@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.code.toboggan.core
 Bundle-Version: 1.0.0
 Bundle-Activator: org.code.toboggan.core.Activator
 Bundle-Vendor: CodeCollaborate
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.code.toboggan.clientcore;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

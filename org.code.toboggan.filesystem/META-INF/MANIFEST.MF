@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CCFilesystem
+Bundle-SymbolicName: org.code.toboggan.filesystem
+Bundle-Version: 1.0.0
+Bundle-Activator: org.code.toboggan.filesystem.Activator
+Bundle-Vendor: CodeCollaborate
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

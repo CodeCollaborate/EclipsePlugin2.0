@@ -8,9 +8,8 @@ import websocket.models.*;
 public class ProjectController {
 	SessionStorage storage;
 	
-	public ProjectController() {
-		// TODO: populate session storage field
-		storage = DataManager.getInstance().getSessionStorage();
+	public ProjectController(SessionStorage storage) {
+		this.storage = storage;
 	}
 	
 	public Project createProject(long id, String name, HashMap<String, Permission> permission) {

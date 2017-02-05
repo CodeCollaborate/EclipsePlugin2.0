@@ -5,6 +5,8 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
 
+	public static final String PLUGIN_ID = "org.code.toboggan.core";
+	
 	private static BundleContext context;
 
 	static BundleContext getContext() {

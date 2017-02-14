@@ -12,14 +12,14 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 
-public class ExtensionManager {
-	private static ExtensionManager instance;
-	private HashMap<String, HashSet<ICoreApiExtension>> extensions;
+public class APIExtensionManager {
+	private static APIExtensionManager instance;
+	private HashMap<String, HashSet<ICoreAPIExtension>> extensions;
 	private Logger logger;
 	
-	public static ExtensionManager getInstance() {
+	public static APIExtensionManager getInstance() {
 		if (instance == null) {
-			instance = new ExtensionManager();
+			instance = new APIExtensionManager();
 		}
 		return instance;
 	}
@@ -28,14 +28,16 @@ public class ExtensionManager {
 		instance = null;
 	}
 	
-	private ExtensionManager() {
+	private APIExtensionManager() {
 		this.extensions = new HashMap<>();
-		this.extensions.put(ExtensionIDs.PROJECT_CREATE_ID, new HashSet<>());
-		logger = LogManager.getLogger("ExtensionManager");
+		this.extensions.put(APIExtensionIDs.PROJECT_CREATE_ID, new HashSet<>());
+		for (String e : this.extensions.keySet()) {
+			this.updateExtensions(e);
+		}
+		logger = LogManager.getLogger("ExtensionManager"); // TODO: breaking logger?
 	}
 	
-	// TODO: Add updateExtensions method
-	private <T> void updateExtensions(String extensionID) {
+	private void updateExtensions(String extensionID) {
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(extensionID);
 		if (point == null) {
 			return;
@@ -47,8 +49,8 @@ public class ExtensionManager {
 			for (IConfigurationElement c : extensionClasses) {
 				try {
 					Object o = c.createExecutableExtension("class");
-					if (o instanceof ICoreApiExtension) {
-						this.extensions.get(extensionID).add((ICoreApiExtension) o);
+					if (o instanceof ICoreAPIExtension) {
+						this.extensions.get(extensionID).add((ICoreAPIExtension) o);
 					}
 				} catch (Exception e) {
 					String message = extension.getLabel() + " [" + extensionID + "]" + " error intializing factory.";
@@ -59,7 +61,7 @@ public class ExtensionManager {
 		}
 	}
 	
-	public Set<ICoreApiExtension> getExtensions(String extensionID) {
+	public Set<ICoreAPIExtension> getExtensions(String extensionID) {
 		return Collections.unmodifiableSet(this.extensions.get(extensionID));
 	}
 }

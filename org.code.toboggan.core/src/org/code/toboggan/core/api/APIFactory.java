@@ -1,11 +1,11 @@
 package org.code.toboggan.core.api;
 
 import org.code.toboggan.core.api.project.ProjectCreate;
-import org.code.toboggan.core.extension.ExtensionManager;
+import org.code.toboggan.core.extension.APIExtensionManager;
 
 public class APIFactory {
 	
-	private static final ExtensionManager EXT_MGR = ExtensionManager.getInstance();
+	private static final APIExtensionManager EXT_MGR = APIExtensionManager.getInstance();
 	
 	public static ProjectCreate createProjectCreate(String name) {
 		return new ProjectCreate(EXT_MGR, name);

@@ -3,7 +3,7 @@ package org.code.toboggan.core;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-public class Activator implements BundleActivator {
+public class CoreActivator implements BundleActivator {
 
 	public static final String PLUGIN_ID = "org.code.toboggan.core";
 	
@@ -18,7 +18,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
+		CoreActivator.context = bundleContext;
 	}
 
 	/*
@@ -26,7 +26,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
-		Activator.context = null;
+		CoreActivator.context = null;
 	}
 
 }

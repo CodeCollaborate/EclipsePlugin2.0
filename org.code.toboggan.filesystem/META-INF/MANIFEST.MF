@@ -8,4 +8,3 @@ Bundle-Vendor: CodeCollaborate
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: org.code.toboggan.filesystem

@@ -3,7 +3,7 @@ package org.code.toboggan.core.api.project;
 import org.code.toboggan.core.api.AbstractAPICall;
 import org.code.toboggan.core.extension.ExtensionIDs;
 import org.code.toboggan.core.extension.ExtensionManager;
-import org.code.toboggan.core.extension.ICoreApiExtension;
+import org.code.toboggan.core.extension.ICoreAPIExtension;
 import org.code.toboggan.core.extension.project.IProjectCreateExtension;
 
 public class ProjectCreate extends AbstractAPICall {
@@ -16,9 +16,9 @@ public class ProjectCreate extends AbstractAPICall {
 	}
 
 	@Override
-	public void execute() {		
+	public void execute() {
 		// notify
-		for (ICoreApiExtension e : this.extensions) {
+		for (ICoreAPIExtension e : this.extensions) {
 			IProjectCreateExtension pExt = (IProjectCreateExtension) e;
 			pExt.projectCreated(name);
 		}

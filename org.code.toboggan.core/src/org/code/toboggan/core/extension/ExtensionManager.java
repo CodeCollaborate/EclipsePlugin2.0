@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Platform;
 
 public class ExtensionManager {
 	private static ExtensionManager instance;
-	private HashMap<String, HashSet<ICoreApiExtension>> extensions;
+	private HashMap<String, HashSet<ICoreAPIExtension>> extensions;
 	private Logger logger;
 	
 	public static ExtensionManager getInstance() {
@@ -47,8 +47,8 @@ public class ExtensionManager {
 			for (IConfigurationElement c : extensionClasses) {
 				try {
 					Object o = c.createExecutableExtension("class");
-					if (o instanceof ICoreApiExtension) {
-						this.extensions.get(extensionID).add((ICoreApiExtension) o);
+					if (o instanceof ICoreAPIExtension) {
+						this.extensions.get(extensionID).add((ICoreAPIExtension) o);
 					}
 				} catch (Exception e) {
 					String message = extension.getLabel() + " [" + extensionID + "]" + " error intializing factory.";
@@ -59,7 +59,7 @@ public class ExtensionManager {
 		}
 	}
 	
-	public Set<ICoreApiExtension> getExtensions(String extensionID) {
+	public Set<ICoreAPIExtension> getExtensions(String extensionID) {
 		return Collections.unmodifiableSet(this.extensions.get(extensionID));
 	}
 }

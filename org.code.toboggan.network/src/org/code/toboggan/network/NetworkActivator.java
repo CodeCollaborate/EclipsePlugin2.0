@@ -1,12 +1,10 @@
-package org.code.toboggan.core;
+package org.code.toboggan.network;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-public class Activator implements BundleActivator {
+public class NetworkActivator implements BundleActivator {
 
-	public static final String PLUGIN_ID = "org.code.toboggan.core";
-	
 	private static BundleContext context;
 
 	static BundleContext getContext() {
@@ -18,7 +16,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
+		NetworkActivator.context = bundleContext;
 	}
 
 	/*
@@ -26,7 +24,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
-		Activator.context = null;
+		NetworkActivator.context = null;
 	}
 
 }

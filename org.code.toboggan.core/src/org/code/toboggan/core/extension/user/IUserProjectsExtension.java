@@ -1,7 +1,7 @@
 package org.code.toboggan.core.extension.user;
 
-import org.code.toboggan.core.extension.ICoreAPIExtension;
+import org.code.toboggan.core.extension.ICoreExtension;
 
-public interface IUserProjectsExtension extends ICoreAPIExtension {
+public interface IUserProjectsExtension extends ICoreExtension {
 	public void userProjects(String username);
 }

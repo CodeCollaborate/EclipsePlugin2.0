@@ -1,9 +1,9 @@
 package org.code.toboggan.core.api.project;
 
 import org.code.toboggan.core.api.AbstractAPICall;
-import org.code.toboggan.core.extension.ExtensionIDs;
-import org.code.toboggan.core.extension.ExtensionManager;
-import org.code.toboggan.core.extension.ICoreAPIExtension;
+import org.code.toboggan.core.extension.APIExtensionIDs;
+import org.code.toboggan.core.extension.AbstractExtensionManager;
+import org.code.toboggan.core.extension.ICoreExtension;
 import org.code.toboggan.core.extension.project.IProjectRevokePermissionsExtension;
 
 public class ProjectRevokePermissions extends AbstractAPICall {
@@ -11,15 +11,15 @@ public class ProjectRevokePermissions extends AbstractAPICall {
 	private long projectID;
 	private String name;
 	
-	public ProjectRevokePermissions(ExtensionManager manager, long projectID, String name) {
-		this.extensions = manager.getExtensions(ExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID);
+	public ProjectRevokePermissions(AbstractExtensionManager manager, long projectID, String name) {
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID);
 		this.projectID = projectID;
 		this.name = name;
 	}
 	
 	@Override
 	public void execute() {
-		for (ICoreAPIExtension e : this.extensions) {
+		for (ICoreExtension e : this.extensions) {
 			IProjectRevokePermissionsExtension pExt = (IProjectRevokePermissionsExtension) e;
 			pExt.permissionRevoked(projectID, name);
 		}

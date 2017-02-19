@@ -1,7 +1,7 @@
 package org.code.toboggan.core.extension.project;
 
-import org.code.toboggan.core.extension.ICoreAPIExtension;
+import org.code.toboggan.core.extension.ICoreExtension;
 
-public interface IProjectGetFilesExtension extends ICoreAPIExtension {
+public interface IProjectGetFilesExtension extends ICoreExtension {
 	public void getFiles(long projectID);
 }

@@ -1,7 +1,7 @@
 package org.code.toboggan.core.extension.project;
 
-import org.code.toboggan.core.extension.ICoreAPIExtension;
+import org.code.toboggan.core.extension.ICoreExtension;
 
-public interface IProjectUnsubscribeExtension extends ICoreAPIExtension {
+public interface IProjectUnsubscribeExtension extends ICoreExtension {
 	public void unsubscribed(long projectID);
 }

@@ -1,7 +1,7 @@
 package org.code.toboggan.core.extension.file;
 
-import org.code.toboggan.core.extension.ICoreAPIExtension;
+import org.code.toboggan.core.extension.ICoreExtension;
 
-public interface IFilePullExtension extends ICoreAPIExtension {
+public interface IFilePullExtension extends ICoreExtension {
 	public void filePulled(long fileID);
 }

@@ -1,9 +1,9 @@
 package org.code.toboggan.core.api.user;
 
 import org.code.toboggan.core.api.AbstractAPICall;
-import org.code.toboggan.core.extension.ExtensionIDs;
-import org.code.toboggan.core.extension.ExtensionManager;
-import org.code.toboggan.core.extension.ICoreAPIExtension;
+import org.code.toboggan.core.extension.APIExtensionIDs;
+import org.code.toboggan.core.extension.AbstractExtensionManager;
+import org.code.toboggan.core.extension.ICoreExtension;
 import org.code.toboggan.core.extension.user.IUserLoginExtension;
 
 public class UserLogin extends AbstractAPICall {
@@ -11,15 +11,15 @@ public class UserLogin extends AbstractAPICall {
 	private String username;
 	private String password;
 	
-	public UserLogin(ExtensionManager manager, String username, String password) {
-		this.extensions = manager.getExtensions(ExtensionIDs.USER_LOGIN_ID);
+	public UserLogin(AbstractExtensionManager manager, String username, String password) {
+		this.extensions = manager.getExtensions(APIExtensionIDs.USER_LOGIN_ID);
 		this.username = username;
 		this.password = password;
 	}
 
 	@Override
 	public void execute() {
-		for (ICoreAPIExtension e : this.extensions) {
+		for (ICoreExtension e : this.extensions) {
 			IUserLoginExtension pExt = (IUserLoginExtension) e;
 			pExt.userLogin(username, password);
 		}

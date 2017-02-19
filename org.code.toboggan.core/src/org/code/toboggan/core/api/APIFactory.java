@@ -9,6 +9,8 @@ import org.code.toboggan.core.api.file.FileMove;
 import org.code.toboggan.core.api.file.FilePull;
 import org.code.toboggan.core.api.file.FileRename;
 import org.code.toboggan.core.api.project.ProjectCreate;
+import org.code.toboggan.core.extension.APIExtensionManager;
+import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.api.project.ProjectDelete;
 import org.code.toboggan.core.api.project.ProjectGetFiles;
 import org.code.toboggan.core.api.project.ProjectGetPermissionConstants;
@@ -22,13 +24,12 @@ import org.code.toboggan.core.api.user.UserLogin;
 import org.code.toboggan.core.api.user.UserLookup;
 import org.code.toboggan.core.api.user.UserProjects;
 import org.code.toboggan.core.api.user.UserRegister;
-import org.code.toboggan.core.extension.ExtensionManager;
 
 import clientcore.patching.*;
 
 public class APIFactory {
 	
-	private static final ExtensionManager EXT_MGR = ExtensionManager.getInstance();
+	private static final AbstractExtensionManager EXT_MGR = APIExtensionManager.getInstance();
 	
 	// Projects
 	public static ProjectCreate createProjectCreate(String name) {

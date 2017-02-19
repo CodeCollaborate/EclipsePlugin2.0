@@ -1,0 +1,4 @@
+/.gradle/
+/.settings/
+build/*
+clientcore_unpack/*

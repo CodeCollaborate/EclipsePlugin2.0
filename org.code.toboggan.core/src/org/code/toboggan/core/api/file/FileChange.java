@@ -6,7 +6,7 @@ import org.code.toboggan.core.extension.ExtensionManager;
 import org.code.toboggan.core.extension.ICoreAPIExtension;
 import org.code.toboggan.core.extension.file.IFileChangeExtension;
 
-import patching.Patch;
+import clientcore.patching.Patch;
 
 public class FileChange extends AbstractAPICall {
 

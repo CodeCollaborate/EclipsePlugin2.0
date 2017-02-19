@@ -24,7 +24,7 @@ import org.code.toboggan.core.api.user.UserProjects;
 import org.code.toboggan.core.api.user.UserRegister;
 import org.code.toboggan.core.extension.ExtensionManager;
 
-import patching.*;
+import clientcore.patching.*;
 
 public class APIFactory {
 	

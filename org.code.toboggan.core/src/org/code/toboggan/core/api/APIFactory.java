@@ -36,8 +36,8 @@ public class APIFactory {
 		return new ProjectGrantPermissions(EXT_MGR, projectID, grantUsername, permission);
 	}
 	
-	public static ProjectLookup createProjectLookup(long projectID) {
-		return new ProjectLookup(EXT_MGR, projectID);
+	public static ProjectLookup createProjectLookup(List<Long> projectIDs) {
+		return new ProjectLookup(EXT_MGR, projectIDs);
 	}
 	
 	public static ProjectRename createProjectRename(long projectID, String newName) {
@@ -54,10 +54,6 @@ public class APIFactory {
 	
 	public static ProjectUnsubscribe createProjectUnsubscribe(long projectID) {
 		return new ProjectUnsubscribe(EXT_MGR, projectID);
-	}
-	
-	public static ProjectFetchAll createProjectFetchAll() {
-		return new ProjectFetchAll(EXT_MGR);
 	}
 	
 	public static ProjectFetchAndSubscribeAll createProjectFetchAndSubscribeAll(List<Long> projectIDs) {
@@ -102,8 +98,8 @@ public class APIFactory {
 		return new UserLookup(EXT_MGR, username);
 	}
 	
-	public static UserProjects createUserProjects(String username) {
-		return new UserProjects(EXT_MGR, username);
+	public static UserProjects createUserProjects() {
+		return new UserProjects(EXT_MGR);
 	}
 	
 	public static UserRegister createUserRegister(String username, String firstName, String lastName, String password, String email) {

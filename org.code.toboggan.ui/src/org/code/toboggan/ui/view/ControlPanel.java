@@ -58,7 +58,7 @@ public class ControlPanel extends ViewPart {
 		
 		if (UIActivator.getDefault().getSessionStorage().getUsername() != null) {
 			setEnabled(true);
-			new Thread(APIFactory.createProjectFetchAll()).start();
+			new Thread(APIFactory.createUserProjects()).start();
 		}
 	}
 	

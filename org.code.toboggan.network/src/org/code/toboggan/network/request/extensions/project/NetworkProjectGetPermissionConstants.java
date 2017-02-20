@@ -36,6 +36,7 @@ public class NetworkProjectGetPermissionConstants implements IProjectGetPermissi
 		Request getPermConstants = new ProjectGetPermissionConstantsRequest().getRequest(response -> {
             int status = response.getStatus();
             if (status == 200) {
+            	logger.info("Successfully fetched permission constants");
                 BiMap<String, Byte> permConstants =
                         (((ProjectGetPermissionConstantsResponse) response.getData()).getConstants());
                 Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_ID);

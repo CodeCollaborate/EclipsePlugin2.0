@@ -34,7 +34,7 @@ public class NetworkProjectDelete implements IProjectDeleteExtension {
 		Request request = (new ProjectDeleteRequest(projectID)).getRequest(response -> {
 			int status = response.getStatus();
 			if (status == 200) {
-            	
+            	logger.info("Successfully deleted project " + projectID + " from server");
 				// Trigger extensions
 				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID);
 				for (ICoreExtension e : extensions) {

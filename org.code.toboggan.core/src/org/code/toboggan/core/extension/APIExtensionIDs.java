@@ -14,6 +14,8 @@ public class APIExtensionIDs {
 	public static final String PROJECT_REVOKE_PERMISSIONS_ID = CoreActivator.PLUGIN_ID + ".project.revokePermissions";
 	public static final String PROJECT_SUBSCRIBE_ID = CoreActivator.PLUGIN_ID + ".project.subscribe";
 	public static final String PROJECT_UNSUBSCRIBE_ID = CoreActivator.PLUGIN_ID + ".project.unsubscribe";
+	public static final String PROJECT_FETCH_SUBSCRIBE_ALL = CoreActivator.PLUGIN_ID + ".project.fetchSubscribeAll";
+	public static final String PROJECT_FETCH_ALL = CoreActivator.PLUGIN_ID + ".project.fetchAll";
 
 	// Files
 	public static final String FILE_CREATE_ID = CoreActivator.PLUGIN_ID + ".file.create";

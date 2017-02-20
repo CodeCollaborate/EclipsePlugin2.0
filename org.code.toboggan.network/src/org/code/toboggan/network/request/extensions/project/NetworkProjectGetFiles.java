@@ -34,6 +34,7 @@ public class NetworkProjectGetFiles implements IProjectGetFilesExtension {
 		Request requestForFiles = (new ProjectGetFilesRequest(projectID)).getRequest(response -> {
             int status = response.getStatus();
             if (status == 200) {
+            	logger.info("Successfully fetched files for project " + projectID);
                 ProjectGetFilesResponse r = (ProjectGetFilesResponse) response.getData();
                 Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GET_FILES_ID);
         		for (ICoreExtension e : extensions) {

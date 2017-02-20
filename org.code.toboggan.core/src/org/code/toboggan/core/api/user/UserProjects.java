@@ -8,23 +8,15 @@ import org.code.toboggan.core.extension.user.IUserProjectsExtension;
 
 public class UserProjects extends AbstractAPICall {
 
-	private String username;
-
-	public UserProjects(AbstractExtensionManager manager, String username) {
+	public UserProjects(AbstractExtensionManager manager) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.USER_PROJECTS_ID);
-		this.username = username;
 	}
 
 	@Override
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {
 			IUserProjectsExtension pExt = (IUserProjectsExtension) e;
-			pExt.userProjects(username);
+			pExt.userProjects();
 		}
 	}
-
-	public String getUsername() {
-		return username;
-	}
-
 }

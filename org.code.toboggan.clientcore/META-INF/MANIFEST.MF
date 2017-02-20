@@ -14,5 +14,6 @@ Export-Package: clientcore.constants,
  clientcore.websocket.models.notifications,
  clientcore.websocket.models.requests,
  clientcore.websocket.models.responses,
+ com.google.common.collect,
  org.apache.logging.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

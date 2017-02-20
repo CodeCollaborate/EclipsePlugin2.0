@@ -1,29 +1,13 @@
 package org.code.toboggan.core.api;
 
 import java.nio.file.Path;
+import java.util.List;
 
-import org.code.toboggan.core.api.file.FileChange;
-import org.code.toboggan.core.api.file.FileCreate;
-import org.code.toboggan.core.api.file.FileDelete;
-import org.code.toboggan.core.api.file.FileMove;
-import org.code.toboggan.core.api.file.FilePull;
-import org.code.toboggan.core.api.file.FileRename;
-import org.code.toboggan.core.api.project.ProjectCreate;
+import org.code.toboggan.core.api.file.*;
+import org.code.toboggan.core.api.project.*;
+import org.code.toboggan.core.api.user.*;
 import org.code.toboggan.core.extension.APIExtensionManager;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.api.project.ProjectDelete;
-import org.code.toboggan.core.api.project.ProjectGetFiles;
-import org.code.toboggan.core.api.project.ProjectGetPermissionConstants;
-import org.code.toboggan.core.api.project.ProjectGrantPermissions;
-import org.code.toboggan.core.api.project.ProjectLookup;
-import org.code.toboggan.core.api.project.ProjectRename;
-import org.code.toboggan.core.api.project.ProjectRevokePermissions;
-import org.code.toboggan.core.api.project.ProjectSubscribe;
-import org.code.toboggan.core.api.project.ProjectUnsubscribe;
-import org.code.toboggan.core.api.user.UserLogin;
-import org.code.toboggan.core.api.user.UserLookup;
-import org.code.toboggan.core.api.user.UserProjects;
-import org.code.toboggan.core.api.user.UserRegister;
 
 import clientcore.patching.*;
 
@@ -70,6 +54,14 @@ public class APIFactory {
 	
 	public static ProjectUnsubscribe createProjectUnsubscribe(long projectID) {
 		return new ProjectUnsubscribe(EXT_MGR, projectID);
+	}
+	
+	public static ProjectFetchAll createProjectFetchAll() {
+		return new ProjectFetchAll(EXT_MGR);
+	}
+	
+	public static ProjectFetchAndSubscribeAll createProjectFetchAndSubscribeAll(List<Long> projectIDs) {
+		return new ProjectFetchAndSubscribeAll(EXT_MGR, projectIDs);
 	}
 	
 	// Files

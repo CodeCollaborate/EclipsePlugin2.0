@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+         <category
+            id="org.code.toboggan"
+            name="CodeCollaborate">
+	      </category>
+	      <view
+            category="org.code.toboggan"
+            class="org.code.toboggan.ui.view.ControlPanel"
+            id="org.code.toboggan.ui.view.ControlPanel"
+            name="CodeCollaborate">
+      </view>
+   </extension>
+
+</plugin>

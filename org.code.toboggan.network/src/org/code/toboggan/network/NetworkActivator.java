@@ -5,6 +5,7 @@ import org.osgi.framework.BundleContext;
 
 public class NetworkActivator implements BundleActivator {
 
+	public static final String PLUGIN_ID = "org.code.toboggan.network";
 	private static BundleContext context;
 
 	static BundleContext getContext() {
@@ -17,6 +18,8 @@ public class NetworkActivator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		NetworkActivator.context = bundleContext;
+		// Start WS connection when this plugin is activated
+		WSService.getWSManager().connect();
 	}
 
 	/*
@@ -25,6 +28,7 @@ public class NetworkActivator implements BundleActivator {
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		NetworkActivator.context = null;
+		WSService.getWSManager().close();
 	}
 
 }

@@ -4,21 +4,21 @@ import org.code.toboggan.core.api.AbstractAPICall;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
-import org.code.toboggan.core.extension.file.IFilePullExtension;
+import org.code.toboggan.core.extension.file.IFilePullDiffSendChangesExtension;
 
-public class FilePull extends AbstractAPICall {
+public class FilePullDiffSendChanges extends AbstractAPICall {
 
 	private long fileID;
 
-	public FilePull(AbstractExtensionManager manager, long fileID) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_PULL_DIFF_SEND_CHANGES_ID);
+	public FilePullDiffSendChanges(AbstractExtensionManager manager, long fileID) {
+		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_PULL_ID);
 		this.fileID = fileID;
 	}
 
 	@Override
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {
-			IFilePullExtension pExt = (IFilePullExtension) e;
+			IFilePullDiffSendChangesExtension pExt = (IFilePullDiffSendChangesExtension) e;
 			pExt.filePulled(fileID);
 		}
 	}

@@ -85,6 +85,10 @@ public class APIFactory {
 		return new FilePull(EXT_MGR, fileID);
 	}
 	
+	public static FilePullDiffSendChanges createFilePullDiffSendChanges(long fileID) {
+		return new FilePullDiffSendChanges(EXT_MGR, fileID);
+	}
+	
 	public static FileRename createFileRename(long fileID, Path newWorkspaceRelativePath, String newName) {
 		return new FileRename(EXT_MGR, fileID, newWorkspaceRelativePath, newName);
 	}

@@ -22,6 +22,7 @@ public class APIExtensionIDs {
 	public static final String FILE_MOVE_ID = CoreActivator.PLUGIN_ID + ".file.move";
 	public static final String FILE_CHANGE_ID = CoreActivator.PLUGIN_ID + ".file.change";
 	public static final String FILE_PULL_ID = CoreActivator.PLUGIN_ID + ".file.pull";
+	public static final String FILE_PULL_DIFF_SEND_CHANGES_ID = CoreActivator.PLUGIN_ID + ".file.pullDiffSendChanges";
 	
 	// Users
 	public static final String USER_REGISTER_ID = CoreActivator.PLUGIN_ID + ".user.register";

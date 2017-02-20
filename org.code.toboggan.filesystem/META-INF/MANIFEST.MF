@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.workbench,
  org.code.toboggan.core,
  org.eclipse.ui;bundle-version="3.108.1",
- org.eclipse.ui.ide;bundle-version="3.12.2"
+ org.eclipse.ui.ide;bundle-version="3.12.2",
+ org.code.toboggan.network
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.code.toboggan.filesystem

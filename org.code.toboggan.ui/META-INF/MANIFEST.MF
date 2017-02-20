@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.security;bundle-version="1.2.200",
  org.eclipse.ui;bundle-version="3.108.1",
  org.code.toboggan.clientcore,
- org.code.toboggan.core
+ org.code.toboggan.core,
+ org.code.toboggan.network
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.code.toboggan.ui

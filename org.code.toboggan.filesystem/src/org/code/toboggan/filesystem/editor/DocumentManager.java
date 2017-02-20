@@ -11,9 +11,11 @@ import java.util.Scanner;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.WarnList;
+import org.code.toboggan.network.NetworkActivator;
 import org.eclipse.core.internal.filebuffers.SynchronizableDocument;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
@@ -59,8 +61,8 @@ public class DocumentManager implements IFileChangeNotificationHandler {
 
 
 	public DocumentManager() {
-		ss = null; // TODO: get from core plugin
-		pm = null; // TODO: get from ???
+		ss = CoreActivator.getSessionStorage();
+		pm = NetworkActivator.getPatchManager();
 		warnList = FSActivator.getWarnList();
 	}
 

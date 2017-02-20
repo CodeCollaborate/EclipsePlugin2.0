@@ -1,7 +1,8 @@
 package org.code.toboggan.ui;
 
 import org.osgi.framework.BundleContext;
-
+import org.code.toboggan.core.CoreActivator;
+import org.code.toboggan.network.WSService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import clientcore.dataMgmt.SessionStorage;
@@ -19,11 +20,11 @@ public class UIActivator extends AbstractUIPlugin {
 	}
 	
 	public SessionStorage getSessionStorage() {
-		return null; // TODO: change to get session storage correctly
+		return CoreActivator.getSessionStorage();
 	}
 	
 	public WSManager getWSManager() {
-		return null; // TODO: change to get ws manager correctly
+		return WSService.getWSManager();
 	}
 
 	/*

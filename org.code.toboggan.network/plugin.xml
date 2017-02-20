@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension
+         id="org.code.toboggan.filesystem.createextension"
+         name="Project Create Extension"
+         point="org.code.toboggan.core.project.create">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectCreate">
+         </create>
+   </extension>
+  
+   <extension
+         id="org.code.toboggan.core.project.renameextension"
+         name="org.code.toboggan.core.project.renameextension"
+         point="org.code.toboggan.core.project.rename">
+         <rename
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectRename">
+     	</rename>
+   </extension> 
+   
+   <extension
+         id="org.code.toboggan.core.project."
+         point="org.code.toboggan.core.project.delete">
+         <delete
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectDelete">
+         </delete>
+   </extension>
 
 </plugin>

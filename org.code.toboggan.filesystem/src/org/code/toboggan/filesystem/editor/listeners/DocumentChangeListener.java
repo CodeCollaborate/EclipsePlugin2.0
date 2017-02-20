@@ -7,8 +7,10 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.editor.DocumentManager;
+import org.code.toboggan.network.NetworkActivator;
 import org.eclipse.core.internal.filebuffers.SynchronizableDocument;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -43,8 +45,8 @@ public class DocumentChangeListener implements IDocumentListener {
 	
 	public DocumentChangeListener() {
 		docMgr = FSActivator.getDocumentManager();
-		ss = null; // TODO: get from core plugin
-		pm = null; // TODO: get from ??
+		ss = CoreActivator.getSessionStorage();
+		pm = NetworkActivator.getPatchManager();
 	}
 	
 	/**

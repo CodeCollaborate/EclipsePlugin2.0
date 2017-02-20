@@ -6,6 +6,7 @@ import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -31,7 +32,7 @@ public class NetworkFileCreate implements IFileCreateExtension {
 	public NetworkFileCreate() {
 		this.wsMgr = WSService.getWSManager();
 		this.extMgr = NetworkExtensionManager.getInstance();
-		this.ss = null; // TODO: get from core
+		this.ss = CoreActivator.getSessionStorage();
 	}
 	
 	@Override

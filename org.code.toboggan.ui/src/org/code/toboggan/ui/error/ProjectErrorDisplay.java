@@ -109,6 +109,11 @@ public class ProjectErrorDisplay implements IProjectCreateResponse, IProjectDele
 	public void subscribed(long projectId) {
 		// Do nothing
 	}
+	
+	@Override
+	public void subscribed(long projectID, List<File> files) {
+		// Do nothing
+	}
 
 	@Override
 	public void subscribeFailed(long projectId) {

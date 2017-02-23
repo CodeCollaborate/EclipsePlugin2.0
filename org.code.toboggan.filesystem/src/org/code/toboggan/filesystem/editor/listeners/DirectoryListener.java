@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.filesystem.CCIgnore;
-import org.code.toboggan.filesystem.util.FSUtils;
+import org.code.toboggan.filesystem.utils.FSUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;

@@ -1,4 +1,4 @@
-package org.code.toboggan.filesystem.util;
+package org.code.toboggan.filesystem.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

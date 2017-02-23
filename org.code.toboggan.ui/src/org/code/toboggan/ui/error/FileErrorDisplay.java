@@ -15,14 +15,14 @@ public class FileErrorDisplay implements IFileChangeResponse, IFileCreateRespons
 	public void fileRenamed(long fileID, Path newWorkspaceRelativePath, String newName) {
 		// Do nothing
 	}
-
+	
 	@Override
-	public void fileRenameFailed(long fileID, Path newWorkspaceRelativePath, String newName) {
+	public void fileRenameFailed(long fileID, Path oldFileLocation, Path newFileLocation, String newName) {
 		MessageDialog.createDialog("Failed to rename file to " + newName + " on the server. Please resubscribe to the project.").open();
 	}
 
 	@Override
-	public void filePulled(byte[] fileBytes) {
+	public void filePulled(long fileID, byte[] fileBytes, String[] changes) {
 		// Do nothing
 	}
 
@@ -35,9 +35,9 @@ public class FileErrorDisplay implements IFileChangeResponse, IFileCreateRespons
 	public void fileMoved(long fileID, Path newWorkspaceRelativePath) {
 		// Do nothing
 	}
-
+	
 	@Override
-	public void fileMoveFailed(long fileID, Path newWorkspaceRelativePath) {
+	public void fileMoveFailed(long fileID, Path oldFileLocation, Path newWorkspaceRelativePath) {
 		MessageDialog.createDialog("Failed to move the file. Please resubscribe to the project.").open();
 	}
 
@@ -53,7 +53,7 @@ public class FileErrorDisplay implements IFileChangeResponse, IFileCreateRespons
 	}
 
 	@Override
-	public void fileCreated(long fileID) {
+	public void fileCreated(long fileID, String name, Path absolutePath, String projectRelativePath, long projectID) {
 		// Do nothing
 	}
 

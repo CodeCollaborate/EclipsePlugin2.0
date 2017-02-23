@@ -1,10 +1,12 @@
-package utils;
+package org.code.toboggan.network.utils;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.core.resources.ResourcesPlugin;
 
 public class NetworkUtils {
 	private static Logger logger = LogManager.getLogger(NetworkUtils.class);
@@ -28,4 +30,17 @@ public class NetworkUtils {
 		return stringProjectRelative;
 	}
 	
+	/**
+	 * Turns a relative path and a filename into an absolute path.
+	 * @param relativePath
+	 * @param filename
+	 * @return The Path object of the absolute path.
+	 */
+	public static Path toAbsolutePathFromRelative(Path relativePath, String filename) {
+		Path wsPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile().toPath();
+		Path relativePathWithName = Paths.get(relativePath.toString(), filename);
+		Path abs = Paths.get(wsPath.toString(), relativePathWithName.toString());
+		logger.debug("Absolute path: " + abs.toString());
+		return abs;
+	}
 }

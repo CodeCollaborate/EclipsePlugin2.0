@@ -17,7 +17,7 @@ import org.code.toboggan.core.extension.ICoreExtension;
 import org.code.toboggan.filesystem.CCIgnore;
 import org.code.toboggan.filesystem.extensionpoints.project.IFSProjectCreateExt;
 import org.code.toboggan.filesystem.extensions.FileSystemExtensionManager;
-import org.code.toboggan.filesystem.util.FSUtils;
+import org.code.toboggan.filesystem.utils.FSUtils;
 import org.code.toboggan.network.request.extensionpoints.project.IProjectCreateResponse;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;

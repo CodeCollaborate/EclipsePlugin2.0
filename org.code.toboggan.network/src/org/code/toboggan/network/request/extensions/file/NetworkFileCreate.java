@@ -13,6 +13,7 @@ import org.code.toboggan.core.extension.file.IFileCreateExtension;
 import org.code.toboggan.network.WSService;
 import org.code.toboggan.network.request.extensionpoints.file.IFileCreateResponse;
 import org.code.toboggan.network.request.extensions.NetworkExtensionManager;
+import org.code.toboggan.network.utils.NetworkUtils;
 
 import clientcore.dataMgmt.SessionStorage;
 import clientcore.websocket.IRequestSendErrorHandler;
@@ -20,7 +21,6 @@ import clientcore.websocket.WSManager;
 import clientcore.websocket.models.Request;
 import clientcore.websocket.models.requests.FileCreateRequest;
 import clientcore.websocket.models.responses.FileCreateResponse;
-import utils.NetworkUtils;
 
 public class NetworkFileCreate implements IFileCreateExtension {
 

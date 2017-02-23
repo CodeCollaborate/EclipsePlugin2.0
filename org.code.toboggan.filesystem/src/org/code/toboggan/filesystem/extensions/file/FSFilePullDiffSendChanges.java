@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.code.toboggan.core.CoreActivator;
-import org.code.toboggan.filesystem.util.FSUtils;
+import org.code.toboggan.filesystem.utils.FSUtils;
 import org.code.toboggan.network.NetworkActivator;
 import org.code.toboggan.network.request.extensionpoints.file.IFilePullDiffSendChangesResponse;
 import org.eclipse.core.resources.IFile;

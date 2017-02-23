@@ -20,6 +20,6 @@ public class APIExtensionManager extends AbstractExtensionManager {
 		for (String e : this.extensions.keySet()) {
 			this.updateExtensions(e);
 		}
-		logger = LogManager.getLogger("APIExtensionManager"); // TODO: breaking logger?
+		logger = LogManager.getLogger(APIExtensionManager.class); // TODO: breaking logger?
 	}	
 }

@@ -21,6 +21,6 @@ public class NetworkExtensionManager extends AbstractExtensionManager {
 		for (String e : this.extensions.keySet()) {
 			this.updateExtensions(e);
 		}
-		logger = LogManager.getLogger("APIExtensionManager"); // TODO: breaking logger?
+		logger = LogManager.getLogger(NetworkExtensionManager.class); // TODO: breaking logger?
 	}
 }

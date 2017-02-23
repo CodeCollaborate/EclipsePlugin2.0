@@ -32,11 +32,13 @@ public class NetworkFilePullDiffSendChanges implements IFilePullDiffSendChangesE
 	public void filePulled(long fileID) {
 		Request req = (new FilePullRequest(fileID)).getRequest(response -> {
 			if (response.getStatus() == 200) {
-				byte[] fileBytes = ((FilePullResponse) response.getData()).getFileBytes();
+				FilePullResponse fpResponse = (FilePullResponse) response.getData();
+				byte[] fileBytes = fpResponse.getFileBytes();
+				String[] changes = fpResponse.getChanges();
 				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_DIFF_SEND_CHANGES_ID);
 		        for (ICoreExtension e : extensions) {
 					IFilePullDiffSendChangesResponse p = (IFilePullDiffSendChangesResponse) e;
-					p.filePulled(fileBytes);
+					p.filePulled(fileID, fileBytes, changes);
 				}
 			} else {
 				handlePullError(fileID);

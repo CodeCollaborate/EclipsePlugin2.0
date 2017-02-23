@@ -3,7 +3,6 @@ package org.code.toboggan.network.request.extensions.file;
 import java.nio.file.Path;
 import java.util.Set;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
@@ -21,6 +20,7 @@ import clientcore.websocket.WSManager;
 import clientcore.websocket.models.File;
 import clientcore.websocket.models.Request;
 import clientcore.websocket.models.requests.FileMoveRequest;
+import utils.NetworkUtils;
 
 public class NetworkFileMove implements IFileMoveExtension {
 
@@ -36,13 +36,11 @@ public class NetworkFileMove implements IFileMoveExtension {
 	}
 	
 	@Override
-	public void fileMoved(long fileID, Path newAbsolutePath) {
+	public void fileMoved(long fileID, Path oldAbsolutePath, Path newFileLocation) {
 		File file = ss.getFile(fileID);
 		long projectID = file.getProjectID();
 		Path projectLocation = ss.getProjectLocation(projectID);
-		Path projectRelativePath = projectLocation.relativize(newAbsolutePath);
-		String stringProjectRelative = FilenameUtils.getPath(projectRelativePath.toString());
-		logger.debug("Project relativized path: " + stringProjectRelative);
+		String stringProjectRelative = NetworkUtils.toStringRelativePath(projectLocation, newFileLocation);
 		
 		Request moveFileReq = new FileMoveRequest(fileID, stringProjectRelative).getRequest(response -> {
             int status = response.getStatus();
@@ -50,26 +48,26 @@ public class NetworkFileMove implements IFileMoveExtension {
             	Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
                 for (ICoreExtension e : extensions) {
         			IFileMoveResponse p = (IFileMoveResponse) e;
-        			p.fileMoved(fileID, newAbsolutePath);
+        			p.fileMoved(fileID, newFileLocation);
         		}
             } else {
-            	handleMoveError(fileID, newAbsolutePath);
+            	handleMoveError(fileID, oldAbsolutePath, newFileLocation);
             }
-        }, getMoveSendHandler(fileID, newAbsolutePath));
+        }, getMoveSendHandler(fileID, oldAbsolutePath, newFileLocation));
         this.wsMgr.sendAuthenticatedRequest(moveFileReq);
 	}
 	
-	private void handleMoveError(long fileID, Path newAbsolutePath) {
+	private void handleMoveError(long fileID, Path oldAbsolutePath, Path newAbsolutePath) {
 		logger.error(String.format("Failed to move file on server: %d", fileID));
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
         for (ICoreExtension e : extensions) {
 			IFileMoveResponse p = (IFileMoveResponse) e;
-			p.fileMoveFailed(fileID, newAbsolutePath);
+			p.fileMoveFailed(fileID, oldAbsolutePath, newAbsolutePath);
 		}
 	}
 	
-	private IRequestSendErrorHandler getMoveSendHandler(long fileID, Path newAbsolutePath) {
-		return () -> handleMoveError(fileID, newAbsolutePath);
+	private IRequestSendErrorHandler getMoveSendHandler(long fileID, Path oldAbsolutePath, Path newAbsolutePath) {
+		return () -> handleMoveError(fileID, oldAbsolutePath, newAbsolutePath);
 	}
 
 }

@@ -3,7 +3,6 @@ package org.code.toboggan.network.request.extensions.file;
 import java.nio.file.Path;
 import java.util.Set;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
@@ -21,6 +20,7 @@ import clientcore.websocket.WSManager;
 import clientcore.websocket.models.Request;
 import clientcore.websocket.models.requests.FileCreateRequest;
 import clientcore.websocket.models.responses.FileCreateResponse;
+import utils.NetworkUtils;
 
 public class NetworkFileCreate implements IFileCreateExtension {
 
@@ -36,43 +36,43 @@ public class NetworkFileCreate implements IFileCreateExtension {
 	}
 	
 	@Override
-	public void fileCreated(String name, Path absolutePath, long projectID, byte[] fileBytes) {
+	public void fileCreated(String name, Path fileLocation, long projectID, byte[] fileBytes) {
 		Path projectLocation = ss.getProjectLocation(projectID);
-		Path projectRelativePath = projectLocation.relativize(absolutePath);
-		String stringProjectRelative = FilenameUtils.getPath(projectRelativePath.toString());
-		logger.debug("Project relativized path: " + stringProjectRelative);
+		String projectRelativePath = NetworkUtils.toStringRelativePath(projectLocation, fileLocation);
 		
 		String contents = new String(fileBytes);
     	if (contents.contains("\r\n")) {
     		contents = contents.replace("\r\n", "\n");
     	}
     	// Make request
-        Request createFileReq = new FileCreateRequest(name, stringProjectRelative, projectID, fileBytes).getRequest(response -> {
+        Request createFileReq = new FileCreateRequest(name, projectRelativePath, projectID, fileBytes).getRequest(response -> {
             int status = response.getStatus();
             if (status == 200) {
                 long fileID = ((FileCreateResponse) response.getData()).getFileID();
+                
                 Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID);
                 for (ICoreExtension e : extensions) {
 					IFileCreateResponse p = (IFileCreateResponse) e;
-					p.fileCreated(fileID);
+					p.fileCreated(fileID, name, fileLocation, projectRelativePath, projectID);
 				}
+                
             } else {
-                handleCreateError(name, absolutePath, projectID, fileBytes);
+                handleCreateError(name, fileLocation, projectID, fileBytes);
             }
-        }, getCreateSendHandler(name, absolutePath, projectID, fileBytes));
+        }, getCreateSendHandler(name, fileLocation, projectID, fileBytes));
         this.wsMgr.sendAuthenticatedRequest(createFileReq);
 	}
 	
-	private void handleCreateError(String name, Path absolutePath, long projectID, byte[] fileBytes) {
+	private void handleCreateError(String name, Path fileLocation, long projectID, byte[] fileBytes) {
 		logger.error(String.format("Failed to create file \"%s\" on the server.", name));
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID);
         for (ICoreExtension e : extensions) {
 			IFileCreateResponse p = (IFileCreateResponse) e;
-			p.fileCreateFailed(name, absolutePath, projectID, fileBytes);
+			p.fileCreateFailed(name, fileLocation, projectID, fileBytes);
 		}
 	}
 	
-	private IRequestSendErrorHandler getCreateSendHandler(String name, Path absolutePath, long projectID, byte[] fileBytes) {
-		return () -> handleCreateError(name, absolutePath, projectID, fileBytes);
+	private IRequestSendErrorHandler getCreateSendHandler(String name, Path fileLocation, long projectID, byte[] fileBytes) {
+		return () -> handleCreateError(name, fileLocation, projectID, fileBytes);
 	}
 }

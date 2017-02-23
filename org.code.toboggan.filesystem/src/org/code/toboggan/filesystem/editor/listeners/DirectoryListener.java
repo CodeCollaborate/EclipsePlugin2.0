@@ -122,7 +122,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 					} else {
 						// send File.Rename request
 						String newName = relativeMovedToPath.lastSegment();
-						changedFileRename(fileLocation, file, newName);
+						changedFileRename(absMovedFromPath, fileLocation, file, newName);
 					}
 
 				}
@@ -231,11 +231,11 @@ public class DirectoryListener extends AbstractDirectoryListener {
 		}
 	}
 
-	private void changedFileRename(Path fileLocation, File file, String newName) {
+	private void changedFileRename(Path movedFromLocation, Path fileLocation, File file, String newName) {
 		if (warnList.isFileInWarnList(fileLocation, FileRenameNotification.class)) {
 			warnList.removeFileFromWarnList(fileLocation, FileRenameNotification.class);
 		} else {
-			new Thread(APIFactory.createFileRename(file.getFileID(), fileLocation, newName)).start();
+			new Thread(APIFactory.createFileRename(file.getFileID(), movedFromLocation, fileLocation, newName)).start();
 			logger.debug(String.format("Sent file rename request; changing to %s", newName));
 		}
 	}
@@ -251,7 +251,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 			Path movedToLocation = FSUtils
 					.getLocationForRelativePath(delta.getMovedToPath().toFile().toPath());
 			fileMeta = ss.getFile(movedToLocation);
-			new Thread(APIFactory.createFileMove(fileMeta.getFileID(), movedToLocation)).start();
+			new Thread(APIFactory.createFileMove(fileMeta.getFileID(), fileLocation, movedToLocation)).start();
 			logger.debug(String.format("Sent file move request; moving from %s to %s",
 					fileLocation.toString(), movedToLocation));
 		}
@@ -270,7 +270,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 		if (warnList.isFileInWarnList(fileLocation, FileRenameNotification.class)) {
 			warnList.removeFileFromWarnList(fileLocation, FileRenameNotification.class);
 		} else {
-			new Thread(APIFactory.createFileRename(fileMeta.getFileID(), fileLocation, newName)).start();
+			new Thread(APIFactory.createFileRename(fileMeta.getFileID(), movedFromLocation, fileLocation, newName)).start();
 			logger.debug(String.format("Sent file rename request; changing to %s", newName));
 		}
 	}
@@ -288,7 +288,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 				return;
 			}
 
-			new Thread(APIFactory.createFileMove(fileMeta.getFileID(), fileLocation)).start();
+			new Thread(APIFactory.createFileMove(fileMeta.getFileID(), movedFromLocation, fileLocation)).start();
 			logger.debug(String.format("Sent file move request; moving from %s to %s",
 					movedFromLocation, fileLocation));
 		}

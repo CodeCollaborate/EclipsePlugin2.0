@@ -11,13 +11,15 @@ import org.code.toboggan.core.extension.file.IFileRenameExtension;
 public class FileRename extends AbstractAPICall {
 
 	private long fileID;
-	private Path newWorkspaceRelativePath;
+	private Path oldAbsolutePath;
+	private Path newAbsolutePath;
 	private String newName;
 
-	public FileRename(AbstractExtensionManager manager, long fileID, Path newWorkspaceRelativePath, String newName) {
+	public FileRename(AbstractExtensionManager manager, long fileID, Path oldAbsolutePath, Path newWorkspaceRelativePath, String newName) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_RENAME_ID);
 		this.fileID = fileID;
-		this.newWorkspaceRelativePath = newWorkspaceRelativePath;
+		this.oldAbsolutePath = oldAbsolutePath;
+		this.newAbsolutePath = newWorkspaceRelativePath;
 		this.newName = newName;
 	}
 
@@ -25,7 +27,7 @@ public class FileRename extends AbstractAPICall {
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {
 			IFileRenameExtension pExt = (IFileRenameExtension) e;
-			pExt.fileRenamed(fileID, newWorkspaceRelativePath, newName);
+			pExt.fileRenamed(fileID, oldAbsolutePath, newAbsolutePath, newName);
 		}
 	}
 
@@ -34,7 +36,7 @@ public class FileRename extends AbstractAPICall {
 	}
 
 	public Path getNewWorkspaceRelativePath() {
-		return newWorkspaceRelativePath;
+		return newAbsolutePath;
 	}
 
 	public String getNewName() {

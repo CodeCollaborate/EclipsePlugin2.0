@@ -65,16 +65,16 @@ public class APIFactory {
 		return new FileChange(EXT_MGR, fileID, patches);
 	}
 	
-	public static FileCreate createFileCreate(String name, Path workspaceRelativePath, long projectID, byte[] fileBytes) {
-		return new FileCreate(EXT_MGR, name, workspaceRelativePath, projectID, fileBytes);
+	public static FileCreate createFileCreate(String name, Path absolutePath, long projectID, byte[] fileBytes) {
+		return new FileCreate(EXT_MGR, name, absolutePath, projectID, fileBytes);
 	}
 	
 	public static FileDelete createFileDelete(long fileID) {
 		return new FileDelete(EXT_MGR, fileID);
 	}
 	
-	public static FileMove createFileMove(long fileID, Path newWorkspaceRelativePath) {
-		return new FileMove(EXT_MGR, fileID, newWorkspaceRelativePath);
+	public static FileMove createFileMove(long fileID, Path oldAbsolutePath, Path newAbsolutePath) {
+		return new FileMove(EXT_MGR, fileID, oldAbsolutePath, newAbsolutePath);
 	}
 	
 	public static FilePull createFilePull(long fileID) {
@@ -85,8 +85,8 @@ public class APIFactory {
 		return new FilePullDiffSendChanges(EXT_MGR, fileID);
 	}
 	
-	public static FileRename createFileRename(long fileID, Path newWorkspaceRelativePath, String newName) {
-		return new FileRename(EXT_MGR, fileID, newWorkspaceRelativePath, newName);
+	public static FileRename createFileRename(long fileID, Path oldAbsolutePath, Path newAbsolutePath, String newName) {
+		return new FileRename(EXT_MGR, fileID, oldAbsolutePath, newAbsolutePath, newName);
 	}
 	
 	// Users

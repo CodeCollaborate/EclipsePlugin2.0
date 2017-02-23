@@ -30,7 +30,7 @@ public class NetworkFileRename implements IFileRenameExtension {
 	}
 	
 	@Override
-	public void fileRenamed(long fileID, Path newAbsolutePath, String newName) {
+	public void fileRenamed(long fileID, Path oldAbsolutePath, Path newAbsolutePath, String newName) {
 		Request renameFileReq = new FileRenameRequest(fileID, newName).getRequest(response -> {
             int status = response.getStatus();
             if (status == 200) {
@@ -40,23 +40,23 @@ public class NetworkFileRename implements IFileRenameExtension {
         			p.fileRenamed(fileID, newAbsolutePath, newName);
         		}
             } else {
-            	handleRenameError(fileID, newAbsolutePath, newName);
+            	handleRenameError(fileID, oldAbsolutePath, newAbsolutePath, newName);
             }
-        }, getRenameSendHandler(fileID, newAbsolutePath, newName));
+        }, getRenameSendHandler(fileID, oldAbsolutePath, newAbsolutePath, newName));
         this.wsMgr.sendAuthenticatedRequest(renameFileReq);
 	}
 	
-	private void handleRenameError(long fileID, Path newAbsolutePath, String newName) {
+	private void handleRenameError(long fileID, Path oldAbsolutePath, Path newAbsolutePath, String newName) {
 		logger.error(String.format("Failed to rename file on server to %s", newName));
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID);
         for (ICoreExtension e : extensions) {
 			IFileRenameResponse p = (IFileRenameResponse) e;
-			p.fileRenameFailed(fileID, newAbsolutePath, newName);
+			p.fileRenameFailed(fileID, oldAbsolutePath, newAbsolutePath, newName);
 		}
 	}
 	
-	private IRequestSendErrorHandler getRenameSendHandler(long fileID, Path newAbsolutePath, String newName) {
-		return () -> handleRenameError(fileID, newAbsolutePath, newName);
+	private IRequestSendErrorHandler getRenameSendHandler(long fileID, Path oldAbsolutePath, Path newAbsolutePath, String newName) {
+		return () -> handleRenameError(fileID, oldAbsolutePath, newAbsolutePath, newName);
 	}
 
 }

@@ -11,19 +11,21 @@ import org.code.toboggan.core.extension.file.IFileMoveExtension;
 public class FileMove extends AbstractAPICall {
 
 	private long fileID;
-	private Path newWorkspaceRelativePath;
+	private Path oldAbsolutePath;
+	private Path newAbsolutePath;
 
-	public FileMove(AbstractExtensionManager manager, long fileID, Path newWorkspaceRelativePath) {
+	public FileMove(AbstractExtensionManager manager, long fileID, Path oldAbsolutePath, Path newAbsolutePath) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
 		this.fileID = fileID;
-		this.newWorkspaceRelativePath = newWorkspaceRelativePath;
+		this.oldAbsolutePath = oldAbsolutePath;
+		this.newAbsolutePath = newAbsolutePath;
 	}
 
 	@Override
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {
 			IFileMoveExtension pExt = (IFileMoveExtension) e;
-			pExt.fileMoved(fileID, newWorkspaceRelativePath);
+			pExt.fileMoved(fileID, oldAbsolutePath, newAbsolutePath);
 		}
 	}
 
@@ -32,7 +34,7 @@ public class FileMove extends AbstractAPICall {
 	}
 
 	public Path getNewWorkspaceRelativePath() {
-		return newWorkspaceRelativePath;
+		return newAbsolutePath;
 	}
 
 }

@@ -34,6 +34,10 @@ dependencies {
     
     // https://mvnrepository.com/artifact/commons-io/commons-io
 	compile group: 'commons-io', name: 'commons-io', version: '2.5'
+	
+	// https://mvnrepository.com/artifact/org.bitbucket.cowwoc.diff-match-patch/diff-match-patch
+	compile group: 'org.bitbucket.cowwoc.diff-match-patch', name: 'diff-match-patch', version: '1.0'
+	
 }
 
 task unpackSources(type: Copy) {

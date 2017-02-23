@@ -15,5 +15,6 @@ Export-Package: clientcore.constants,
  clientcore.websocket.models.requests,
  clientcore.websocket.models.responses,
  com.google.common.collect,
- org.apache.logging.log4j
+ org.apache.logging.log4j,
+ org.bitbucket.cowwoc.diffmatchpatch
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

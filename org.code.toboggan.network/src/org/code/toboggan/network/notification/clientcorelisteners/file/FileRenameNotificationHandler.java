@@ -32,7 +32,7 @@ public class FileRenameNotificationHandler implements INotificationHandler {
 		for (ICoreExtension e : extensions) {
 			IFileRenameNotificationExtension p = (IFileRenameNotificationExtension) e;
 			Path oldPath = storage.getFile(notification.getResourceID()).getRelativePath();
-			p.fileRenamed(notification.getResourceID(), NetworkUtils.toAbsolutePathFromRelative(oldPath, n.newName), n.newName);
+			p.fileRenameNotification(notification.getResourceID(), NetworkUtils.toAbsolutePathFromRelative(oldPath, n.newName), n.newName);
 		}
 	}
 }

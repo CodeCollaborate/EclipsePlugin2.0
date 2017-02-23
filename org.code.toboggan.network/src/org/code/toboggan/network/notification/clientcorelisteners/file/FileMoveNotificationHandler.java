@@ -33,7 +33,7 @@ public class FileMoveNotificationHandler implements INotificationHandler {
 		for (ICoreExtension e : extensions) {
 			IFileMoveNotificationExtension p = (IFileMoveNotificationExtension) e;
 			File file = storage.getFile(notification.getResourceID());
-			p.fileMoved(notification.getResourceID(), NetworkUtils.toAbsolutePathFromRelative(Paths.get(n.newPath), file.getFilename()));
+			p.fileMoveNotification(notification.getResourceID(), NetworkUtils.toAbsolutePathFromRelative(Paths.get(n.newPath), file.getFilename()));
 		}
 	}
 }

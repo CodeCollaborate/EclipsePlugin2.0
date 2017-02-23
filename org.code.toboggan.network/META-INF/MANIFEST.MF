@@ -14,6 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.code.toboggan.network,
+ org.code.toboggan.network.notification.extensionpoints.file,
+ org.code.toboggan.network.notification.extensionpoints.project,
  org.code.toboggan.network.request.extensionpoints,
  org.code.toboggan.network.request.extensionpoints.file,
  org.code.toboggan.network.request.extensionpoints.project,

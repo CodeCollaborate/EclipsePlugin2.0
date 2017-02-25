@@ -1,5 +1,6 @@
 package org.code.toboggan.network.request.extensions.project;
 
+import java.nio.file.Path;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +30,7 @@ public class NetworkProjectRename implements IProjectRenameExtension {
 	}
 
 	@Override
-	public void projectRenamed(long projectID, String newName) {
+	public void projectRenamed(long projectID, String newName, Path newProjectLocation) {
 		Request renameRequest = (new ProjectRenameRequest(projectID, newName)).getRequest(response -> {
 			int status = response.getStatus();
 			if (status == 200) {
@@ -37,7 +38,7 @@ public class NetworkProjectRename implements IProjectRenameExtension {
 				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID);
 				for (ICoreExtension e : extensions) {
 					IProjectRenameResponse p = (IProjectRenameResponse) e;
-					p.projectRenamed(projectID, newName);
+					p.projectRenamed(projectID, newName, newProjectLocation);
 				}
 			} else {
 				handleProjectRenameFailure(projectID, newName);

@@ -20,4 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ltk.core.refactoring
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: org.code.toboggan.filesystem
+Export-Package: org.code.toboggan.filesystem,
+ org.code.toboggan.filesystem.extensionpoints.file,
+ org.code.toboggan.filesystem.extensionpoints.project,
+ org.code.toboggan.filesystem.utils

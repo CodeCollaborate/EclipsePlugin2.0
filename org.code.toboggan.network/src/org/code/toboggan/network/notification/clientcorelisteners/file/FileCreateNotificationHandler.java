@@ -26,7 +26,7 @@ public class FileCreateNotificationHandler implements INotificationHandler {
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID);
 		for (ICoreExtension e : extensions) {
 			IFileCreateNotificationExtension p = (IFileCreateNotificationExtension) e;
-			p.fileCreated(notification.getResourceID(), n.file);
+			p.fileCreateNotification(notification.getResourceID(), n.file);
 		}
 	}
 }

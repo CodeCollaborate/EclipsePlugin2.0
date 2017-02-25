@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -49,19 +50,7 @@ public class NetworkProjectFetchAndSubscribeAll implements IProjectFetchSubscrib
 				// List<Long> projectIds = projects.stream().mapToLong(Project::getProjectID).boxed().collect(Collectors.toList());
 				// ^^ convert projects to list of ids
 				for (long id : subscribedIds) {
-					Request subscribeRequest = (new ProjectSubscribeRequest(id)).getRequest(response2 -> {
-						int status2 = response2.getStatus();
-						if (status2 == 200) {
-							logger.info("Success subscribing to project: " + id);
-							for (ICoreExtension e : extensions) {
-								IProjectFetchAndSubscribeAllResponse p = (IProjectFetchAndSubscribeAllResponse) e;
-								p.subscribed(id);
-							}
-						} else {
-							handleSubscribeError(id);
-						}
-					}, getSubscribeRequestSendHandler(id));
-					wsMgr.sendAuthenticatedRequest(subscribeRequest);
+					new Thread(APIFactory.createProjectSubscribe(id)).start();
 				}
 			} else {
 				handleFetchError();
@@ -82,17 +71,5 @@ public class NetworkProjectFetchAndSubscribeAll implements IProjectFetchSubscrib
 	private IRequestSendErrorHandler getFetchRequestSendHandler() {
 		return () -> handleFetchError();
 	}
-	
-	private void handleSubscribeError(long subscribeId) {
-		logger.error("Failed to subscribe to project: " + subscribeId);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_FETCH_SUBSCRIBE_ALL);
-		for (ICoreExtension e : extensions) {
-			IProjectFetchAndSubscribeAllResponse p = (IProjectFetchAndSubscribeAllResponse) e;
-			p.subscribeFailed(subscribeId);
-		}
-	}
-	
-	private IRequestSendErrorHandler getSubscribeRequestSendHandler(long subscribeId) {
-		return () -> handleSubscribeError(subscribeId);
-	}
+
 }

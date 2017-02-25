@@ -53,7 +53,8 @@ public class DirectoryListener extends AbstractDirectoryListener {
 					String newName = delta.getMovedToPath().lastSegment();
 					String newPath = delta.getMovedToPath().toString();
 
-					new Thread(APIFactory.createProjectRename(project.getProjectID(), newName)).start();
+					Path movedToProjectLocation = FSUtils.getLocationForRelativePath(delta.getMovedToPath().toFile().toPath());
+					new Thread(APIFactory.createProjectRename(project.getProjectID(), newName, movedToProjectLocation)).start();
 					;
 					logger.debug(
 							String.format("sent project rename request: renamed to \"%s\"; path changed to : \"%s\"",

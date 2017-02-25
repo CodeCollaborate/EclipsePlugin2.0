@@ -24,7 +24,7 @@ public class FileDeleteNotificationHandler implements INotificationHandler {
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID);
 		for (ICoreExtension e : extensions) {
 			IFileDeleteNotificationExtension p = (IFileDeleteNotificationExtension) e;
-			p.fileDeleted(notification.getResourceID());
+			p.fileDeleteNotification(notification.getResourceID());
 		}
 	}
 

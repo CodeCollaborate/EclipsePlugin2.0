@@ -1,5 +1,6 @@
 package org.code.toboggan.ui.error;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import org.code.toboggan.network.request.extensionpoints.project.*;
@@ -10,7 +11,7 @@ import com.google.common.collect.BiMap;
 import clientcore.websocket.models.File;
 import clientcore.websocket.models.Project;
 
-public class ProjectErrorDisplay implements IProjectCreateResponse, IProjectDeletedResponse, IProjectFetchAllResponse, IProjectFetchAndSubscribeAllResponse,
+public class ProjectErrorDisplay implements IProjectCreateResponse, IProjectDeleteResponse, IProjectFetchAllResponse, IProjectFetchAndSubscribeAllResponse,
 		IProjectGetFilesResponse, IProjectGetPermissionConstantsResponse, IProjectLookupResponse, IProjectRenameResponse, IProjectRevokePermissionsResponse,
 		IProjectSubscribeResponse, IProjectUnsubscribeResponse
 {
@@ -36,11 +37,6 @@ public class ProjectErrorDisplay implements IProjectCreateResponse, IProjectDele
 	}
 
 	@Override
-	public void projectRenamed(long projectID, String newName) {
-		// Do nothing
-	}
-
-	@Override
 	public void projectRenameFailed(long projectID, String newName) {
 		MessageDialog.createDialog("Error renaming project to " + newName + ". Please try again.").open();
 	}
@@ -63,11 +59,6 @@ public class ProjectErrorDisplay implements IProjectCreateResponse, IProjectDele
 	@Override
 	public void getPermissionConstantsFailed() {
 		MessageDialog.createDialog("Error fetching permission data. Please reconnect to the server through the preferences.").open();
-	}
-
-	@Override
-	public void projectGetFiles(File[] files) {
-		// Do nothing
 	}
 
 	@Override
@@ -128,5 +119,15 @@ public class ProjectErrorDisplay implements IProjectCreateResponse, IProjectDele
 	@Override
 	public void projectFetchFailed(long projectId) {
 		MessageDialog.createDialog("Failed to fetch project from the server. Please try again.").open();
+	}
+
+	@Override
+	public void projectRenamed(long projectID, String newName, Path newProjectLocation) {
+		// Do nothing		
+	}
+
+	@Override
+	public void projectGetFiles(long projectID, File[] files) {
+		// Do nothing
 	}
 }

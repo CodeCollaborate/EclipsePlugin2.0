@@ -9,7 +9,7 @@ import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
 import org.code.toboggan.core.extension.project.IProjectDeleteExtension;
 import org.code.toboggan.network.WSService;
-import org.code.toboggan.network.request.extensionpoints.project.IProjectDeletedResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectDeleteResponse;
 import org.code.toboggan.network.request.extensions.NetworkExtensionManager;
 
 import clientcore.websocket.IRequestSendErrorHandler;
@@ -38,7 +38,7 @@ public class NetworkProjectDelete implements IProjectDeleteExtension {
 				// Trigger extensions
 				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID);
 				for (ICoreExtension e : extensions) {
-					IProjectDeletedResponse p = (IProjectDeletedResponse) e;
+					IProjectDeleteResponse p = (IProjectDeleteResponse) e;
 					p.projectDeleted(projectID);
 				}
 				
@@ -54,7 +54,7 @@ public class NetworkProjectDelete implements IProjectDeleteExtension {
 		logger.error("Failed to delete project from server");
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID);
 		for (ICoreExtension e : extensions) {
-			IProjectDeletedResponse p = (IProjectDeletedResponse) e;
+			IProjectDeleteResponse p = (IProjectDeleteResponse) e;
 			p.projectDeleteFailed(projectID);
 		}
 	}

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
@@ -30,20 +29,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
-import clientcore.dataMgmt.ProjectController;
-import clientcore.dataMgmt.SessionStorage;
 import clientcore.websocket.models.Project;
 
 public class FSProjectCreate implements IProjectCreateResponse {
 	private static Logger logger = LogManager.getLogger(FSProjectCreate.class);
 
-	private SessionStorage ss;
-	private ProjectController pc;
 	private AbstractExtensionManager extMgr;
 	
 	public FSProjectCreate() {
-		this.ss = CoreActivator.getSessionStorage();
-		pc = new ProjectController(ss);
 		this.extMgr = FileSystemExtensionManager.getInstance();
 	}
 	
@@ -51,9 +44,12 @@ public class FSProjectCreate implements IProjectCreateResponse {
 	public void projectFetched(Project p) {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IProject iProject = workspace.getRoot().getProject(p.getName());
-
-		pc.createProject(p);
-		pc.putProjectLocation(iProject.getLocation().toFile().toPath(), p.getProjectID());
+		
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID);
+		for (ICoreExtension e : extensions) {
+			IFSProjectCreateExt createExt = (IFSProjectCreateExt) e;
+			createExt.projectCreated(p, iProject);
+		}
 		
 		Display.getDefault().syncExec(() -> PlatformUI.getWorkbench().saveAllEditors(false));	
 		CCIgnore ignoreFile = CCIgnore.createForProject(iProject);
@@ -72,12 +68,6 @@ public class FSProjectCreate implements IProjectCreateResponse {
 				new Thread(APIFactory.createFileDelete(p.getProjectID())).start();
 				return;
 			}			
-		}
-		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID);
-		for (ICoreExtension e : extensions) {
-			IFSProjectCreateExt createExt = (IFSProjectCreateExt) e;
-			createExt.projectCreated(p, iProject);
 		}
 	}
 	

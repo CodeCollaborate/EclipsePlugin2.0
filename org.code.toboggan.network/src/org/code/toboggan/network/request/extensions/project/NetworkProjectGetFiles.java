@@ -39,7 +39,7 @@ public class NetworkProjectGetFiles implements IProjectGetFilesExtension {
                 Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GET_FILES_ID);
         		for (ICoreExtension e : extensions) {
         			IProjectGetFilesResponse p = (IProjectGetFilesResponse) e;
-        			p.projectGetFiles(r.files);
+        			p.projectGetFiles(projectID, r.files);
         		}
             } else {
             }

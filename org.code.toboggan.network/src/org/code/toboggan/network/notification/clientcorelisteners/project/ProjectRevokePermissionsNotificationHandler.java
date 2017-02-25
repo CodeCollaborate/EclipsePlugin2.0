@@ -26,7 +26,7 @@ public class ProjectRevokePermissionsNotificationHandler implements INotificatio
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID);
 		for (ICoreExtension e : extensions) {
 			IProjectRevokePermissionsNotificationExtension p = (IProjectRevokePermissionsNotificationExtension) e;
-			p.permissionRevoked(notification.getResourceID(), n.revokeUsername);
+			p.permissionRevokedNotification(notification.getResourceID(), n.revokeUsername);
 		}
 	}
 }

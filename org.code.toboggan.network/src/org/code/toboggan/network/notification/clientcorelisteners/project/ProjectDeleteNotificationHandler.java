@@ -24,7 +24,7 @@ public class ProjectDeleteNotificationHandler implements INotificationHandler {
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID);
 		for (ICoreExtension e : extensions) {
 			IProjectDeleteNotificationExtension p = (IProjectDeleteNotificationExtension) e;
-			p.projectDeleted(notification.getResourceID());
+			p.projectDeleteNotification(notification.getResourceID());
 		}
 	}
 

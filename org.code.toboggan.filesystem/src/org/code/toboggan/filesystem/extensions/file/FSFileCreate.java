@@ -18,7 +18,7 @@ public class FSFileCreate implements IFileCreateNotificationExtension {
 	}
 
 	@Override
-	public void fileCreated(long projectID, File file) {
+	public void fileCreateNotification(long projectID, File file) {
 		file.setProjectID(projectID);
 		
 		if (ss.getFile(file.getFileID()) != null) {

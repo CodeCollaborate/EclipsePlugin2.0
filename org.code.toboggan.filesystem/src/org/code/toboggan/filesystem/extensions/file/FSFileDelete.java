@@ -44,7 +44,7 @@ public class FSFileDelete implements IFileDeleteNotificationExtension {
 	}
 	
 	@Override
-	public void fileDeleted(long deletedId) {
+	public void fileDeleteNotification(long deletedId) {
 		File file = ss.getFile(deletedId);
 		if (file == null) {
 			logger.warn("Received delete notification for a file that does not exist in storage");

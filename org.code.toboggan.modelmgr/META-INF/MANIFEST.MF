@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CCModelManager
+Bundle-SymbolicName: org.code.toboggan.modelmgr;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.code.toboggan.modelmgr.ModelMgrActivator
+Require-Bundle: org.eclipse.core.runtime,
+ org.code.toboggan.network,
+ org.code.toboggan.clientcore,
+ org.code.toboggan.core,
+ org.code.toboggan.filesystem,
+ org.eclipse.core.resources,
+ org.eclipse.wb.core.lib
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

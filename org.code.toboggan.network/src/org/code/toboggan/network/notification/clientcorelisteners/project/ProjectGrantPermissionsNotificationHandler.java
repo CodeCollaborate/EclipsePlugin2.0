@@ -26,7 +26,7 @@ public class ProjectGrantPermissionsNotificationHandler implements INotification
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GRANT_PERMISSIONS_ID);
 		for (ICoreExtension e : extensions) {
 			IProjectGrantPermissionsNotificationExtension p = (IProjectGrantPermissionsNotificationExtension) e;
-			p.permissionsGranted(notification.getResourceID(), n.grantUsername, n.permissionLevel);
+			p.permissionsGrantedNotification(notification.getResourceID(), n.grantUsername, n.permissionLevel);
 		}
 	}
 }

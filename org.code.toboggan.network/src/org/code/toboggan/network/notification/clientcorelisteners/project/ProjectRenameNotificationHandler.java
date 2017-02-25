@@ -25,7 +25,7 @@ public class ProjectRenameNotificationHandler implements INotificationHandler {
 		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID);
 		for (ICoreExtension e : extensions) {
 			IProjectRenameNotificationExtension p = (IProjectRenameNotificationExtension) e;
-			p.projectRenamed(notification.getResourceID(), n.newName);
+			p.projectRenameNotification(notification.getResourceID(), n.newName);
 		}
 	}
 }

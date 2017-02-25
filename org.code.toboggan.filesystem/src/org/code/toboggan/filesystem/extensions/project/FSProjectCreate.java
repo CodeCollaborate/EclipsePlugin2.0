@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
@@ -45,12 +46,6 @@ public class FSProjectCreate implements IProjectCreateResponse {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IProject iProject = workspace.getRoot().getProject(p.getName());
 		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID);
-		for (ICoreExtension e : extensions) {
-			IFSProjectCreateExt createExt = (IFSProjectCreateExt) e;
-			createExt.projectCreated(p, iProject);
-		}
-		
 		Display.getDefault().syncExec(() -> PlatformUI.getWorkbench().saveAllEditors(false));	
 		CCIgnore ignoreFile = CCIgnore.createForProject(iProject);
 		
@@ -68,6 +63,12 @@ public class FSProjectCreate implements IProjectCreateResponse {
 				new Thread(APIFactory.createFileDelete(p.getProjectID())).start();
 				return;
 			}			
+		}
+		
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID, IFSProjectCreateExt.class);
+		for (ICoreExtension e : extensions) {
+			IFSProjectCreateExt createExt = (IFSProjectCreateExt) e;
+			createExt.projectCreated(p, iProject);
 		}
 	}
 	

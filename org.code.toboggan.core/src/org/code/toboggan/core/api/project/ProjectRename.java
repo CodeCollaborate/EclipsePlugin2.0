@@ -14,8 +14,8 @@ public class ProjectRename extends AbstractAPICall {
 	private String newName;
 	private Path newProjectLocation;
 	
-	public ProjectRename(AbstractExtensionManager manager, long projectID, String newName, Path newProjectLocation) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID);
+	public ProjectRename(AbstractExtensionManager manager, long projectID, String newName) {
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID, IProjectRenameExtension.class);
 		this.projectID = projectID;
 		this.newName = newName;
 	}

@@ -3,8 +3,8 @@ package org.code.toboggan.filesystem.extensions.project;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.core.extension.APIExtensionIDs;
@@ -71,7 +71,7 @@ private static Logger logger = LogManager.getLogger(FSProjectSubscribe.class);
 		
 		files.forEach((f) -> new Thread(APIFactory.createFilePull(f.getFileID())).start());
 		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_SUBSCRIBE_ID, IFSProjectSubscribeExt.class);
 		for (ICoreExtension e : extensions) {
 			IFSProjectSubscribeExt createExt = (IFSProjectSubscribeExt) e;
 			createExt.subscribed(p, iProject);

@@ -1,6 +1,6 @@
 package org.code.toboggan.core.extension;
 
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.LogManager;
 
 public class APIExtensionManager extends AbstractExtensionManager {
 	public static APIExtensionManager getInstance() {

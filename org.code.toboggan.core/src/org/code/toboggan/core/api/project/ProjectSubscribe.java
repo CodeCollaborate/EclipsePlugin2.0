@@ -11,7 +11,7 @@ public class ProjectSubscribe extends AbstractAPICall {
 	private long projectID;
 	
 	public ProjectSubscribe(AbstractExtensionManager manager, long projectID) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_SUBSCRIBE_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_SUBSCRIBE_ID, IProjectSubscribeExtension.class);
 	}
 	
 	@Override

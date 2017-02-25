@@ -2,8 +2,8 @@ package org.code.toboggan.ui.view;
 
 import java.beans.PropertyChangeListener;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.ui.UIActivator;
 import org.code.toboggan.ui.dialogs.DialogStrings;
@@ -22,7 +22,7 @@ import clientcore.websocket.WSConnection.State;
 
 public class ControlPanel extends ViewPart {
 
-	private final Logger logger = LogManager.getLogger();
+	private final Logger logger = LogManager.getLogger(ControlPanel.class);
 	
 	protected ListViewer projectsListViewer;
 	protected ListViewer usersListViewer;

@@ -9,7 +9,7 @@ import org.code.toboggan.core.extension.user.IUserProjectsExtension;
 public class UserProjects extends AbstractAPICall {
 
 	public UserProjects(AbstractExtensionManager manager) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.USER_PROJECTS_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.USER_PROJECTS_ID, IUserProjectsExtension.class);
 	}
 
 	@Override

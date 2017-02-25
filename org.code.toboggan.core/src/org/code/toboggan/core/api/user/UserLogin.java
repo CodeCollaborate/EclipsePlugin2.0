@@ -12,7 +12,7 @@ public class UserLogin extends AbstractAPICall {
 	private String password;
 	
 	public UserLogin(AbstractExtensionManager manager, String username, String password) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.USER_LOGIN_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.USER_LOGIN_ID, IUserLoginExtension.class);
 		this.username = username;
 		this.password = password;
 	}

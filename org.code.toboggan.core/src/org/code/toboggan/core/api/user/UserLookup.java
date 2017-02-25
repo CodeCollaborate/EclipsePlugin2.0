@@ -11,7 +11,7 @@ public class UserLookup extends AbstractAPICall {
 	private String username;
 
 	public UserLookup(AbstractExtensionManager manager, String username) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.USER_LOOKUP_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.USER_LOOKUP_ID, IUserLookupExtension.class);
 		this.username = username;
 	}
 

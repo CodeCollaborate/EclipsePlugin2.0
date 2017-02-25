@@ -11,7 +11,7 @@ public class ProjectDelete extends AbstractAPICall {
 	private long projectID;
 	
 	public ProjectDelete(AbstractExtensionManager manager, long projectID) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID, IProjectDeleteExtension.class);
 		this.projectID = projectID;
 	}
 	

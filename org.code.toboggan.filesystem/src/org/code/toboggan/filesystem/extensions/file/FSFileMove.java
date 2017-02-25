@@ -4,8 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.core.extension.APIExtensionIDs;
@@ -82,7 +82,7 @@ public class FSFileMove implements IFileMoveResponse, IFileMoveNotificationExten
 		IFile iFile = ResourcesPlugin.getWorkspace().getRoot()
 				.getFileForLocation(new org.eclipse.core.runtime.Path(newFileLocation.toString()));
 		NullProgressMonitor progressMonitor = new NullProgressMonitor();
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID, IFSFileMoveExt.class);
 		
 		try {
 			iFile.move(new org.eclipse.core.runtime.Path(oldFileLocation.toString()), true, progressMonitor);
@@ -105,7 +105,7 @@ public class FSFileMove implements IFileMoveResponse, IFileMoveNotificationExten
 	}
 	
 	private void moveFile(IProject p, IFile iFile, IPath newWorkspaceRelativePath, long fileID, long projectID, Path newFileLocation) {
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID, IFSFileMoveExt.class);
 		
 		if (iFile.exists()) {
 			

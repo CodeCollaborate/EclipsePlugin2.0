@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.user;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -33,7 +33,7 @@ public class NetworkUserRegister implements IUserRegisterExtension {
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.info("Successfully registered as " + username);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_REGISTER_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_REGISTER_ID, IUserRegisterResponse.class);
 				for (ICoreExtension e : extensions) {
 					IUserRegisterResponse p = (IUserRegisterResponse) e;
 					p.userRegistered(username);
@@ -47,7 +47,7 @@ public class NetworkUserRegister implements IUserRegisterExtension {
 	
 	private void handleRegisterError(String username, String firstName, String lastName, String email) {
 		logger.error("Error registering as user " + username);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_REGISTER_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_REGISTER_ID, IUserRegisterResponse.class);
 		for (ICoreExtension e : extensions) {
 			IUserRegisterResponse p = (IUserRegisterResponse) e;
 			p.userRegistrationFailed(username, firstName, lastName, email);

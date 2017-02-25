@@ -13,7 +13,7 @@ public class ProjectFetchAndSubscribeAll extends AbstractAPICall {
 	private List<Long> projectIDs;
 	
 	public ProjectFetchAndSubscribeAll(AbstractExtensionManager manager, List<Long> projectIDs) {
-		this.extensions = manager.getExtensions(ExtensionIDs.PROJECT_FETCH_SUBSCRIBE_ALL_ID);
+		this.extensions = manager.getExtensions(ExtensionIDs.PROJECT_FETCH_SUBSCRIBE_ALL_ID, IProjectFetchSubscribeAllExtension.class);
 		this.projectIDs = projectIDs;
 	}
 

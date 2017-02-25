@@ -3,8 +3,8 @@ package org.code.toboggan.network.request.extensions.file;
 import java.nio.file.Path;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
@@ -45,7 +45,7 @@ public class NetworkFileMove implements IFileMoveExtension {
 		Request moveFileReq = new FileMoveRequest(fileID, stringProjectRelative).getRequest(response -> {
             int status = response.getStatus();
             if (status == 200) {
-            	Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
+            	Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID, IFileMoveResponse.class);
                 for (ICoreExtension e : extensions) {
         			IFileMoveResponse p = (IFileMoveResponse) e;
         			p.fileMoved(fileID, newFileLocation);
@@ -59,7 +59,7 @@ public class NetworkFileMove implements IFileMoveExtension {
 	
 	private void handleMoveError(long fileID, Path oldAbsolutePath, Path newAbsolutePath) {
 		logger.error(String.format("Failed to move file on server: %d", fileID));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID, IFileMoveResponse.class);
         for (ICoreExtension e : extensions) {
 			IFileMoveResponse p = (IFileMoveResponse) e;
 			p.fileMoveFailed(fileID, oldAbsolutePath, newAbsolutePath);

@@ -4,8 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
@@ -64,7 +64,7 @@ public class FSFileDelete implements IFileDeleteNotificationExtension {
 		Path fileLocation = iFile.getLocation().toFile().toPath();
 
 		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID, IFSFileDeleteExt.class);
 
 		if (iFile.exists()) {
 			if (dm.getEditor(fileLocation) != null) {

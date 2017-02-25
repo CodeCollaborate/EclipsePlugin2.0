@@ -16,7 +16,7 @@ public class UserRegister extends AbstractAPICall {
 	
 
 	public UserRegister(AbstractExtensionManager manager, String username, String firstName, String lastName, String email, String password) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.USER_REGISTER_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.USER_REGISTER_ID, IUserRegisterExtension.class);
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;

@@ -10,7 +10,7 @@ public class ProjectGetFiles extends AbstractAPICall {
 	private long projectID;
 
 	public ProjectGetFiles(AbstractExtensionManager manager, long projectID) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_GET_FILES_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_GET_FILES_ID, IProjectGetFilesExtension.class);
 		this.projectID = projectID;
 	}
 

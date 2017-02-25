@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -54,9 +54,15 @@ public abstract class AbstractExtensionManager {
 			
 		}
 	}
-
-	public Set<ICoreExtension> getExtensions(String extensionID) {
-		return Collections.unmodifiableSet(this.extensions.get(extensionID));
+	
+	public Set<ICoreExtension> getExtensions(String extensionID, Class<?> type) {
+		Set<ICoreExtension> specificExtensions = new HashSet<>();
+		for (ICoreExtension e : this.extensions.get(extensionID)) {
+			if (type.isInstance(e)) {
+				specificExtensions.add(e);
+			}
+		}
+		return Collections.unmodifiableSet(specificExtensions);
 	}
 
 }

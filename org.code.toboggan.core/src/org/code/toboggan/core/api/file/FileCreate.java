@@ -16,7 +16,7 @@ public class FileCreate extends AbstractAPICall {
 	private byte[] fileBytes;
 	
 	public FileCreate(AbstractExtensionManager manager, String name, Path workspaceRelativePath, long projectID, byte[] fileBytes) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_CREATE_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_CREATE_ID, IFileCreateExtension.class);
 		this.name = name;
 		this.workspaceRelativePath = workspaceRelativePath;
 		this.projectID = projectID;

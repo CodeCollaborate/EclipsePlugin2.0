@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -44,7 +44,7 @@ public class NetworkProjectSubscribe implements IProjectSubscribeExtension {
 					if (getFilesResponse.getStatus() == 200) {
 						ProjectGetFilesResponse gfResponse = (ProjectGetFilesResponse) getFilesResponse.getData();
 						List<File> fileList = Arrays.asList(gfResponse.files);
-						Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_SUBSCRIBE_ID);
+						Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_SUBSCRIBE_ID, IProjectSubscribeResponse.class);
 						for (ICoreExtension e : extensions) {
 							IProjectSubscribeResponse p = (IProjectSubscribeResponse) e;
 							p.subscribed(projectID, fileList);
@@ -64,7 +64,7 @@ public class NetworkProjectSubscribe implements IProjectSubscribeExtension {
 	
 	private void handleSubscribeError(long projectID) {
 		logger.error("Failed to subscribe to project: " + projectID);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_SUBSCRIBE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_SUBSCRIBE_ID, IProjectSubscribeResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectSubscribeResponse p = (IProjectSubscribeResponse) e;
 			p.subscribeFailed(projectID);

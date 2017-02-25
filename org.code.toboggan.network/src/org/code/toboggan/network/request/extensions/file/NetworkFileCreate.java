@@ -3,8 +3,8 @@ package org.code.toboggan.network.request.extensions.file;
 import java.nio.file.Path;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
@@ -50,7 +50,7 @@ public class NetworkFileCreate implements IFileCreateExtension {
             if (status == 200) {
                 long fileID = ((FileCreateResponse) response.getData()).getFileID();
                 
-                Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID);
+                Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID, IFileCreateResponse.class);
                 for (ICoreExtension e : extensions) {
 					IFileCreateResponse p = (IFileCreateResponse) e;
 					p.fileCreated(fileID, name, fileLocation, projectRelativePath, projectID);
@@ -65,7 +65,7 @@ public class NetworkFileCreate implements IFileCreateExtension {
 	
 	private void handleCreateError(String name, Path fileLocation, long projectID, byte[] fileBytes) {
 		logger.error(String.format("Failed to create file \"%s\" on the server.", name));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID, IFileCreateResponse.class);
         for (ICoreExtension e : extensions) {
 			IFileCreateResponse p = (IFileCreateResponse) e;
 			p.fileCreateFailed(name, fileLocation, projectID, fileBytes);

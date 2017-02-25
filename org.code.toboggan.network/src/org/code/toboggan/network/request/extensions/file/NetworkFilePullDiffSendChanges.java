@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.file;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -35,7 +35,7 @@ public class NetworkFilePullDiffSendChanges implements IFilePullDiffSendChangesE
 				FilePullResponse fpResponse = (FilePullResponse) response.getData();
 				byte[] fileBytes = fpResponse.getFileBytes();
 				String[] changes = fpResponse.getChanges();
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_DIFF_SEND_CHANGES_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_DIFF_SEND_CHANGES_ID, IFilePullDiffSendChangesResponse.class);
 		        for (ICoreExtension e : extensions) {
 					IFilePullDiffSendChangesResponse p = (IFilePullDiffSendChangesResponse) e;
 					p.filePulled(fileID, fileBytes, changes);
@@ -51,7 +51,7 @@ public class NetworkFilePullDiffSendChanges implements IFilePullDiffSendChangesE
 
 	private void handlePullError(long fileID) {
 		logger.error(String.format("Failed to pull file on server: %d", fileID));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_DIFF_SEND_CHANGES_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_DIFF_SEND_CHANGES_ID, IFilePullDiffSendChangesResponse.class);
         for (ICoreExtension e : extensions) {
 			IFilePullDiffSendChangesResponse p = (IFilePullDiffSendChangesResponse) e;
 			p.filePullFailed(fileID);

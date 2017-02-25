@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.file;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -33,7 +33,7 @@ public class NetworkFileDelete implements IFileDeleteExtension {
 		Request deleteFileReq = new FileDeleteRequest(fileID).getRequest(response -> {
             int status = response.getStatus();
             if (status == 200) {
-            	Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID);
+            	Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID, IFileDeleteResponse.class);
                 for (ICoreExtension e : extensions) {
 					IFileDeleteResponse p = (IFileDeleteResponse) e;
 					p.fileDeleted(fileID);
@@ -47,7 +47,7 @@ public class NetworkFileDelete implements IFileDeleteExtension {
 	
 	private void handleDeleteError(long fileID) {
 		logger.error(String.format("Failed to delete file \"%d\" on the server.", fileID));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID, IFileDeleteResponse.class);
         for (ICoreExtension e : extensions) {
 			IFileDeleteResponse p = (IFileDeleteResponse) e;
 			p.fileDeleteFailed(fileID);

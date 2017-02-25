@@ -4,8 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.core.extension.APIExtensionIDs;
@@ -84,7 +84,7 @@ public class FSFileRename implements IFileRenameResponse, IFileRenameNotificatio
 	public void fileRenameFailed(long fileID, Path oldFileLocation, Path newFileLocation, String newName) {
 		IFile iFile = ResourcesPlugin.getWorkspace().getRoot()
 				.getFileForLocation(new org.eclipse.core.runtime.Path(newFileLocation.toString()));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID, IFSFileRenameExt.class);
 		File file = CoreActivator.getSessionStorage().getFile(fileID);
 	
 		logger.error("Failed rename, unsubscribing from project");
@@ -97,7 +97,7 @@ public class FSFileRename implements IFileRenameResponse, IFileRenameNotificatio
 	}
 	
 	private void moveFile(IProject p, IFile iFile, IPath newWorkspaceRelativePath, String newName, long fileID, long projectID) {
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID, IFSFileRenameExt.class);
 		
 		if (iFile.exists()) {
 			

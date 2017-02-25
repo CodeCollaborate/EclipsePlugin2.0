@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.code.toboggan.clientcore,
  org.code.toboggan.core,
- org.code.toboggan.network
+ org.code.toboggan.network,
+ org.code.toboggan.filesystem,
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.code.toboggan.ui,

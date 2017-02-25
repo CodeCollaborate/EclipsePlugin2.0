@@ -11,7 +11,7 @@ public class ProjectUnsubscribe extends AbstractAPICall {
 	private long projectID;
 	
 	public ProjectUnsubscribe(AbstractExtensionManager manager, long projectID) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_UNSUBSCRIBE_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_UNSUBSCRIBE_ID, IProjectUnsubscribeExtension.class);
 		this.projectID = projectID;
 	}
 	

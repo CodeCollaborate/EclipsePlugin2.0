@@ -1,17 +1,16 @@
-package org.code.toboggan.ui.error;
+package org.code.toboggan.ui.error.response;
 
 import java.nio.file.Path;
 import java.util.List;
 
 import org.code.toboggan.network.request.extensionpoints.project.*;
 import org.code.toboggan.ui.dialogs.MessageDialog;
-
 import com.google.common.collect.BiMap;
 
 import clientcore.websocket.models.File;
 import clientcore.websocket.models.Project;
 
-public class ProjectErrorDisplay implements IProjectCreateResponse, IProjectDeleteResponse, IProjectFetchAllResponse, IProjectFetchAndSubscribeAllResponse,
+public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IProjectDeleteResponse, IProjectFetchAllResponse, IProjectFetchAndSubscribeAllResponse,
 		IProjectGetFilesResponse, IProjectGetPermissionConstantsResponse, IProjectLookupResponse, IProjectRenameResponse, IProjectRevokePermissionsResponse,
 		IProjectSubscribeResponse, IProjectUnsubscribeResponse
 {

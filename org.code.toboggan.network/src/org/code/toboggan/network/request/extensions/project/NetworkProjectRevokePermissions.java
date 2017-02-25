@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.project;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -34,7 +34,7 @@ public class NetworkProjectRevokePermissions implements IProjectRevokePermission
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.info("Project permissions revoked for project: " + projectID + " and user " + name);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID, IProjectRevokePermissionsResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectRevokePermissionsResponse p = (IProjectRevokePermissionsResponse) e;
 					p.permissionsRevoked(projectID, name);
@@ -48,7 +48,7 @@ public class NetworkProjectRevokePermissions implements IProjectRevokePermission
 	
 	private void handleProjectRevokeError(long projectID, String name) {
 		logger.error("Failed to revoke project permissions for project: " + projectID + " and user " + name);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID, IProjectRevokePermissionsResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectRevokePermissionsResponse p = (IProjectRevokePermissionsResponse) e;
 			p.permissionsRevokeFailed(projectID, name);

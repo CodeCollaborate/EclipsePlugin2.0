@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.user;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -34,7 +34,7 @@ public class NetworkUserLogin implements IUserLoginExtension {
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.info("Successfully logged in as " + username);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_LOGIN_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_LOGIN_ID, IUserLoginResponse.class);
 				for (ICoreExtension e : extensions) {
 					IUserLoginResponse p = (IUserLoginResponse) e;
 					p.loggedIn(username);
@@ -48,7 +48,7 @@ public class NetworkUserLogin implements IUserLoginExtension {
 	
 	private void handleLoginError(String username) {
 		logger.error("Error logging in as user " + username + " with password " + "************");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_LOGIN_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_LOGIN_ID, IUserLoginResponse.class);
 		for (ICoreExtension e : extensions) {
 			IUserLoginResponse p = (IUserLoginResponse) e;
 			p.loginFailed(username);

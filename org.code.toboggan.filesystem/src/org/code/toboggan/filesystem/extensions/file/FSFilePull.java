@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.core.extension.APIExtensionIDs;
@@ -74,7 +74,7 @@ public class FSFilePull implements IFilePullResponse {
 		
 		createFiles(fileBytes, changes, file, newFile, fileLocation);
 		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_ID, IFSFilePullExt.class);
 		for (ICoreExtension e : extensions) {
 			IFSFilePullExt createExt = (IFSFilePullExt) e;
 			createExt.filePulled(file, newFile);

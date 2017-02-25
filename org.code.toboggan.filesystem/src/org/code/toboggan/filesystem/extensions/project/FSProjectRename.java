@@ -19,11 +19,10 @@ public class FSProjectRename implements IProjectRenameNotificationExtension {
 	
 	@Override
 	public void projectRenameNotification(long projectID, String newName) {
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID, IFSProjectRenameExt.class);
 		for (ICoreExtension ext : extensions) {
 			IFSProjectRenameExt renameExt = (IFSProjectRenameExt) ext;
 			renameExt.projectRenamed(projectID, newName);
 		}
 	}
-
 }

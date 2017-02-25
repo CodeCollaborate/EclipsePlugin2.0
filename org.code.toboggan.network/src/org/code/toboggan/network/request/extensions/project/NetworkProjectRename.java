@@ -3,8 +3,8 @@ package org.code.toboggan.network.request.extensions.project;
 import java.nio.file.Path;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -35,7 +35,7 @@ public class NetworkProjectRename implements IProjectRenameExtension {
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.debug("Renamed project: " + projectID + " to name " + newName);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID, IProjectRenameResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectRenameResponse p = (IProjectRenameResponse) e;
 					p.projectRenamed(projectID, newName, newProjectLocation);
@@ -49,7 +49,7 @@ public class NetworkProjectRename implements IProjectRenameExtension {
 	
 	private void handleProjectRenameFailure(long projectID, String newName) {
 		logger.error("Failed to rename project: " + projectID + " to name " + newName);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID, IProjectRenameResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectRenameResponse p = (IProjectRenameResponse) e;
 			p.projectRenameFailed(projectID, newName);

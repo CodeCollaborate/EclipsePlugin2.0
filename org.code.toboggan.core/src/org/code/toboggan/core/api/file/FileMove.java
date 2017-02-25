@@ -15,7 +15,7 @@ public class FileMove extends AbstractAPICall {
 	private Path newAbsolutePath;
 
 	public FileMove(AbstractExtensionManager manager, long fileID, Path oldAbsolutePath, Path newAbsolutePath) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_MOVE_ID, IFileMoveExtension.class);
 		this.fileID = fileID;
 		this.oldAbsolutePath = oldAbsolutePath;
 		this.newAbsolutePath = newAbsolutePath;

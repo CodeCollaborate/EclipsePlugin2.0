@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.filesystem.CCIgnore;
 import org.code.toboggan.filesystem.utils.FSUtils;
@@ -53,8 +53,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 					String newName = delta.getMovedToPath().lastSegment();
 					String newPath = delta.getMovedToPath().toString();
 
-					Path movedToProjectLocation = FSUtils.getLocationForRelativePath(delta.getMovedToPath().toFile().toPath());
-					new Thread(APIFactory.createProjectRename(project.getProjectID(), newName, movedToProjectLocation)).start();
+					new Thread(APIFactory.createProjectRename(project.getProjectID(), newName)).start();
 					;
 					logger.debug(
 							String.format("sent project rename request: renamed to \"%s\"; path changed to : \"%s\"",

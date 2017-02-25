@@ -5,8 +5,8 @@ import clientcore.websocket.models.ConnectionConfig;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.ICoreExtension;
 import org.code.toboggan.network.request.extensionpoints.NetworkExtensionIDs;
 import org.code.toboggan.network.request.extensionpoints.websocket.IWSEvent;
@@ -50,7 +50,7 @@ public class WSService {
 	}
 
 	private void notifyWSEventListeners(WSConnection.EventType wsEvent) {
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.WS_EVENT);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.WS_EVENT, IWSEvent.class);
 		for (ICoreExtension e : extensions) {
 			IWSEvent p = (IWSEvent) e;
 			switch(wsEvent) {

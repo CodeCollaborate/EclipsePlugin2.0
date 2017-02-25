@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.project;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -36,7 +36,7 @@ public class NetworkProjectDelete implements IProjectDeleteExtension {
 			if (status == 200) {
             	logger.info("Successfully deleted project " + projectID + " from server");
 				// Trigger extensions
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID, IProjectDeleteResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectDeleteResponse p = (IProjectDeleteResponse) e;
 					p.projectDeleted(projectID);
@@ -52,7 +52,7 @@ public class NetworkProjectDelete implements IProjectDeleteExtension {
 	
 	private void handleDeletionError(long projectID) {
 		logger.error("Failed to delete project from server");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID, IProjectDeleteResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectDeleteResponse p = (IProjectDeleteResponse) e;
 			p.projectDeleteFailed(projectID);

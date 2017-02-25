@@ -3,8 +3,8 @@ package org.code.toboggan.network.notification.clientcorelisteners.file;
 import java.nio.file.Path;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
@@ -28,7 +28,7 @@ public class FileRenameNotificationHandler implements INotificationHandler {
 	public void handleNotification(Notification notification) {
 		FileRenameNotification n = (FileRenameNotification) notification.getData();
 		logger.info("Received file rename notification for " + notification.getResourceID());
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID, IFileRenameNotificationExtension.class);
 		for (ICoreExtension e : extensions) {
 			IFileRenameNotificationExtension p = (IFileRenameNotificationExtension) e;
 			Path oldPath = storage.getFile(notification.getResourceID()).getRelativePath();

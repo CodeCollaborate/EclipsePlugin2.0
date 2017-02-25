@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -44,7 +44,7 @@ public class NetworkUserProjects implements IUserProjectsExtension {
 								((UserProjectsResponse) response.getData()).getProjects()
 								)
 						);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_PROJECTS_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_PROJECTS_ID, IUserProjectsResponse.class);
 				for (ICoreExtension e : extensions) {
 					IUserProjectsResponse p = (IUserProjectsResponse) e;
 					p.projectsRetrieved(projects);
@@ -58,7 +58,7 @@ public class NetworkUserProjects implements IUserProjectsExtension {
 	
 	private void handleFetchError() {
 		logger.error("Error fetching projects for user");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_PROJECTS_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_PROJECTS_ID, IUserProjectsResponse.class);
 		for (ICoreExtension e : extensions) {
 			IUserProjectsResponse p = (IUserProjectsResponse) e;
 			p.userProjectsFailed();

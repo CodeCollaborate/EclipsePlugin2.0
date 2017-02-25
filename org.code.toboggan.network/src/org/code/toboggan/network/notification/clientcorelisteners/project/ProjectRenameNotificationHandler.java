@@ -2,8 +2,8 @@ package org.code.toboggan.network.notification.clientcorelisteners.project;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -22,7 +22,7 @@ public class ProjectRenameNotificationHandler implements INotificationHandler {
 	public void handleNotification(Notification notification) {
 		ProjectRenameNotification n = (ProjectRenameNotification) notification.getData();
 		logger.info("Received project rename notification for " + notification.getResourceID());
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_RENAME_ID, IProjectRenameNotificationExtension.class);
 		for (ICoreExtension e : extensions) {
 			IProjectRenameNotificationExtension p = (IProjectRenameNotificationExtension) e;
 			p.projectRenameNotification(notification.getResourceID(), n.newName);

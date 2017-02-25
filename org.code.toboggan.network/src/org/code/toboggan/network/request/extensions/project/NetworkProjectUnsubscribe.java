@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.project;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -33,7 +33,7 @@ public class NetworkProjectUnsubscribe implements IProjectUnsubscribeExtension {
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.info("Success unsubscribing from project: " + projectID);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_UNSUBSCRIBE_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_UNSUBSCRIBE_ID, IProjectUnsubscribeResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectUnsubscribeResponse p = (IProjectUnsubscribeResponse) e;
 					p.unsubscribed(projectID);
@@ -47,7 +47,7 @@ public class NetworkProjectUnsubscribe implements IProjectUnsubscribeExtension {
 	
 	private void handleUnsubscribeError(long projectID) {
 		logger.error("Failed to unsubscribe from project: " + projectID);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_UNSUBSCRIBE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_UNSUBSCRIBE_ID, IProjectUnsubscribeResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectUnsubscribeResponse p = (IProjectUnsubscribeResponse) e;
 			p.unsubscribeFailed(projectID);

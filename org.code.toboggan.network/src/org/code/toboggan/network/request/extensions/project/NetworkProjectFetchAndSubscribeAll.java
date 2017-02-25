@@ -3,9 +3,9 @@ package org.code.toboggan.network.request.extensions.project;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -40,7 +40,7 @@ public class NetworkProjectFetchAndSubscribeAll implements IProjectFetchSubscrib
 			if (status == 200) {
 				logger.info("Success fetching projects");
 				List<Project> projects = Arrays.asList(((UserProjectsResponse) response.getData()).getProjects());
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_FETCH_SUBSCRIBE_ALL);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_FETCH_SUBSCRIBE_ALL, IProjectFetchAndSubscribeAllResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectFetchAndSubscribeAllResponse p = (IProjectFetchAndSubscribeAllResponse) e;
 					p.fetchedAll(projects);
@@ -61,7 +61,7 @@ public class NetworkProjectFetchAndSubscribeAll implements IProjectFetchSubscrib
 	
 	private void handleFetchError() {
 		logger.error("Failed to fetch projects");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_FETCH_SUBSCRIBE_ALL);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_FETCH_SUBSCRIBE_ALL, IProjectFetchAndSubscribeAllResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectFetchAndSubscribeAllResponse p = (IProjectFetchAndSubscribeAllResponse) e;
 			p.fetchAllFailed();
@@ -71,5 +71,17 @@ public class NetworkProjectFetchAndSubscribeAll implements IProjectFetchSubscrib
 	private IRequestSendErrorHandler getFetchRequestSendHandler() {
 		return () -> handleFetchError();
 	}
-
+	
+	private void handleSubscribeError(long subscribeId) {
+		logger.error("Failed to subscribe to project: " + subscribeId);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_FETCH_SUBSCRIBE_ALL, IProjectFetchAndSubscribeAllResponse.class);
+		for (ICoreExtension e : extensions) {
+			IProjectFetchAndSubscribeAllResponse p = (IProjectFetchAndSubscribeAllResponse) e;
+			p.subscribeFailed(subscribeId);
+		}
+	}
+	
+	private IRequestSendErrorHandler getSubscribeRequestSendHandler(long subscribeId) {
+		return () -> handleSubscribeError(subscribeId);
+	}
 }

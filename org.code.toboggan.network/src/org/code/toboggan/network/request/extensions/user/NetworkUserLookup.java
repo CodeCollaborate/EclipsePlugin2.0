@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.user;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -38,7 +38,7 @@ public class NetworkUserLookup implements IUserLookupExtension {
 			if (status == 200) {
 				logger.info("Successfully looked up user " + username);
 				User user = ((UserLookupResponse) response.getData()).getUsers()[0];
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_LOOKUP_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_LOOKUP_ID, IUserLookupResponse.class);
 				for (ICoreExtension e : extensions) {
 					IUserLookupResponse p = (IUserLookupResponse) e;
 					p.userFound(user);
@@ -52,7 +52,7 @@ public class NetworkUserLookup implements IUserLookupExtension {
 
 	private void handleLookupError(String username) {
 		logger.error("Error looking up user " + username);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_LOOKUP_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.USER_LOOKUP_ID, IUserLookupResponse.class);
 		for (ICoreExtension e : extensions) {
 			IUserLookupResponse p = (IUserLookupResponse) e;
 			p.userLookupFailed(username);

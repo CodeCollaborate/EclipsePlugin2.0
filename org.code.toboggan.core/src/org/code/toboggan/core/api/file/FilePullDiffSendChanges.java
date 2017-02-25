@@ -11,7 +11,7 @@ public class FilePullDiffSendChanges extends AbstractAPICall {
 	private long fileID;
 
 	public FilePullDiffSendChanges(AbstractExtensionManager manager, long fileID) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_PULL_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_PULL_ID, IFilePullDiffSendChangesExtension.class);
 		this.fileID = fileID;
 	}
 

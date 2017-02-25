@@ -3,8 +3,8 @@ package org.code.toboggan.network.request.extensions.file;
 import java.nio.file.Path;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -34,7 +34,7 @@ public class NetworkFileRename implements IFileRenameExtension {
 		Request renameFileReq = new FileRenameRequest(fileID, newName).getRequest(response -> {
             int status = response.getStatus();
             if (status == 200) {
-            	Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID);
+            	Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID, IFileRenameResponse.class);
                 for (ICoreExtension e : extensions) {
         			IFileRenameResponse p = (IFileRenameResponse) e;
         			p.fileRenamed(fileID, newAbsolutePath, newName);
@@ -48,7 +48,7 @@ public class NetworkFileRename implements IFileRenameExtension {
 	
 	private void handleRenameError(long fileID, Path oldAbsolutePath, Path newAbsolutePath, String newName) {
 		logger.error(String.format("Failed to rename file on server to %s", newName));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID, IFileRenameResponse.class);
         for (ICoreExtension e : extensions) {
 			IFileRenameResponse p = (IFileRenameResponse) e;
 			p.fileRenameFailed(fileID, oldAbsolutePath, newAbsolutePath, newName);

@@ -40,8 +40,8 @@ public class APIFactory {
 		return new ProjectLookup(EXT_MGR, projectIDs);
 	}
 	
-	public static ProjectRename createProjectRename(long projectID, String newName, Path newProjectLocation) {
-		return new ProjectRename(EXT_MGR, projectID, newName, newProjectLocation);
+	public static ProjectRename createProjectRename(long projectID, String newName) {
+		return new ProjectRename(EXT_MGR, projectID, newName);
 	}
 	
 	public static ProjectRevokePermissions createRevokePermissions(long projectID, String username) {

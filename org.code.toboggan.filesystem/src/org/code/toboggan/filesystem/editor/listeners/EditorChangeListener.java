@@ -2,8 +2,8 @@ package org.code.toboggan.filesystem.editor.listeners;
 
 import java.nio.file.Path;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.editor.DocumentManager;
 import org.eclipse.core.resources.IFile;

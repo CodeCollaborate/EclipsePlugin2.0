@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.project;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -35,7 +35,7 @@ public class NetworkProjectGrantPermissions implements IProjectGrantPermissionsE
 					int status = response.getStatus();
 					if (status == 200) {
 						logger.info("Granted permissions for project: " + projectID + " and user " + grantUsername + " for level " + permission);
-						Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GRANT_PERMISSIONS_ID);
+						Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GRANT_PERMISSIONS_ID, IProjectGrantPermissionsResponse.class);
 						for (ICoreExtension e : extensions) {
 							IProjectGrantPermissionsResponse p = (IProjectGrantPermissionsResponse) e;
 							p.permissionGranted(projectID, grantUsername, permission);
@@ -49,7 +49,7 @@ public class NetworkProjectGrantPermissions implements IProjectGrantPermissionsE
 	
 	private void handlePermissionGrantError(long projectID, String grantUsername, int permission) {
 		logger.error("Failed to grant permission on server");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GRANT_PERMISSIONS_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GRANT_PERMISSIONS_ID, IProjectGrantPermissionsResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectGrantPermissionsResponse p = (IProjectGrantPermissionsResponse) e;
 			p.permissionGrantFailed(projectID, grantUsername, permission);

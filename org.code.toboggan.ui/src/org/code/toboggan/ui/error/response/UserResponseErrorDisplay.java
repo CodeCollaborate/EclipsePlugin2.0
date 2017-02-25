@@ -1,4 +1,4 @@
-package org.code.toboggan.ui.error;
+package org.code.toboggan.ui.error.response;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.code.toboggan.ui.dialogs.MessageDialog;
 import clientcore.websocket.models.Project;
 import clientcore.websocket.models.User;
 
-public class UserErrorDisplay implements IUserLoginResponse, IUserLookupResponse, IUserProjectsResponse, IUserRegisterResponse {
+public class UserResponseErrorDisplay implements IUserLoginResponse, IUserLookupResponse, IUserProjectsResponse, IUserRegisterResponse {
 
 	@Override
 	public void userRegistered(String username) {

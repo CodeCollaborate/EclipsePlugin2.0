@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.project;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -39,7 +39,7 @@ public class NetworkProjectGetPermissionConstants implements IProjectGetPermissi
             	logger.info("Successfully fetched permission constants");
                 BiMap<String, Byte> permConstants =
                         (((ProjectGetPermissionConstantsResponse) response.getData()).getConstants());
-                Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_ID);
+                Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_ID, IProjectGetPermissionConstantsResponse.class);
         		for (ICoreExtension e : extensions) {
         			IProjectGetPermissionConstantsResponse p = (IProjectGetPermissionConstantsResponse) e;
         			p.getPermissionConstants(permConstants);
@@ -53,7 +53,7 @@ public class NetworkProjectGetPermissionConstants implements IProjectGetPermissi
 	
 	private void handleGetPermissionConstantsError() {
 		logger.error("Failed to get permission constants from server");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_ID, IProjectGetPermissionConstantsResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectGetPermissionConstantsResponse p = (IProjectGetPermissionConstantsResponse) e;
 			p.getPermissionConstantsFailed();

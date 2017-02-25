@@ -14,7 +14,7 @@ public class FileChange extends AbstractAPICall {
 	private Patch[] patches;
 
 	public FileChange(AbstractExtensionManager manager, long fileID, Patch[] patches) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_CHANGE_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_CHANGE_ID, IFileChangeExtension.class);
 		this.fileID = fileID;
 		this.patches = patches;
 	}

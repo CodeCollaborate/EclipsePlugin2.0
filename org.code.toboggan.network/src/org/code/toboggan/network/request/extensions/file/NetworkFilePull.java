@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.file;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -36,7 +36,7 @@ public class NetworkFilePull implements IFilePullExtension {
 				FilePullResponse fpResponse = (FilePullResponse) response.getData();
 				byte[] fileBytes = fpResponse.getFileBytes();
 				String[] changes = fpResponse.getChanges();
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_ID, IFilePullResponse.class);
 		        for (ICoreExtension e : extensions) {
 					IFilePullResponse p = (IFilePullResponse) e;
 					p.filePulled(fileID, fileBytes, changes);
@@ -52,7 +52,7 @@ public class NetworkFilePull implements IFilePullExtension {
 
 	private void handlePullError(long fileID) {
 		logger.error(String.format("Failed to pull file on server: %d", fileID));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_ID, IFilePullResponse.class);
         for (ICoreExtension e : extensions) {
 			IFilePullResponse p = (IFilePullResponse) e;
 			p.filePullFailed(fileID);

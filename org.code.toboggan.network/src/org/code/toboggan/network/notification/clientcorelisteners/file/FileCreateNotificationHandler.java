@@ -2,8 +2,8 @@ package org.code.toboggan.network.notification.clientcorelisteners.file;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -23,7 +23,7 @@ public class FileCreateNotificationHandler implements INotificationHandler {
 	public void handleNotification(Notification notification) {
 		FileCreateNotification n = (FileCreateNotification) notification.getData();
 		logger.info("Received file create notification for " + notification.getResourceID());
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_CREATE_ID, IFileCreateNotificationExtension.class);
 		for (ICoreExtension e : extensions) {
 			IFileCreateNotificationExtension p = (IFileCreateNotificationExtension) e;
 			p.fileCreateNotification(notification.getResourceID(), n.file);

@@ -2,8 +2,8 @@ package org.code.toboggan.network.request.extensions.project;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -47,7 +47,7 @@ public class NetworkProjectCreate implements IProjectCreateExtension {
 				long projectId = ((ProjectCreateResponse) createResponse.getData()).getProjectID();
 				logger.info("Successfully created project: " + projectId);
 				
-				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID, IProjectCreateResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectCreateResponse p = (IProjectCreateResponse) e;
 					p.projectCreated(projectId);
@@ -94,7 +94,7 @@ public class NetworkProjectCreate implements IProjectCreateExtension {
 	
 	private void handleCreateError(String name) {
 		logger.error("Failed to create project: " + name);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID, IProjectCreateResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectCreateResponse p = (IProjectCreateResponse) e;
 			p.projectCreationFailed(name);
@@ -107,7 +107,7 @@ public class NetworkProjectCreate implements IProjectCreateExtension {
 	
 	private void handleSubscribeError(long id) {
 		logger.error("Failed to subscribe to project: " + id);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID, IProjectCreateResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectCreateResponse p = (IProjectCreateResponse) e;
 			p.subscribeFailed(id);
@@ -120,7 +120,7 @@ public class NetworkProjectCreate implements IProjectCreateExtension {
 	
 	private void handleLookupError(long id) {
 		logger.error("Failed to lookup project: " + id);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID, IProjectCreateResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectCreateResponse p = (IProjectCreateResponse) e;
 			p.projectFetchFailed(id);

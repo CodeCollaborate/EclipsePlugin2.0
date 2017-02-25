@@ -2,8 +2,8 @@ package org.code.toboggan.network.notification.clientcorelisteners.file;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 import org.code.toboggan.core.extension.ICoreExtension;
@@ -21,7 +21,7 @@ public class FileDeleteNotificationHandler implements INotificationHandler {
 	@Override
 	public void handleNotification(Notification notification) {
 		logger.info("Received file delete notification for " + notification.getResourceID());
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID, IFileDeleteNotificationExtension.class);
 		for (ICoreExtension e : extensions) {
 			IFileDeleteNotificationExtension p = (IFileDeleteNotificationExtension) e;
 			p.fileDeleteNotification(notification.getResourceID());

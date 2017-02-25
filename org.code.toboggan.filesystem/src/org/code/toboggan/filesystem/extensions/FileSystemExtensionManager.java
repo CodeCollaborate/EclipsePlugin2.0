@@ -1,6 +1,6 @@
 package org.code.toboggan.filesystem.extensions;
 
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.LogManager;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
 
 public class FileSystemExtensionManager extends AbstractExtensionManager {

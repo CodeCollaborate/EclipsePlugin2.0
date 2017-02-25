@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.filesystem.utils.FSUtils;

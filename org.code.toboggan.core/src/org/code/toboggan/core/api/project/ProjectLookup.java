@@ -13,7 +13,7 @@ public class ProjectLookup extends AbstractAPICall {
 	private List<Long> projectIDs;
 	
 	public ProjectLookup(AbstractExtensionManager manager, List<Long> projectIDs) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_LOOKUP_ID);
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_LOOKUP_ID, IProjectLookupExtension.class);
 		this.projectIDs = projectIDs;
 	}
 	

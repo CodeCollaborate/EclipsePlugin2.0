@@ -3,8 +3,8 @@ package org.code.toboggan.network.notification.clientcorelisteners.file;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.extension.APIExtensionIDs;
 import org.code.toboggan.core.extension.AbstractExtensionManager;
@@ -29,7 +29,7 @@ public class FileMoveNotificationHandler implements INotificationHandler {
 	public void handleNotification(Notification notification) {
 		FileMoveNotification n = (FileMoveNotification) notification.getData();
 		logger.info("Received file move notification for " + notification.getResourceID());
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID, IFileMoveNotificationExtension.class);
 		for (ICoreExtension e : extensions) {
 			IFileMoveNotificationExtension p = (IFileMoveNotificationExtension) e;
 			File file = storage.getFile(notification.getResourceID());

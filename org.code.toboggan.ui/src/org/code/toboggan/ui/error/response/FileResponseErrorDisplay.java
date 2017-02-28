@@ -37,12 +37,12 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 	}
 
 	@Override
-	public void fileMoved(long fileID, Path newWorkspaceRelativePath) {
+	public void fileMoved(long fileID, Path newFileLocation) {
 		// Do nothing
 	}
 
 	@Override
-	public void fileMoveFailed(long fileID, Path oldFileLocation, Path newWorkspaceRelativePath) {
+	public void fileMoveFailed(long fileID, Path oldFileLocation, Path newFileLocation) {
 		MessageDialog.createDialog("Failed to move the file on the server. Please resubscribe to the project.").open();
 	}
 

@@ -1,6 +1,8 @@
 package org.code.toboggan.ui.error.filesystem;
 
-import org.code.toboggan.filesystem.extensionpoints.project.*;
+import org.code.toboggan.filesystem.extensionpoints.project.IFSProjectCreateExt;
+import org.code.toboggan.filesystem.extensionpoints.project.IFSProjectRenameExt;
+import org.code.toboggan.filesystem.extensionpoints.project.IFSProjectSubscribeExt;
 import org.eclipse.core.resources.IProject;
 
 import clientcore.websocket.models.Project;

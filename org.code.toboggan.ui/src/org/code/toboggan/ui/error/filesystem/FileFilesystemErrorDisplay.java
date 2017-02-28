@@ -2,7 +2,9 @@ package org.code.toboggan.ui.error.filesystem;
 
 import java.nio.file.Path;
 
-import org.code.toboggan.filesystem.extensionpoints.file.*;
+import org.code.toboggan.filesystem.extensionpoints.file.IFSFileMoveExt;
+import org.code.toboggan.filesystem.extensionpoints.file.IFSFilePullExt;
+import org.code.toboggan.filesystem.extensionpoints.file.IFSFileRenameExt;
 import org.code.toboggan.ui.dialogs.MessageDialog;
 import org.eclipse.core.resources.IFile;
 

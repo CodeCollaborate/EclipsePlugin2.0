@@ -4,6 +4,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.ui.UIActivator;
 import org.code.toboggan.ui.dialogs.AddNewUserDialog;
 import org.code.toboggan.ui.dialogs.RemoveUserDialog;
@@ -21,6 +23,7 @@ import clientcore.websocket.models.Permission;
 import clientcore.websocket.models.Project;
 
 public class UsersListView extends ListView {
+	private Logger logger = LogManager.getLogger(this.getClass());
 	private Project currentProject = null;
 
 	public UsersListView(Composite parent, int style, ProjectsListView listView) {
@@ -99,6 +102,7 @@ public class UsersListView extends ListView {
 		bar.getPlusButton().addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
+				logger.debug("UI-DEBUG: UsersListView plus button pressed");
 				Display.getDefault().asyncExec(() -> {
 					Shell shell = Display.getDefault().getActiveShell();
 					List projectList = listView.getListWithButtons().getList();
@@ -117,6 +121,7 @@ public class UsersListView extends ListView {
 		bar.getMinusButton().addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
+				logger.debug("UI-DEBUG: UsersListView minus button pressed");
 				if (currentProject == null) {
 					return;
 				}
@@ -133,6 +138,7 @@ public class UsersListView extends ListView {
 
 			@Override
 			public void handleEvent(Event arg0) {
+				logger.debug("UI-DEBUG: UsersListView reload button pressed");
 				refreshSelected(listView);
 			}
 
@@ -154,6 +160,7 @@ public class UsersListView extends ListView {
 	}
 
 	public void setProject(Project project) {
+		logger.debug("UI-DEBUG: UsersListView - New project was set, discarding old users list");
 		this.currentProject = project;
 		Display.getDefault().asyncExec(() -> {
 			List list = this.getListWithButtons().getList();

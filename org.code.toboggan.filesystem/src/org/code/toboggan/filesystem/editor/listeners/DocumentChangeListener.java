@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
+import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.editor.DocumentManager;
 import org.code.toboggan.network.NetworkActivator;
@@ -23,10 +24,8 @@ import clientcore.dataMgmt.SessionStorage;
 import clientcore.patching.Diff;
 import clientcore.patching.Patch;
 import clientcore.patching.PatchManager;
-import clientcore.websocket.ConnectException;
 import clientcore.websocket.models.File;
 import clientcore.websocket.models.Project;
-import clientcore.websocket.models.responses.FileChangeResponse;
 
 /**
  * Listens for document changes, and dispatches a new FileChangeRequest when
@@ -38,17 +37,17 @@ import clientcore.websocket.models.responses.FileChangeResponse;
 public class DocumentChangeListener implements IDocumentListener {
 
 	private final Logger logger = LogManager.getLogger("documentChangeListener");
-	
+
 	private DocumentManager docMgr;
 	private PatchManager pm;
 	private SessionStorage ss;
-	
+
 	public DocumentChangeListener() {
 		docMgr = FSActivator.getDocumentManager();
 		ss = CoreActivator.getSessionStorage();
 		pm = NetworkActivator.getPatchManager();
 	}
-	
+
 	/**
 	 * Called when document is about to be changed.
 	 * 
@@ -57,7 +56,7 @@ public class DocumentChangeListener implements IDocumentListener {
 	 */
 	@Override
 	public void documentAboutToBeChanged(DocumentEvent event) {
-		System.out.printf("DocumentChangeListener %s got event %s", this, event.toString());
+		logger.debug(String.format("DocumentChangeListener %s got event %s", this, event.toString()));
 
 		List<Diff> diffs = new ArrayList<>();
 		String currDocument = event.getDocument().get();
@@ -90,7 +89,7 @@ public class DocumentChangeListener implements IDocumentListener {
 			diffs.add(patch);
 		}
 
-		synchronized (((SynchronizableDocument)event.getDocument()).getLockObject()) {
+		synchronized (((SynchronizableDocument) event.getDocument()).getLockObject()) {
 			// If diffs were not incoming, applied diffs, convert to LF
 			List<Diff> newDiffs = new ArrayList<>();
 			diffLoop: for (int i = 0; i < diffs.size(); i++) {
@@ -100,11 +99,11 @@ public class DocumentChangeListener implements IDocumentListener {
 					// Find first diff that matches, if any.
 					for (int j = 0; j < appliedDiffs.size(); j++) {
 						Diff appliedDiff = appliedDiffs.get(j);
-						System.out.printf("isNotification: %s ?= %s; %b\n", diffs.get(i).toString(),
-								appliedDiff.toString(), diffs.get(i).equals(appliedDiff));
+						logger.debug(String.format("isNotification: %s ?= %s; %b\n", diffs.get(i).toString(),
+								appliedDiff.toString(), diffs.get(i).equals(appliedDiff)));
 						// If found matching diff, remove all previous diffs.
 						if (appliedDiff.equals(diffs.get(i))) {
-							for (int k = j-offset; k >= 0; k--) {
+							for (int k = j - offset; k >= 0; k--) {
 								appliedDiffs.removeFirst();
 								offset++;
 							}
@@ -112,35 +111,25 @@ public class DocumentChangeListener implements IDocumentListener {
 						}
 					}
 				}
-				newDiffs.add(diffs.get(i).convertToLF(currDocument));
+				// Do this in the API FileCreate.execute() call
+				// newDiffs.add(diffs.get(i).convertToLF(currDocument));
+				newDiffs.add(diffs.get(i));
 			}
 
 			// If no diffs left; abort
 			if (newDiffs.isEmpty()) {
-				System.out.println("No new diffs, aborting.");
+				logger.debug("No new diffs, aborting.");
 				return;
 			}
 
 			// Create the patch
 			Patch patch = new Patch(file.getFileVersion(), newDiffs);
 
-			System.out.println("DocumentManager sending change request, with patch " + patch.toString());
+			logger.debug(String.format("DocumentManager sending change request, with patch " + patch.toString()));
 
-            try {
-                pm.sendPatch(file.getFileID(),
-                        new Patch[] { patch }, response -> {
-                            synchronized (file) {
-                                long version = ((FileChangeResponse) response.getData()).getFileVersion();
-                                if (version == 0) {
-                                	logger.error("File version returned from server was 0");
-                                }
-                                file.setFileVersion(version);
-                            }
-                        }, null);
-            } catch (ConnectException e) {
-            	logger.error("Failed to send change request", e);
-            }
-        }
+			APIFactory.createFileChange(file.getFileID(), new Patch[] { patch }, currDocument).runAsync();
+			
+		}
 	}
 
 	/**
@@ -162,7 +151,9 @@ public class DocumentChangeListener implements IDocumentListener {
 				|| file.getFilename().contains(CoreStringConstants.CONFIG_FILE_NAME)) {
 			return;
 		}
-		System.out.println("DocumentChange-NewModificationStamp: " + ((SynchronizableDocument) event.getDocument()).getModificationStamp());
-		pm.setModificationStamp(file.getFileID(), ((SynchronizableDocument) event.getDocument()).getModificationStamp());
+		logger.debug("DocumentChange-NewModificationStamp: "
+				+ ((SynchronizableDocument) event.getDocument()).getModificationStamp());
+		pm.setModificationStamp(file.getFileID(),
+				((SynchronizableDocument) event.getDocument()).getModificationStamp());
 	}
 }

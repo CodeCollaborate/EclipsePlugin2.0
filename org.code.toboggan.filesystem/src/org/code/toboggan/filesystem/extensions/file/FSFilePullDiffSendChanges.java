@@ -6,10 +6,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.code.toboggan.core.CoreActivator;
+import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.filesystem.utils.FSUtils;
 import org.code.toboggan.network.NetworkActivator;
 import org.code.toboggan.network.request.extensionpoints.file.IFilePullDiffSendChangesResponse;
@@ -21,11 +22,10 @@ import clientcore.patching.Diff;
 import clientcore.patching.Patch;
 import clientcore.patching.PatchManager;
 import clientcore.websocket.models.File;
-import clientcore.websocket.models.responses.FileChangeResponse;
 
 public class FSFilePullDiffSendChanges implements IFilePullDiffSendChangesResponse {
 	private static Logger logger = LogManager.getLogger(FSFilePullDiffSendChanges.class);
-	
+
 	private SessionStorage ss;
 	private PatchManager pm;
 	
@@ -36,7 +36,6 @@ public class FSFilePullDiffSendChanges implements IFilePullDiffSendChangesRespon
 	
 	@Override
 	public void filePulled(long fileID, byte[] serverContents, String[] changes) {
-		
 		File file = ss.getFile(fileID);
 		Path projectLocation = ss.getProjectLocation(file.getProjectID());
 		Path fileLocation = Paths.get(projectLocation.toString(), file.getRelativePath().toString(), file.getFilename());
@@ -44,12 +43,11 @@ public class FSFilePullDiffSendChanges implements IFilePullDiffSendChangesRespon
 		IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
 				new org.eclipse.core.runtime.Path(fileLocation.toString()));
 		
-		try {
-			InputStream in = iFile.getContents();
+		try (InputStream in = iFile.getContents()){
 			byte[] localContents = FSUtils.inputStreamToByteArray(in);
 			String localStringContents = new String(localContents);
 			localStringContents = localStringContents.replace("\r\n", "\n");
-			in.close();
+			
 			// applying patches
 			String serverStringContents = new String(serverContents);
 			List<Patch> patches = new ArrayList<>();
@@ -59,19 +57,13 @@ public class FSFilePullDiffSendChanges implements IFilePullDiffSendChangesRespon
 			serverStringContents = pm.applyPatch(serverStringContents, patches);
 			
 			List<Diff> diffs = generateStringDiffs(serverStringContents, localStringContents);
-			
+						
 			if (diffs != null && !diffs.isEmpty()) {
-				pm.sendPatch(fileID, new Patch[] { new Patch((int) file.getFileVersion(), diffs)}, response -> {
-                    synchronized (file) {
-                        long version = ((FileChangeResponse) response.getData()).getFileVersion();
-                        if (version == 0) {
-                        	logger.error("File version returned from server was 0");
-                        }
-                        file.setFileVersion(version);
-                    }
-                }, null);
+				APIFactory.createFileChange(fileID, new Patch[]{
+						new Patch((int) file.getFileVersion(), diffs)
+				}, localStringContents).runAsync();
 			} else {
-				logger.debug("File either failed to pull or no diffs were found.");
+				logger.debug("No diffs were found.");
 			}
 			
 		} catch (Exception e) {

@@ -1,13 +1,20 @@
 package org.code.toboggan.network.request.extensions;
 
-import org.apache.log4j.LogManager;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
+import org.apache.logging.log4j.LogManager;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.network.NetworkActivator;
 
 public class NetworkExtensionManager extends AbstractExtensionManager {
 	public static NetworkExtensionManager getInstance() {
 		String className = NetworkExtensionManager.class.getName();
 		if (instances.get(className) == null) {
-			instances.put(className, new NetworkExtensionManager());
+			synchronized(NetworkExtensionManager.class) {
+				if (instances.get(className) == null) {
+					NetworkExtensionManager em = new NetworkExtensionManager();
+					instances.put(className, em);
+					em.initExtensions(NetworkActivator.PLUGIN_ID);
+				}
+			}
 		}
 		return (NetworkExtensionManager) instances.get(className);
 	}
@@ -18,9 +25,7 @@ public class NetworkExtensionManager extends AbstractExtensionManager {
 	}
 
 	private NetworkExtensionManager() {
-		for (String e : this.extensions.keySet()) {
-			this.updateExtensions(e);
-		}
-		logger = LogManager.getLogger(NetworkExtensionManager.class); // TODO: breaking logger?
+		logger = LogManager.getLogger(NetworkExtensionManager.class);
 	}
+	
 }

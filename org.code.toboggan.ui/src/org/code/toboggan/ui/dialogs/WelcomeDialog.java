@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.dialogs;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.ui.preferences.PreferenceConstants;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
@@ -20,6 +22,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public class WelcomeDialog extends Dialog {
+	private Logger logger = LogManager.getLogger(this.getClass());
+	
 	private Text usernameBox;
 	private Text passwordBox;
 	private ISecurePreferences prefStore;
@@ -42,6 +46,7 @@ public class WelcomeDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+		logger.debug("UI-DEBUG: Creating WelcomeDialog");
 		Composite container = (Composite) super.createDialogArea(parent);
 
 		Label lblNewLabel = new Label(container, SWT.WRAP | SWT.CENTER);
@@ -110,10 +115,11 @@ public class WelcomeDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
+		logger.debug("UI-DEBUG: Ok button pressed for WelcomeDialog");
 		String username = usernameBox.getText();
 		String password = passwordBox.getText();
 		
-		new Thread(APIFactory.createUserLogin(username, password)).start();
+		APIFactory.createUserLogin(username, password).runAsync();
 		
 		try {
 			prefStore.put(PreferenceConstants.USERNAME, username, true);

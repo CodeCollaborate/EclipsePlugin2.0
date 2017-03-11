@@ -4,16 +4,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.code.toboggan.filesystem.CCIgnore;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.WarnList;
 import org.code.toboggan.filesystem.editor.DocumentManager;
+import org.code.toboggan.filesystem.extensionpoints.FSExtensionIDs;
 import org.code.toboggan.filesystem.extensionpoints.file.IFSFileDeleteExt;
 import org.code.toboggan.filesystem.extensions.FileSystemExtensionManager;
 import org.code.toboggan.network.notification.extensionpoints.file.IFileDeleteNotificationExtension;
@@ -64,7 +64,7 @@ public class FSFileDelete implements IFileDeleteNotificationExtension {
 		Path fileLocation = iFile.getLocation().toFile().toPath();
 
 		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_DELETE_ID, IFSFileDeleteExt.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_DELETE_ID, IFSFileDeleteExt.class);
 
 		if (iFile.exists()) {
 			if (dm.getEditor(fileLocation) != null) {

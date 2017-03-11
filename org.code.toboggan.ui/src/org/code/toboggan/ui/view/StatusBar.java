@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.RowLayout;
@@ -7,6 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 public class StatusBar extends Composite {
+	private Logger logger = LogManager.getLogger(this.getClass());
 	
 	private Label label;
 	
@@ -17,6 +20,7 @@ public class StatusBar extends Composite {
 	}
 	
 	private void initialize() {
+		logger.debug("UI-DEBUG: ");
 		RowLayout layout = new RowLayout();
 		layout.marginTop = 0;
 		layout.marginBottom = 0;

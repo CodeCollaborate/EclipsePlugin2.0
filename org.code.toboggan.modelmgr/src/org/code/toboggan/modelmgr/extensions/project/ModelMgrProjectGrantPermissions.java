@@ -11,6 +11,7 @@ public class ModelMgrProjectGrantPermissions extends AbstractProjectModelMgrHand
 
 	@Override
 	public void permissionGranted(long projectID, String grantUsername, int permissionLevel) {
+		// The below permission that is generated does not have a strictly correct timestamp, but it's close enough.
 		Permission permission = new Permission(grantUsername, permissionLevel, ss.getUsername(), new Date().toString());
 		pc.addPermission(projectID, grantUsername, permission);
 	}

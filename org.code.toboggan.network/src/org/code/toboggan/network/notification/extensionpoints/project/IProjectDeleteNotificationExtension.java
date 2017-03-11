@@ -1,5 +1,7 @@
 package org.code.toboggan.network.notification.extensionpoints.project;
 
-public interface IProjectDeleteNotificationExtension {
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
+
+public interface IProjectDeleteNotificationExtension extends ICoreExtension {
 	public void projectDeleteNotification(long projectId);
 }

@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -7,6 +9,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
 public class ListViewsParent extends Composite {
+	private Logger logger = LogManager.getLogger(this.getClass());
 	
 	private ProjectsListView projectListView;
 	private UsersListView userListView;
@@ -24,6 +27,7 @@ public class ListViewsParent extends Composite {
 	}
 	
 	private ProjectsListView createProjectsList() {
+		logger.debug("UI-DEBUG: Creating Projects list");
 		ProjectsListView listView = new ProjectsListView(this, SWT.BORDER);
 		FormData data = new FormData();
 		data.top = new FormAttachment(0);
@@ -35,6 +39,7 @@ public class ListViewsParent extends Composite {
 	}
 	
 	private UsersListView createUsersList(ProjectsListView projectsListView) {
+		logger.debug("UI-DEBUG: Creating Users List");
 		UsersListView listView = new UsersListView(this, SWT.BORDER, projectListView);
 		FormData data = new FormData();
 		data.top = new FormAttachment(0);

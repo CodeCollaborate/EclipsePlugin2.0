@@ -10,6 +10,7 @@ import org.code.toboggan.network.request.extensionpoints.file.IFilePullDiffSendC
 import org.code.toboggan.network.request.extensionpoints.file.IFilePullResponse;
 import org.code.toboggan.network.request.extensionpoints.file.IFileRenameResponse;
 import org.code.toboggan.ui.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 
 import clientcore.patching.Patch;
 
@@ -23,7 +24,7 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void fileRenameFailed(long fileID, Path oldFileLocation, Path newFileLocation, String newName) {
-		MessageDialog.createDialog("Failed to rename the file on the server. Please resubscribe to the project.").open();
+		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to rename the file on the server. Please resubscribe to the project.").open());
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void filePullFailed(long fileID) {
-		MessageDialog.createDialog("Failed to pull file from the server. Please resubscribe to the project.").open();
+		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to pull file from the server. Please resubscribe to the project.").open());
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void fileMoveFailed(long fileID, Path oldFileLocation, Path newFileLocation) {
-		MessageDialog.createDialog("Failed to move the file on the server. Please resubscribe to the project.").open();
+		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to move the file on the server. Please resubscribe to the project.").open());
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void fileDeleteFailed(long fileID) {
-		MessageDialog.createDialog("Failed to delete the file on the server. The file has been recreated locally.").open();
+		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to delete the file on the server. The file has been recreated locally.").open());
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void fileCreateFailed(String fileName, Path absolutePath, long projectID, byte[] fileBytes) {
-		MessageDialog.createDialog("Failed to create the file on the server. The file has been deleted locally.").open();
+		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to create the file on the server. The file has been deleted locally.").open());
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void fileChangeFailed(long fileID, Patch[] patches) {
-		MessageDialog.createDialog("Failed to change the file on the server. Please resubscribe to the project.").open();
+		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to change the file on the server. Please resubscribe to the project.").open());
 	}
 
 }

@@ -7,14 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.code.toboggan.core.CoreActivator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.code.toboggan.filesystem.CCIgnore;
+import org.code.toboggan.filesystem.extensionpoints.FSExtensionIDs;
 import org.code.toboggan.filesystem.extensionpoints.project.IFSProjectCreateExt;
 import org.code.toboggan.filesystem.extensions.FileSystemExtensionManager;
 import org.code.toboggan.filesystem.utils.FSUtils;
@@ -49,26 +48,28 @@ public class FSProjectCreate implements IProjectCreateResponse {
 		Display.getDefault().syncExec(() -> PlatformUI.getWorkbench().saveAllEditors(false));	
 		CCIgnore ignoreFile = CCIgnore.createForProject(iProject);
 		
+		// Process extensions before creating files;
+		// File creation is dependent on metadata
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.PROJECT_CREATE_ID, IFSProjectCreateExt.class);
+		for (ICoreExtension e : extensions) {
+			IFSProjectCreateExt createExt = (IFSProjectCreateExt) e;
+			createExt.projectCreated(p, iProject);
+		}
+		
 		List<IFile> ifiles = recursivelyGetFiles(iProject, ignoreFile);
 		for (IFile f : ifiles) {
-			try (InputStream in = f.getContents();) {
+			try (InputStream in = f.getContents()) {
 				String contents = new String(FSUtils.inputStreamToByteArray(in));
 				if (contents.contains("\r\n")) {
 					contents = contents.replace("\r\n", "\n");
 				}
 				Path fileLocation = f.getLocation().toFile().toPath();
-				new Thread(APIFactory.createFileCreate(f.getName(), fileLocation, p.getProjectID(), contents.getBytes())).start();
+				APIFactory.createFileCreate(f.getName(), fileLocation, p.getProjectID(), contents.getBytes()).runAsync();
 			} catch (IOException | CoreException e) {
 				logger.error("Error reading files as part of project create", e);
-				new Thread(APIFactory.createFileDelete(p.getProjectID())).start();
+				APIFactory.createFileDelete(p.getProjectID()).runAsync();
 				return;
 			}			
-		}
-		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID, IFSProjectCreateExt.class);
-		for (ICoreExtension e : extensions) {
-			IFSProjectCreateExt createExt = (IFSProjectCreateExt) e;
-			createExt.projectCreated(p, iProject);
 		}
 	}
 	

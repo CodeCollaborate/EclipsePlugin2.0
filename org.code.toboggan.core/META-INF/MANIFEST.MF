@@ -16,7 +16,7 @@ Export-Package: org.code.toboggan.core,
  org.code.toboggan.core.api.file,
  org.code.toboggan.core.api.project,
  org.code.toboggan.core.api.user,
- org.code.toboggan.core.extension,
- org.code.toboggan.core.extension.file,
- org.code.toboggan.core.extension.project,
- org.code.toboggan.core.extension.user
+ org.code.toboggan.core.extensionpoints,
+ org.code.toboggan.core.extensionpoints.file,
+ org.code.toboggan.core.extensionpoints.project,
+ org.code.toboggan.core.extensionpoints.user

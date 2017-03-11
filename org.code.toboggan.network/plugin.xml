@@ -1,196 +1,216 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.unsubscribe" name="org.code.toboggan.network.request.extensionpoints.project.unsubscribe" schema="schema/org.code.toboggan.network.request.extensionpoints.project.unsubscribe.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.subscribe" name="org.code.toboggan.network.request.extensionpoints.project.subscribe" schema="schema/org.code.toboggan.network.request.extensionpoints.project.subscribe.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.revokepermissions" name="org.code.toboggan.network.request.extensionpoints.project.revokepermissions" schema="schema/org.code.toboggan.network.request.extensionpoints.project.revokepermissions.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.rename" name="org.code.toboggan.network.request.extensionpoints.project.rename" schema="schema/org.code.toboggan.network.request.extensionpoints.project.rename.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.lookup" name="org.code.toboggan.network.request.extensionpoints.project.lookup" schema="schema/org.code.toboggan.network.request.extensionpoints.project.lookup.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.grantpermissions" name="org.code.toboggan.network.request.extensionpoints.project.grantpermissions" schema="schema/org.code.toboggan.network.request.extensionpoints.project.grantpermissions.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.getpermissionconstants" name="org.code.toboggan.network.request.extensionpoints.project.getpermissionconstants" schema="schema/org.code.toboggan.network.request.extensionpoints.project.getpermissionconstants.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.getfiles" name="org.code.toboggan.network.request.extensionpoints.project.getfiles" schema="schema/org.code.toboggan.network.request.extensionpoints.project.getfiles.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.fetchsubscribeall" name="org.code.toboggan.network.request.extensionpoints.project.fetchsubscribeall" schema="schema/org.code.toboggan.network.request.extensionpoints.project.fetchsubscribeall.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.delete" name="org.code.toboggan.network.request.extensionpoints.project.delete" schema="schema/org.code.toboggan.network.request.extensionpoints.project.delete.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.create" name="org.code.toboggan.network.request.extensionpoints.project.create" schema="schema/org.code.toboggan.network.request.extensionpoints.project.create.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.rename" name="org.code.toboggan.network.request.extensionpoints.file.rename" schema="schema/org.code.toboggan.network.request.extensionpoints.file.rename.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.pull" name="org.code.toboggan.network.request.extensionpoints.file.pull" schema="schema/org.code.toboggan.network.request.extensionpoints.file.pull.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges" name="org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges" schema="schema/org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.move" name="org.code.toboggan.network.request.extensionpoints.file.move" schema="schema/org.code.toboggan.network.request.extensionpoints.file.move.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.delete" name="org.code.toboggan.network.request.extensionpoints.file.delete" schema="schema/org.code.toboggan.network.request.extensionpoints.file.delete.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.create" name="org.code.toboggan.network.request.extensionpoints.file.create" schema="schema/org.code.toboggan.network.request.extensionpoints.file.create.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.change" name="org.code.toboggan.network.request.extensionpoints.file.change" schema="schema/org.code.toboggan.network.request.extensionpoints.file.change.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.user.register" name="org.code.toboggan.network.request.extensionpoints.user.register" schema="schema/org.code.toboggan.network.request.extensionpoints.user.register.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.user.projects" name="org.code.toboggan.network.request.extensionpoints.user.projects" schema="schema/org.code.toboggan.network.request.extensionpoints.user.projects.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.user.lookup" name="org.code.toboggan.network.request.extensionpoints.user.lookup" schema="schema/org.code.toboggan.network.request.extensionpoints.user.lookup.exsd"/>
-   <extension-point id="org.code.toboggan.network.request.extensionpoints.user.login" name="org.code.toboggan.network.request.extensionpoints.user.login" schema="schema/org.code.toboggan.network.request.extensionpoints.user.login.exsd"/>
+   <!-- Extension Points -->
+   <extension-point id="org.code.toboggan.network.notification.extensionpoints.file.create" name="org.code.toboggan.network.notification.extensionpoints.file.create" schema="schema/org.code.toboggan.network.notification.extensionpoints.file.create.exsd"/>
+   <extension-point id="org.code.toboggan.network.notification.extensionpoints.file.delete" name="org.code.toboggan.network.notification.extensionpoints.file.delete" schema="schema/org.code.toboggan.network.notification.extensionpoints.file.delete.exsd"/>
+   <extension-point id="org.code.toboggan.network.notification.extensionpoints.file.move" name="org.code.toboggan.network.notification.extensionpoints.file.move" schema="schema/org.code.toboggan.network.notification.extensionpoints.file.move.exsd"/>
+   <extension-point id="org.code.toboggan.network.notification.extensionpoints.file.rename" name="org.code.toboggan.network.notification.extensionpoints.file.rename" schema="schema/org.code.toboggan.network.notification.extensionpoints.file.rename.exsd"/>
    <extension-point id="org.code.toboggan.network.notification.extensionpoints.project.revokepermissions" name="org.code.toboggan.network.notification.extensionpoints.project.revokepermissions" schema="schema/org.code.toboggan.network.notification.extensionpoints.project.revokepermissions.exsd"/>
    <extension-point id="org.code.toboggan.network.notification.extensionpoints.project.rename" name="org.code.toboggan.network.notification.extensionpoints.project.rename" schema="schema/org.code.toboggan.network.notification.extensionpoints.project.rename.exsd"/>
    <extension-point id="org.code.toboggan.network.notification.extensionpoints.project.grantpermissions" name="org.code.toboggan.network.notification.extensionpoints.project.grantpermissions" schema="schema/org.code.toboggan.network.notification.extensionpoints.project.grantpermissions.exsd"/>
    <extension-point id="org.code.toboggan.network.notification.extensionpoints.project.delete" name="org.code.toboggan.network.notification.extensionpoints.project.delete" schema="schema/org.code.toboggan.network.notification.extensionpoints.project.delete.exsd"/>
-   <extension-point id="org.code.toboggan.network.notification.extensionpoints.file.rename" name="org.code.toboggan.network.notification.extensionpoints.file.rename" schema="schema/org.code.toboggan.network.notification.extensionpoints.file.rename.exsd"/>
-   <extension-point id="org.code.toboggan.network.notification.extensionpoints.file.move" name="org.code.toboggan.network.notification.extensionpoints.file.move" schema="schema/org.code.toboggan.network.notification.extensionpoints.file.move.exsd"/>
-   <extension-point id="org.code.toboggan.network.notification.extensionpoints.file.delete" name="org.code.toboggan.network.notification.extensionpoints.file.delete" schema="schema/org.code.toboggan.network.notification.extensionpoints.file.delete.exsd"/>
-   <extension-point id="org.code.toboggan.network.notification.extensionpoints.file.create" name="org.code.toboggan.network.notification.extensionpoints.file.create" schema="schema/org.code.toboggan.network.notification.extensionpoints.file.create.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.change" name="org.code.toboggan.network.request.extensionpoints.file.change" schema="schema/org.code.toboggan.network.request.extensionpoints.file.change.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.create" name="org.code.toboggan.network.request.extensionpoints.file.create" schema="schema/org.code.toboggan.network.request.extensionpoints.file.create.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.delete" name="org.code.toboggan.network.request.extensionpoints.file.delete" schema="schema/org.code.toboggan.network.request.extensionpoints.file.delete.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.move" name="org.code.toboggan.network.request.extensionpoints.file.move" schema="schema/org.code.toboggan.network.request.extensionpoints.file.move.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges" name="org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges" schema="schema/org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.pull" name="org.code.toboggan.network.request.extensionpoints.file.pull" schema="schema/org.code.toboggan.network.request.extensionpoints.file.pull.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.file.rename" name="org.code.toboggan.network.request.extensionpoints.file.rename" schema="schema/org.code.toboggan.network.request.extensionpoints.file.rename.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.create" name="org.code.toboggan.network.request.extensionpoints.project.create" schema="schema/org.code.toboggan.network.request.extensionpoints.project.create.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.delete" name="org.code.toboggan.network.request.extensionpoints.project.delete" schema="schema/org.code.toboggan.network.request.extensionpoints.project.delete.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.fetchsubscribeall" name="org.code.toboggan.network.request.extensionpoints.project.fetchsubscribeall" schema="schema/org.code.toboggan.network.request.extensionpoints.project.fetchsubscribeall.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.getfiles" name="org.code.toboggan.network.request.extensionpoints.project.getfiles" schema="schema/org.code.toboggan.network.request.extensionpoints.project.getfiles.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.getpermissionconstants" name="org.code.toboggan.network.request.extensionpoints.project.getpermissionconstants" schema="schema/org.code.toboggan.network.request.extensionpoints.project.getpermissionconstants.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.grantpermissions" name="org.code.toboggan.network.request.extensionpoints.project.grantpermissions" schema="schema/org.code.toboggan.network.request.extensionpoints.project.grantpermissions.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.lookup" name="org.code.toboggan.network.request.extensionpoints.project.lookup" schema="schema/org.code.toboggan.network.request.extensionpoints.project.lookup.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.rename" name="org.code.toboggan.network.request.extensionpoints.project.rename" schema="schema/org.code.toboggan.network.request.extensionpoints.project.rename.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.revokepermissions" name="org.code.toboggan.network.request.extensionpoints.project.revokepermissions" schema="schema/org.code.toboggan.network.request.extensionpoints.project.revokepermissions.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.subscribe" name="org.code.toboggan.network.request.extensionpoints.project.subscribe" schema="schema/org.code.toboggan.network.request.extensionpoints.project.subscribe.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.project.unsubscribe" name="org.code.toboggan.network.request.extensionpoints.project.unsubscribe" schema="schema/org.code.toboggan.network.request.extensionpoints.project.unsubscribe.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.user.login" name="org.code.toboggan.network.request.extensionpoints.user.login" schema="schema/org.code.toboggan.network.request.extensionpoints.user.login.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.user.lookup" name="org.code.toboggan.network.request.extensionpoints.user.lookup" schema="schema/org.code.toboggan.network.request.extensionpoints.user.lookup.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.user.projects" name="org.code.toboggan.network.request.extensionpoints.user.projects" schema="schema/org.code.toboggan.network.request.extensionpoints.user.projects.exsd"/>
+   <extension-point id="org.code.toboggan.network.request.extensionpoints.user.register" name="org.code.toboggan.network.request.extensionpoints.user.register" schema="schema/org.code.toboggan.network.request.extensionpoints.user.register.exsd"/>
+   <extension-point id="org.code.toboggan.network.ws.event" name="org.code.toboggan.network.ws.event" schema="schema/org.code.toboggan.network.ws.event.exsd"/>
+   
+   <!-- Notifications -->
    <extension
-         id="org.code.toboggan.filesystem.createextension"
-         name="Project Create Extension"
+         id="org.code.toboggan.network.file.changeextension"
+         name="org.code.toboggan.network.file.changeextension"
+         point="org.code.toboggan.core.file.change">
+         <create
+         	class="org.code.toboggan.network.request.extensions.file.NetworkFileChange">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.file.createextension"
+         name="org.code.toboggan.network.file.createextension"
+         point="org.code.toboggan.core.file.create">
+         <create
+         	class="org.code.toboggan.network.request.extensions.file.NetworkFileCreate">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.file.deleteextension"
+         name="org.code.toboggan.network.file.deleteextension"
+         point="org.code.toboggan.core.file.delete">
+         <create
+         	class="org.code.toboggan.network.request.extensions.file.NetworkFileDelete">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.file.moveextension"
+         name="org.code.toboggan.network.file.moveextension"
+         point="org.code.toboggan.core.file.move">
+         <create
+         	class="org.code.toboggan.network.request.extensions.file.NetworkFileMove">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.file.pullextension"
+         name="org.code.toboggan.network.file.pullextension"
+         point="org.code.toboggan.core.file.pull">
+         <create
+         	class="org.code.toboggan.network.request.extensions.file.NetworkFilePull">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.file.pulldiffsendchangesextension"
+         name="org.code.toboggan.network.file.pulldiffsendchangesextension"
+         point="org.code.toboggan.core.file.pulldiffsendchanges">
+         <create
+         	class="org.code.toboggan.network.request.extensions.file.NetworkFilePullDiffSendChanges">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.file.renameextension"
+         name="org.code.toboggan.network.file.renameextension"
+         point="org.code.toboggan.core.file.rename">
+         <create
+         	class="org.code.toboggan.network.request.extensions.file.NetworkFileRename">
+         </create>
+   </extension>
+   
+   <extension
+         id="org.code.toboggan.network.project.createextension"
+         name="org.code.toboggan.network.project.createextension"
          point="org.code.toboggan.core.project.create">
          <create
          	class="org.code.toboggan.network.request.extensions.project.NetworkProjectCreate">
          </create>
-   </extension>
-  
+   </extension>  
    <extension
-         id="org.code.toboggan.core.project.renameextension"
-         name="org.code.toboggan.core.project.renameextension"
-         point="org.code.toboggan.core.project.rename">
-         <rename
-         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectRename">
-     	</rename>
-   </extension> 
-   
-   <extension
-         id="org.code.toboggan.core.project.deleteextension"
-         name="org.code.toboggan.core.project.deleteextension"
+         id="org.code.toboggan.network.project.deleteextension"
+         name="org.code.toboggan.network.project.deleteextension"
          point="org.code.toboggan.core.project.delete">
-         <delete
-         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectDelete">
-         </delete>
-   </extension>
-   <extension
-   		 id="org.code.toboggan.core.project.fetchsubscribeallextension"
-   		 name="org.code.toboggan.core.project.fetchsubscribeallextension"
-         point="org.code.toboggan.core.project.fetchsubscribeall">
-         <fetchsubscribeall
-         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectFetchAndSubscribeAll">
-         </fetchsubscribeall>
-   </extension>
-   <extension
-         id="org.code.toboggan.core.project.getfilesextension"
-         name="org.code.toboggan.core.project.getfilesextension"
-         point="org.code.toboggan.core.project.getfiles">
-         <getfiles
-         	class="org.code.toboggan.network.request.extension.project.NetworkProjectGetFiles">
-         </getfiles>
-   </extension>
-   <extension
-         id="org.code.toboggan.core.project.getpermissionconstantsextension"
-         name="org.code.toboggan.core.project.getpermissionconstantsextension"
-         point="org.code.toboggan.core.project.getpermissionconstants">
-         <getpermissionconstants
-         	class="org.code.toboggan.network.request.extension.project.NetworkProjectGetPermissionConstants">
-         </getpermissionconstants>
-	</extension>
-   <extension
-         id="org.code.toboggan.core.project.lookupextension"
-         name="org.code.toboggan.core.project.lookupextension"
-         point="org.code.toboggan.core.project.grantpermissions">
-         <lookup
-         	class="org.code.toboggan.network.request.extension.project.NetworkProjectLookup">
-         </lookup>
-   </extension>
-   <extension
-         id="org.code.toboggan.core.project.revokepermissionsextension"
-         name="org.code.toboggan.core.project.revokepermissionsextension"
-         point="org.code.toboggan.core.project.revokepermissions">
-         <revokepermissions
-         	class="org.code.toboggan.network.request.extension.project.NetworkProjectRevokePermissions">
-         </revokepermissions>
-   </extension>
-   <extension
-         id="org.code.toboggan.core.project.subscribeextension"
-         name="org.code.toboggan.core.project.subscribeextension"
-         point="org.code.toboggan.core.project.subscribe">
-         <subscribe
-         	class="org.code.toboggan.network.request.extension.project.NetworkProjectSubscribe">
-         </subscribe>
-   </extension>
-   <extension
-         id="org.code.toboggan.core.project.unsubscribeextension"
-         name="org.code.toboggan.core.project.unsubscribeextension"
-         point="org.code.toboggan.core.project.unsubscribe">
-         <unsubscribe
-         	class="org.code.toboggan.network.request.extension.project.NetworkProjectUnsubscribe">
-     	</unsubscribe>
-   </extension>
-   <extension
-         id="org.code.toboggan.core.file.createextension"
-         name="org.code.toboggan.core.file.createextension"
-         point="org.code.toboggan.core.file.create">
          <create
-         	class="org.code.toboggan.network.request.extension.file.NetworkFileCreate">
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectDelete">
          </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.file.deleteextension"
-         name="org.code.toboggan.core.file.deleteextension"
-         point="org.code.toboggan.core.file.delete">
-         <delete
-         	class="org.code.toboggan.network.request.extension.file.NetworkFileDelete">
-         </delete>
+   		 id="org.code.toboggan.network.project.fetchsubscribeallextension"
+   		 name="org.code.toboggan.network.project.fetchsubscribeallextension"
+         point="org.code.toboggan.core.project.fetchsubscribeall">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectFetchAndSubscribeAll">
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.file.moveextension"
-         name="org.code.toboggan.core.file.moveextension"
-         point="org.code.toboggan.core.file.move">
-         <move
-         	class="org.code.toboggan.network.request.extension.file.NetworkFileMove">
-         </move>
+         id="org.code.toboggan.network.project.getfilesextension"
+         name="org.code.toboggan.network.project.getfilesextension"
+         point="org.code.toboggan.core.project.getfiles">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectGetFiles">
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.file.pullextension"
-         name="org.code.toboggan.core.file.pullextension"
-         point="org.code.toboggan.core.file.pull">
-         <pull
-         	class="org.code.toboggan.network.request.extension.file.NetworkFilePull">
-         </pull>
+         id="org.code.toboggan.network.project.getpermissionconstantsextension"
+         name="org.code.toboggan.network.project.getpermissionconstantsextension"
+         point="org.code.toboggan.core.project.getpermissionconstants">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectGetPermissionConstants">
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.file.pulldiffsendchangesextension"
-         name="org.code.toboggan.core.file.pulldiffsendchangesextension"
-         point="org.code.toboggan.core.file.pulldiffsendchanges">
-         <pulldiffsendchanges
-         	class="org.code.toboggan.network.request.extension.file.NetworkFilePullDiffSendChanges">
-         </pulldiffsendchanges>
+         id="org.code.toboggan.network.project.grantpermissionsextension"
+         name="org.code.toboggan.network.project.grantpermissionsextension"
+         point="org.code.toboggan.core.project.grantpermissions">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectGrantPermissions">
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.file.renameextension"
-         name="org.code.toboggan.core.file.renameextension"
-         point="org.code.toboggan.core.file.rename">
-         <rename
-         	class="org.code.toboggan.network.request.extension.file.NetworkFileRename">
-         </rename>
+         id="org.code.toboggan.network.project.lookupextension"
+         name="org.code.toboggan.network.project.lookupextension"
+         point="org.code.toboggan.core.project.lookup">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectLookup">
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.user.loginextension"
-         name="org.code.toboggan.core.user.loginextension"
+         id="org.code.toboggan.network.project.renameextension"
+         name="org.code.toboggan.network.project.renameextension"
+         point="org.code.toboggan.core.project.rename">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectRename">
+     	</create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.project.revokepermissionsextension"
+         name="org.code.toboggan.network.project.revokepermissionsextension"
+         point="org.code.toboggan.core.project.revokepermissions">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectRevokePermissions">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.project.subscribeextension"
+         name="org.code.toboggan.network.project.subscribeextension"
+         point="org.code.toboggan.core.project.subscribe">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectSubscribe">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.network.project.unsubscribeextension"
+         name="org.code.toboggan.network.project.unsubscribeextension"
+         point="org.code.toboggan.core.project.unsubscribe">
+         <create
+         	class="org.code.toboggan.network.request.extensions.project.NetworkProjectUnsubscribe">
+     	</create>
+   </extension>
+   
+   <extension
+         id="org.code.toboggan.network.user.loginextension"
+         name="org.code.toboggan.network.user.loginextension"
          point="org.code.toboggan.core.user.login">
-         <login
-         	class="org.code.toboggan.network.request.extension.user.NetworkUserLogin">
-         </login>
+         <create
+         	class="org.code.toboggan.network.request.extensions.user.NetworkUserLogin">
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.user.lookupextension"
-         name="org.code.toboggan.core.user.lookupextension"
+         id="org.code.toboggan.network.user.lookupextension"
+         name="org.code.toboggan.network.user.lookupextension"
          point="org.code.toboggan.core.user.lookup">
-         <lookup
-         	class="org.code.toboggan.network.request.extension.user.NetworkUserLookup">
-         </lookup>
+         <create
+         	class="org.code.toboggan.network.request.extensions.user.NetworkUserLookup">
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.user.projectsextension"
-         name="org.code.toboggan.core.user.projectsextension"
+         id="org.code.toboggan.network.user.projectsextension"
+         name="org.code.toboggan.network.user.projectsextension"
          point="org.code.toboggan.core.user.projects">
-         <projects
-         	class="org.code.toboggan.network.request.extension.user.NetworkUserProjects">
-         </projects>
+         <create
+         	class="org.code.toboggan.network.request.extensions.user.NetworkUserProjects">
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.core.user.registerextension"
-         name="org.code.toboggan.core.user.projectsextension"
+         id="org.code.toboggan.network.user.registerextension"
+         name="org.code.toboggan.network.user.register"
          point="org.code.toboggan.core.user.register">
-         <register
-         	class="org.code.toboggan.network.request.extension.user.NetworkUserRegister">
-         </register>
+         <create
+         	class="org.code.toboggan.network.request.extensions.user.NetworkUserRegister">
+         </create>
    </extension>
 </plugin>

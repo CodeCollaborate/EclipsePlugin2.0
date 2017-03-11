@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -7,6 +9,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public class VerticalButtonBar extends Composite {
+	private Logger logger = LogManager.getLogger(this.getClass());
 	
 	private Button plusButton;
 	private Button minusButton;

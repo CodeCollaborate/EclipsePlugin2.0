@@ -6,7 +6,7 @@
          <meta.schema plugin="org.code.toboggan.core" id="org.code.toboggan.core.file.rename" name="org.code.toboggan.core.file.rename"/>
       </appinfo>
       <documentation>
-         Extend the functionality of when a File.Rename call is made.
+         [Enter description of this extension point.]
       </documentation>
    </annotation>
 
@@ -17,8 +17,6 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence>
-         </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -40,21 +38,6 @@
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="rename">
-      <complexType>
-         <attribute name="class" type="string">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.code.toboggan.core.extension.file.IFileRenameExtension"/>
                </appinfo>
             </annotation>
          </attribute>

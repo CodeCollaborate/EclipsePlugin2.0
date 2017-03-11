@@ -46,7 +46,7 @@
       </complexType>
    </element>
 
-   <element name="delete">
+   <element name="create">
       <complexType>
          <attribute name="class" type="string">
             <annotation>
@@ -54,7 +54,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.code.toboggan.network.request.extensionpoints.project.IProjectDeletedResponse"/>
+                  <meta.attribute kind="java" basedOn=":org.code.toboggan.network.request.extensionpoints.project.IProjectDeleteResponse"/>
                </appinfo>
             </annotation>
          </attribute>

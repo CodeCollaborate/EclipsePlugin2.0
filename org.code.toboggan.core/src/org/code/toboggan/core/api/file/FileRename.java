@@ -3,10 +3,10 @@ package org.code.toboggan.core.api.file;
 import java.nio.file.Path;
 
 import org.code.toboggan.core.api.AbstractAPICall;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
-import org.code.toboggan.core.extension.file.IFileRenameExtension;
+import org.code.toboggan.core.extensionpoints.APIExtensionIDs;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.file.IFileRenameExtension;
 
 public class FileRename extends AbstractAPICall {
 

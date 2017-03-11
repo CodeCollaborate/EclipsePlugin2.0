@@ -3,10 +3,10 @@ package org.code.toboggan.core.api.project;
 import java.util.List;
 
 import org.code.toboggan.core.api.AbstractAPICall;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
-import org.code.toboggan.core.extension.project.IProjectLookupExtension;
+import org.code.toboggan.core.extensionpoints.APIExtensionIDs;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.project.IProjectLookupExtension;
 
 public class ProjectLookup extends AbstractAPICall {
 

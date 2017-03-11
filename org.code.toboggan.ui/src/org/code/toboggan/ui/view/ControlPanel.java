@@ -2,9 +2,10 @@ package org.code.toboggan.ui.view;
 
 import java.beans.PropertyChangeListener;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
+import org.code.toboggan.network.NetworkActivator;
 import org.code.toboggan.ui.UIActivator;
 import org.code.toboggan.ui.dialogs.DialogStrings;
 import org.eclipse.jface.viewers.ListViewer;
@@ -21,8 +22,16 @@ import clientcore.websocket.WSConnection;
 import clientcore.websocket.WSConnection.State;
 
 public class ControlPanel extends ViewPart {
-
 	private final Logger logger = LogManager.getLogger(ControlPanel.class);
+	
+	static ControlPanel instance;
+	public static ControlPanel getInstance() {
+		return instance;
+	}
+	
+	public ControlPanel() {
+		instance = this;
+	}
 	
 	protected ListViewer projectsListViewer;
 	protected ListViewer usersListViewer;
@@ -53,12 +62,11 @@ public class ControlPanel extends ViewPart {
 		statusData.horizontalAlignment = GridData.FILL;
 		statusBar.setLayoutData(statusData);
 		initializePropertyChangeListeners();
-		initializeNotificationHandlers();
 		initializeStatusBar();
 		
 		if (UIActivator.getDefault().getSessionStorage().getUsername() != null) {
 			setEnabled(true);
-			new Thread(APIFactory.createUserProjects()).start();
+			APIFactory.createUserProjects().runAsync();
 		}
 	}
 	
@@ -79,23 +87,8 @@ public class ControlPanel extends ViewPart {
 		UIActivator.getDefault().getSessionStorage().addPropertyChangeListener(usernameListener);
 	}
 	
-	private void initializeNotificationHandlers() {
-		WSManager wsManager = UIActivator.getDefault().getWSManager();
-		// TODO: change to use network plugin extension points once implemented
-		// status bar handlers
-		wsManager.registerEventHandler(WSConnection.EventType.ON_CONNECT, () -> {
-			statusBar.getDisplay().asyncExec(() -> statusBar.setStatus(DialogStrings.NotInitialized));
-		});
-		wsManager.registerEventHandler(WSConnection.EventType.ON_CLOSE, () -> {
-			statusBar.getDisplay().asyncExec(() -> statusBar.setStatus(DialogStrings.NotInitialized));
-		});
-		wsManager.registerEventHandler(WSConnection.EventType.ON_ERROR, () -> {
-			statusBar.getDisplay().asyncExec(() -> statusBar.setStatus(DialogStrings.NotInitialized));
-		});
-	}
-	
 	private void initializeStatusBar() {
-		WSManager wsManager = UIActivator.getDefault().getWSManager();
+		WSManager wsManager = UIActivator.getWSManager();
 		State s = wsManager.getConnectionState();
 		logger.debug(String.format("STATE: %s", s.toString()));
 		switch (s) {
@@ -115,7 +108,7 @@ public class ControlPanel extends ViewPart {
 	}
 	
 	private void undoNotificationHandlers() {
-		WSManager wsManager = UIActivator.getDefault().getWSManager();
+		WSManager wsManager = NetworkActivator.getWSService().getWSManager();
 		wsManager.deregisterEventHandler(WSConnection.EventType.ON_CONNECT);
 		wsManager.deregisterEventHandler(WSConnection.EventType.ON_CLOSE);
 		wsManager.deregisterEventHandler(WSConnection.EventType.ON_ERROR);
@@ -141,4 +134,9 @@ public class ControlPanel extends ViewPart {
 		removePropertyChangeListener();
 		super.dispose();
 	}
+	
+	public StatusBar getStatusBar() {
+		return statusBar;
+	}
+
 }

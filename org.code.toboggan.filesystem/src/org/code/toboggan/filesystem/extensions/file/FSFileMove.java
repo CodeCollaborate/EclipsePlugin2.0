@@ -4,16 +4,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.WarnList;
 import org.code.toboggan.filesystem.editor.DocumentManager;
+import org.code.toboggan.filesystem.extensionpoints.FSExtensionIDs;
 import org.code.toboggan.filesystem.extensionpoints.file.IFSFileMoveExt;
 import org.code.toboggan.filesystem.extensions.FileSystemExtensionManager;
 import org.code.toboggan.network.notification.extensionpoints.file.IFileMoveNotificationExtension;
@@ -48,8 +48,21 @@ public class FSFileMove implements IFileMoveResponse, IFileMoveNotificationExten
 	}
 	
 	@Override
-	public void fileMoved(long fileID, Path newWorkspaceRelativePath) {
-		new Thread(APIFactory.createFilePullDiffSendChanges(fileID)).start();
+	public void fileMoved(long fileID, Path newFileLocation) {
+		File file = ss.getFile(fileID);
+		Project project = ss.getProject(file.getProjectID());
+		
+		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(project.getName());
+		Path projectLocation = p.getLocation().toFile().toPath();
+		IFile newFile = p.getFile(projectLocation.relativize(newFileLocation).toString());
+		
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_MOVE_ID, IFSFileMoveExt.class);
+		for (ICoreExtension ext : extensions) {
+			IFSFileMoveExt moveExt = (IFSFileMoveExt) ext;
+			moveExt.fileMoved(fileID, newFile, newFileLocation);
+		}
+		
+		APIFactory.createFilePullDiffSendChanges(fileID).runAsync();
 	}
 	
 	@Override
@@ -82,7 +95,7 @@ public class FSFileMove implements IFileMoveResponse, IFileMoveNotificationExten
 		IFile iFile = ResourcesPlugin.getWorkspace().getRoot()
 				.getFileForLocation(new org.eclipse.core.runtime.Path(newFileLocation.toString()));
 		NullProgressMonitor progressMonitor = new NullProgressMonitor();
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID, IFSFileMoveExt.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_MOVE_ID, IFSFileMoveExt.class);
 		
 		try {
 			iFile.move(new org.eclipse.core.runtime.Path(oldFileLocation.toString()), true, progressMonitor);
@@ -100,12 +113,12 @@ public class FSFileMove implements IFileMoveResponse, IFileMoveNotificationExten
 			}
 			
 			File file = CoreActivator.getSessionStorage().getFile(fileID);
-			new Thread(APIFactory.createProjectUnsubscribe(file.getProjectID())).start();
+			APIFactory.createProjectUnsubscribe(file.getProjectID()).runAsync();
 		}
 	}
 	
 	private void moveFile(IProject p, IFile iFile, IPath newWorkspaceRelativePath, long fileID, long projectID, Path newFileLocation) {
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_MOVE_ID, IFSFileMoveExt.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_MOVE_ID, IFSFileMoveExt.class);
 		
 		if (iFile.exists()) {
 			
@@ -130,7 +143,7 @@ public class FSFileMove implements IFileMoveResponse, IFileMoveNotificationExten
 							IFSFileMoveExt moveExt = (IFSFileMoveExt) ext;
 							moveExt.folderCreationFailed(fileID, currentFolder.toString());
 						}
-						new Thread(APIFactory.createProjectUnsubscribe(projectID)).start();
+						APIFactory.createProjectUnsubscribe(projectID).runAsync();
 						return;
 					}
 					
@@ -153,7 +166,7 @@ public class FSFileMove implements IFileMoveResponse, IFileMoveNotificationExten
 			} catch (Exception e) {
 				logger.error("Failed to move file for rename, unsubscribing", e);
 				warnList.removeFileFromWarnList(fileLocation, FileRenameNotification.class);
-				new Thread(APIFactory.createProjectUnsubscribe(projectID)).start();
+				APIFactory.createProjectUnsubscribe(projectID).runAsync();
 				for (ICoreExtension ext : extensions) {
 					IFSFileMoveExt moveExt = (IFSFileMoveExt) ext;
 					moveExt.moveFailed(fileID, iFile, newFileLocation);

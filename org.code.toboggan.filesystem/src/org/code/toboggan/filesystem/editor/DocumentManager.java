@@ -9,8 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.filesystem.FSActivator;
@@ -138,7 +138,7 @@ public class DocumentManager implements IFileChangeNotificationHandler {
 			return;
 		}
 		
-		new Thread(APIFactory.createFilePull(file.getFileID())).start();
+		APIFactory.createFilePull(file.getFileID()).runAsync();
 		// TODO: make sure this code is used in implementation of network FilePull extension
 //		Request req = (new FilePullRequest(file.getFileID())).getRequest(response -> {
 //			if (response.getStatus() == 200) {

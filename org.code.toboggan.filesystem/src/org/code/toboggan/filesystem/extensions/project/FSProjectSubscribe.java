@@ -3,15 +3,15 @@ package org.code.toboggan.filesystem.extensions.project;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.WarnList;
+import org.code.toboggan.filesystem.extensionpoints.FSExtensionIDs;
 import org.code.toboggan.filesystem.extensionpoints.project.IFSProjectSubscribeExt;
 import org.code.toboggan.filesystem.extensions.FileSystemExtensionManager;
 import org.code.toboggan.network.request.extensionpoints.project.IProjectSubscribeResponse;
@@ -65,16 +65,13 @@ private static Logger logger = LogManager.getLogger(FSProjectSubscribe.class);
 		} catch (CoreException e) {
 			logger.error("Failed to create project", e);
 		}
+						
+		files.forEach((f) -> APIFactory.createFilePull(f.getFileID()).runAsync());
 		
-		pc.putProjectLocation(iProject.getLocation().toFile().toPath(), projectID);
-		p.setFiles(files);
-		
-		files.forEach((f) -> new Thread(APIFactory.createFilePull(f.getFileID())).start());
-		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.PROJECT_SUBSCRIBE_ID, IFSProjectSubscribeExt.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.PROJECT_SUBSCRIBE_ID, IFSProjectSubscribeExt.class);
 		for (ICoreExtension e : extensions) {
 			IFSProjectSubscribeExt createExt = (IFSProjectSubscribeExt) e;
-			createExt.subscribed(p, iProject);
+			createExt.subscribed(p, iProject, files.toArray(new File[]{}));
 		}
 	}
 

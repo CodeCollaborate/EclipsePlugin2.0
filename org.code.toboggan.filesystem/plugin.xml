@@ -1,91 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.code.toboggan.filesystem.project.subscribe" name="org.code.toboggan.filesystem.project.subscribe" schema="schema/org.code.toboggan.filesystem.project.subscribe.exsd"/>
-   <extension-point id="org.code.toboggan.filesystem.project.create" name="org.code.toboggan.filesystem.project.create" schema="schema/org.code.toboggan.filesystem.project.create.exsd"/>
-   <extension-point id="org.code.toboggan.filesystem.file.create" name="org.code.toboggan.filesystem.file.create" schema="schema/org.code.toboggan.filesystem.file.create.exsd"/>
-   <extension-point id="org.code.toboggan.filesystem.file.pull" name="org.code.toboggan.filesystem.file.pull" schema="schema/org.code.toboggan.filesystem.file.pull.exsd"/>
+   <!-- Extension Points -->
+   <extension-point id="org.code.toboggan.filesystem.file.change" name="org.code.toboggan.filesystem.file.change" schema="schema/org.code.toboggan.filesystem.file.change.exsd"/>
+   <extension-point id="org.code.toboggan.filesystem.file.delete" name="org.code.toboggan.filesystem.file.delete" schema="schema/org.code.toboggan.filesystem.file.delete.exsd"/>
    <extension-point id="org.code.toboggan.filesystem.file.move" name="org.code.toboggan.filesystem.file.move" schema="schema/org.code.toboggan.filesystem.file.move.exsd"/>
+   <extension-point id="org.code.toboggan.filesystem.file.pull" name="org.code.toboggan.filesystem.file.pull" schema="schema/org.code.toboggan.filesystem.file.pull.exsd"/>
    <extension-point id="org.code.toboggan.filesystem.file.rename" name="org.code.toboggan.filesystem.file.rename" schema="schema/org.code.toboggan.filesystem.file.rename.exsd"/>
+   <extension-point id="org.code.toboggan.filesystem.project.create" name="org.code.toboggan.filesystem.project.create" schema="schema/org.code.toboggan.filesystem.project.create.exsd"/>
+   <extension-point id="org.code.toboggan.filesystem.project.rename" name="org.code.toboggan.filesystem.project.rename" schema="schema/org.code.toboggan.filesystem.project.rename.exsd"/>
+   <extension-point id="org.code.toboggan.filesystem.project.subscribe" name="org.code.toboggan.filesystem.project.subscribe" schema="schema/org.code.toboggan.filesystem.project.subscribe.exsd"/>
+   
+   <!-- Notifications -->
    <extension
-         id="org.code.toboggan.filesystem.extensions.file.createextension"
-         name="org.code.toboggan.filesystem.extensions.file.createextension"
+         id="org.code.toboggan.filesystem.extensions.notification.file.createextension"
+         name="org.code.toboggan.filesystem.extensions.notification.file.createextension"
          point="org.code.toboggan.network.notification.extensionpoints.file.create">
          <create
          	class="org.code.toboggan.filesystem.extensions.file.FSFileCreate">
          </create>
    </extension>
    <extension
-         id="org.code.toboggan.filesystem.extensions.file.deleteextension"
-         name="org.code.toboggan.filesystem.extensions.file.deleteextension"
+         id="org.code.toboggan.filesystem.extensions.notification.file.deleteextension"
+         name="org.code.toboggan.filesystem.extensions.notification.file.deleteextension"
          point="org.code.toboggan.network.notification.extensionpoints.file.delete">
-         <delete
+         <create
          	class="org.code.toboggan.filesystem.extensions.file.FSFileDelete">
-         </delete>
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.filesystem.extensions.file.moveextension"
-         name="org.code.toboggan.filesystem.extensions.file.moveextension"
+         id="org.code.toboggan.filesystem.extensions.notification.file.moveextension"
+         name="org.code.toboggan.filesystem.extensions.notification.file.moveextension"
          point="org.code.toboggan.network.notification.extensionpoints.file.move">
-         <move
+         <create
          	class="org.code.toboggan.filesystem.extensions.file.FSFileMove">
-         </move>
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.filesystem.extensions.file.moverequestextension"
-         name="org.code.toboggan.filesystem.extensions.file.moverequestextension"
-         point="org.code.toboggan.network.request.extensionpoints.file.move">
-         <move
-         	class="org.code.toboggan.filesystem.extensions.file.FSFileMove">
-         </move>
-   </extension>
-   <extension
-         id="org.code.toboggan.filesystem.extensions.file.pullextension"
-         name="org.code.toboggan.filesystem.extensions.file.pullextension"
-         point="org.code.toboggan.network.request.extensionpoints.file.pull">
-         <pull
-         	class="org.code.toboggan.filesystem.extensions.file.FSFilePull">
-         </pull>
-   </extension>
-   <extension
-         id="org.code.toboggan.filesystem.extensions.file.pulldiffsendchangesextension"
-         name="org.code.toboggan.filesystem.extensions.file.pulldiffsendchangesextension"
-         point="org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges">
-         <pulldiffsendchanges
-         	class="org.code.toboggan.filesystem.extensions.file.FSFilePullDiffSendChanges">
-         </pulldiffsendchanges>
-   </extension>
-   <extension
-         id="org.code.toboggan.filesystem.extensions.file.renameextension"
-         name="org.code.toboggan.filesystem.extensions.file.renameextension"
+         id="org.code.toboggan.filesystem.extensions.notification.file.renameextension"
+         name="org.code.toboggan.filesystem.extensions.notification.file.renameextension"
          point="org.code.toboggan.network.notification.extensionpoints.file.rename">
-         <rename
+         <create
          	class="org.code.toboggan.filesystem.extensions.file.FSFileRename">
-         </rename>
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.filesystem.extensions.file.renamerequestextension"
-         name="org.code.toboggan.filesystem.extensions.file.renamerequestextension"
+         id="org.code.toboggan.filesystem.extensions.notification.project.renameextension"
+         name="org.code.toboggan.filesystem.extensions.notification.project.renameextension"
+         point="org.code.toboggan.network.notification.extensionpoints.project.rename">
+         <create
+         	class="org.code.toboggan.filesystem.extensions.project.FSProjectRename">
+         </create>
+   </extension>
+   
+   <!-- Responses -->
+   <extension
+         id="org.code.toboggan.filesystem.extensions.request.file.moveextension"
+         name="org.code.toboggan.filesystem.extensions.request.file.moveextension"
+         point="org.code.toboggan.network.request.extensionpoints.file.move">
+         <create
+         	class="org.code.toboggan.filesystem.extensions.file.FSFileMove">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.filesystem.extensions.request.file.pullextension"
+         name="org.code.toboggan.filesystem.extensions.request.file.pullextension"
+         point="org.code.toboggan.network.request.extensionpoints.file.pull">
+         <create
+         	class="org.code.toboggan.filesystem.extensions.file.FSFilePull">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.filesystem.extensions.request.file.pulldiffsendchangesextension"
+         name="org.code.toboggan.filesystem.extensions.request.file.pulldiffsendchangesextension"
+         point="org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges">
+         <create
+         	class="org.code.toboggan.filesystem.extensions.file.FSFilePullDiffSendChanges">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.filesystem.extensions.request.file.renameextension"
+         name="org.code.toboggan.filesystem.extensions.request.file.renameextension"
          point="org.code.toboggan.network.request.extensionpoints.file.rename">
-         <rename
+         <create
          	class="org.code.toboggan.filesystem.extensions.file.FSFileRename">
-         </rename>
+         </create>
    </extension>
    <extension
-         id="org.code.toboggan.filesystem.extensions.project.createextension"
-         name="org.code.toboggan.filesystem.extensions.project.createextension"
+         id="org.code.toboggan.filesystem.extensions.request.project.createextension"
+         name="org.code.toboggan.filesystem.extensions.request.project.createextension"
          point="org.code.toboggan.network.request.extensionpoints.project.create">
          <create
          	class="org.code.toboggan.filesystem.extensions.project.FSProjectCreate">
          </create>
    </extension>
    <extension
-         id="org.code.toboggan.filesystem.extensions.project.subscribeextension"
-         name="org.code.toboggan.filesystem.extensions.project.subscribeextension"
+         id="org.code.toboggan.filesystem.extensions.request.project.subscribeextension"
+         name="org.code.toboggan.filesystem.extensions.request.project.subscribeextension"
          point="org.code.toboggan.network.request.extensionpoints.project.subscribe">
-         <subscribe
+         <create
          	class="org.code.toboggan.filesystem.extensions.project.FSProjectSubscribe">
-         </subscribe>
+         </create>
    </extension>
-
 </plugin>

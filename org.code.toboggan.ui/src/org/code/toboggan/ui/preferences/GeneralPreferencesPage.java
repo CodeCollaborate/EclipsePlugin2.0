@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.preferences;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.ui.UIActivator;
 import org.code.toboggan.ui.dialogs.RecoverPasswordDialog;
 import org.code.toboggan.ui.dialogs.WelcomeDialog;
@@ -17,6 +19,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import clientcore.websocket.ConnectException;
 
 public class GeneralPreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+	private Logger logger = LogManager.getLogger(this.getClass());
 
 	public GeneralPreferencesPage() {
 		super(GRID);
@@ -34,6 +37,7 @@ public class GeneralPreferencesPage extends FieldEditorPreferencePage implements
 		loginButton.setText("Login to CodeCollaborate");
 		loginButton.addListener(SWT.Selection, (event) -> {
 			Display.getDefault().asyncExec(() -> {
+				logger.debug("UI-DEBUG: Preferences login to codecollaborate button pressed");
 				Shell shell = Display.getDefault().getActiveShell();
 				ISecurePreferences secureStore = SecurePreferencesFactory.getDefault();
 				new WelcomeDialog(shell, secureStore).open();
@@ -50,7 +54,8 @@ public class GeneralPreferencesPage extends FieldEditorPreferencePage implements
 		reconnect.addListener(SWT.Selection, (event) -> {
 			 new Thread(() -> {
 				 try {
-					 UIActivator.getDefault().getWSManager().connect();
+					 logger.debug("UI-DEBUG: Preferences Reconnect to server button pressed");
+					 UIActivator.getWSManager().connect();
 				 } catch (ConnectException e) {
 					 e.printStackTrace();
 				 }
@@ -61,6 +66,7 @@ public class GeneralPreferencesPage extends FieldEditorPreferencePage implements
 		forgotPassword.setText("Forgotten Password?");
 		forgotPassword.addListener(SWT.Selection, (event) -> {
 			new Thread(() -> {
+				logger.debug("UI-DEBUG: Preferences forgot password button pressed");
 				Display.getDefault().asyncExec(() -> new RecoverPasswordDialog(getShell()).open());
 			}).start();
 		});

@@ -1,6 +1,6 @@
 package org.code.toboggan.network.request.extensions;
 
-import org.code.toboggan.core.extension.APIExtensionManager;
+import org.code.toboggan.core.extensionpoints.APIExtensionManager;
 import org.junit.Before;
 import org.junit.Test;
 

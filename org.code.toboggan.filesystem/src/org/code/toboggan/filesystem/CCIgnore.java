@@ -9,12 +9,13 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.eclipse.core.resources.IFile;
@@ -135,14 +136,14 @@ public class CCIgnore {
 			return;
 		}
 		
-		SessionStorage ss = null; CoreActivator.getSessionStorage();
+		SessionStorage ss = CoreActivator.getSessionStorage();
 		Path projectLocation = p.getLocation().toFile().toPath();
 		Project pMeta = ss.getProject(projectLocation);
 		
 		if (pMeta == null) {
 			return;
 		}
-		List<File> fileMetas = pMeta.getFiles();
+		Collection<File> fileMetas = pMeta.getFiles();
 		
 		if (fileMetas == null) {
 			return;
@@ -153,7 +154,7 @@ public class CCIgnore {
 			if (containsEntry(path)) {
 				// send delete request for fileID
 				logger.debug(String.format("Cleaning up %s from server", path));
-				new Thread(APIFactory.createFileDelete(fm.getFileID())).start();
+				APIFactory.createFileDelete(fm.getFileID()).runAsync();
 			}
 		}
 	}

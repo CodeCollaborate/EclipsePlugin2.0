@@ -19,6 +19,7 @@ public class NetworkActivator implements BundleActivator {
 	public static final String PLUGIN_ID = "org.code.toboggan.network";
 	private static BundleContext context;
 	private static PatchManager patchManager;
+	private static WSService wsService;
 	
 	static BundleContext getContext() {
 		return context;
@@ -26,6 +27,25 @@ public class NetworkActivator implements BundleActivator {
 	
 	public static PatchManager getPatchManager() {
 		return patchManager;
+	}
+	
+	public static void reset() {
+		patchManager = new PatchManager();
+	}
+	
+	public static WSService getWSService() {
+		if (wsService == null){
+			synchronized(NetworkActivator.class){
+				if(wsService == null){
+					wsService = new WSService();
+				}
+			}
+		}
+		return wsService;
+	}
+	
+	public static void setWSService(WSService wsService) {
+		NetworkActivator.wsService = wsService;
 	}
 
 	/*
@@ -35,11 +55,14 @@ public class NetworkActivator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		NetworkActivator.context = bundleContext;
 		// Start WS connection when this plugin is activated
-		WSManager m = WSService.getWSManager();
-		patchManager = new PatchManager();
-		patchManager.setWsMgr(m);
-		registerNotificationHandlers(m);
-		m.connect();
+		getWSService();
+		
+		reset();
+		patchManager.setWsMgr(wsService.getWSManager());
+		registerNotificationHandlers(wsService.getWSManager());
+
+		// Don't connect - let the websocket lazily connect upon first request
+//		 wsService.getWSManager().connect();
 	}
 	
 	private void registerNotificationHandlers(WSManager m) {
@@ -60,7 +83,7 @@ public class NetworkActivator implements BundleActivator {
 	public void stop(BundleContext bundleContext) throws Exception {
 		NetworkActivator.context = null;
 		patchManager = null;
-		WSService.getWSManager().close();
+		wsService.getWSManager().close();
 	}
 
 }

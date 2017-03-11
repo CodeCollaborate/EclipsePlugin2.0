@@ -2,7 +2,7 @@ package org.code.toboggan.filesystem.extensionpoints.file;
 
 import java.nio.file.Path;
 
-import org.code.toboggan.core.extension.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.eclipse.core.resources.IFile;
 
 public interface IFSFileMoveExt extends ICoreExtension {

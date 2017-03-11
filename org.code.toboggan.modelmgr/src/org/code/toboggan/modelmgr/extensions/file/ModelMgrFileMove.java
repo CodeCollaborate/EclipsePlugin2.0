@@ -13,8 +13,8 @@ public class ModelMgrFileMove extends AbstractFileModelMgrHandler implements IFS
 	public void fileMoved(long fileID, IFile iFile, Path newFileLocation) {
 		File file = ss.getFile(fileID);
 		long projectID = file.getProjectID();
-		Path projectLocation = ss.getProjectLocation(fileID);
-		Path newRelativePath = projectLocation.relativize(newFileLocation);
+		Path projectLocation = ss.getProjectLocation(file.getProjectID());
+		Path newRelativePath = projectLocation.relativize(newFileLocation).getParent();
 		fc.moveFile(fileID, projectID, newFileLocation, newRelativePath);
 	}
 

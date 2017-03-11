@@ -5,9 +5,9 @@ import clientcore.websocket.models.ConnectionConfig;
 
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.code.toboggan.core.extension.ICoreExtension;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.code.toboggan.network.request.extensionpoints.NetworkExtensionIDs;
 import org.code.toboggan.network.request.extensionpoints.websocket.IWSEvent;
 import org.code.toboggan.network.request.extensions.NetworkExtensionManager;
@@ -18,12 +18,15 @@ public class WSService {
 	final private static String WS_ADDRESS = "wss://codecollaborate.obsessiveorange.com:8000/ws/";
 	final private static boolean RECONNECT = true;
 	final private static int MAX_RETRY_COUNT = 3;
-
-	private static WSManager wsManager;
-	private NetworkExtensionManager extMgr;
+	
+	private WSManager wsManager;
 	private static Logger logger = LogManager.getLogger(WSService.class);
+	
+	public WSService() {
+		initConnectionListeners();
+	}
 
-	public static WSManager getWSManager() {
+	public WSManager getWSManager() {
 		synchronized (WSManager.class) {
 			if (wsManager == null) {
 				wsManager = new WSManager(new ConnectionConfig(WS_ADDRESS, RECONNECT, MAX_RETRY_COUNT));
@@ -32,24 +35,21 @@ public class WSService {
 		return wsManager;
 	}
 
-	private WSService() {
-		extMgr = NetworkExtensionManager.getInstance();
-		initConnectionListeners();
-	}
-
 	private void initConnectionListeners() {
-		wsManager.registerEventHandler(WSConnection.EventType.ON_CONNECT, () -> {
+		getWSManager().registerEventHandler(WSConnection.EventType.ON_CONNECT, () -> {
 			notifyWSEventListeners(WSConnection.EventType.ON_CONNECT);
 		});
-		wsManager.registerEventHandler(WSConnection.EventType.ON_CLOSE, () -> {
+		getWSManager().registerEventHandler(WSConnection.EventType.ON_CLOSE, () -> {
 			notifyWSEventListeners(WSConnection.EventType.ON_CLOSE);
 		});
-		wsManager.registerEventHandler(WSConnection.EventType.ON_ERROR, () -> {
+		getWSManager().registerEventHandler(WSConnection.EventType.ON_ERROR, () -> {
 			notifyWSEventListeners(WSConnection.EventType.ON_ERROR);
 		});
 	}
 
 	private void notifyWSEventListeners(WSConnection.EventType wsEvent) {
+		NetworkExtensionManager extMgr = NetworkExtensionManager.getInstance();
+		
 		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.WS_EVENT, IWSEvent.class);
 		for (ICoreExtension e : extensions) {
 			IWSEvent p = (IWSEvent) e;

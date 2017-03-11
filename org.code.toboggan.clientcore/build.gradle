@@ -24,13 +24,13 @@ repositories {
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     // compile 'org.slf4j:slf4j-api:1.7.12'
-    compile 'org.code.toboggan:org.code.toboggan.clientcore:2.0.1'
-
+    compile 'org.code.toboggan:org.code.toboggan.clientcore:2.0.2-hotfix5'
+    
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
-    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:2.7.12"
     
     // https://mvnrepository.com/artifact/commons-io/commons-io
 	compile group: 'commons-io', name: 'commons-io', version: '2.5'
@@ -41,6 +41,6 @@ dependencies {
 }
 
 task unpackSources(type: Copy) {
-	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } + configurations.testCompile.collect { it.isDirectory() ? it : zipTree(it) } }
     into file('clientcore_unpack')
 }

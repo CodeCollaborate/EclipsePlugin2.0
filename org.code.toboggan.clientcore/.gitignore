@@ -2,3 +2,4 @@
 /.settings/
 build/*
 clientcore_unpack/*
+/build/

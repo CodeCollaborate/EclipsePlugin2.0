@@ -12,6 +12,7 @@ import org.osgi.framework.BundleContext;
 
 public class FSActivator implements BundleActivator {
 
+	public static final String PLUGIN_ID = "org.code.toboggan.filesystem";
 	private static BundleContext context;
 	
 	private static DocumentManager documentManager;
@@ -24,6 +25,19 @@ public class FSActivator implements BundleActivator {
 	static BundleContext getContext() {
 		return context;
 	}
+	
+	public static DocumentManager getDocumentManager() {
+		return documentManager;
+	}
+	
+	public static WarnList getWarnList() {
+		return warnList;
+	}
+	
+	public static void reset(){
+		documentManager = new DocumentManager();
+		warnList = new WarnList();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -33,8 +47,7 @@ public class FSActivator implements BundleActivator {
 		FSActivator.context = bundleContext;
 		
 		// instantiate persistent objects
-		documentManager = new DocumentManager();
-		warnList = new WarnList();
+		reset();
 		
 		registerEditorListener();
 		registerResourceListeners();
@@ -48,14 +61,6 @@ public class FSActivator implements BundleActivator {
 		FSActivator.context = null;
 		
 		deregisterResourceListeners();
-	}
-	
-	public static DocumentManager getDocumentManager() {
-		return documentManager;
-	}
-	
-	public static WarnList getWarnList() {
-		return warnList;
 	}
 	
 	private void registerResourceListeners() {

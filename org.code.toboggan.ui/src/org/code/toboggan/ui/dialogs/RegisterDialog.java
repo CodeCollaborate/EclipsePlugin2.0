@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.dialogs;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
@@ -19,6 +21,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.events.ModifyListener;
 
 public class RegisterDialog extends Dialog {
+	private Logger logger = LogManager.getLogger(this.getClass());
+	
 	private Text usernameBox;
 	private Text firstNameBox;
 	private Text lastNameBox;
@@ -44,6 +48,7 @@ public class RegisterDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+		logger.debug("UI-DEBUG: Creating new RegisterDialog");
 		Composite container = (Composite) super.createDialogArea(parent);
 
 		Label lblNewLabel = new Label(container, SWT.NONE);
@@ -135,6 +140,7 @@ public class RegisterDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
+		logger.debug("UI-DEBUG: Ok button pressed on RegisterDialog");
 		if (!passwordBox.getText().equals(confirmPasswordBox.getText()))
 			return;
 
@@ -144,11 +150,12 @@ public class RegisterDialog extends Dialog {
 		String firstName = firstNameBox.getText();
 		String lastName = lastNameBox.getText();
 
-		new Thread(APIFactory.createUserRegister(username, firstName, lastName, password, email)).start();
+		APIFactory.createUserRegister(username, firstName, lastName, password, email).runAsync();
 		super.okPressed();
 	}
 	
 	private void launchWelcome() {
+		logger.debug("UI-DEBUG: RegisterDialog launching WelcomeDialog");
 		ISecurePreferences prefStore = SecurePreferencesFactory.getDefault();
 		Shell shell = Display.getDefault().getActiveShell();
 		new WelcomeDialog(shell, prefStore).open();
@@ -156,6 +163,7 @@ public class RegisterDialog extends Dialog {
 	
 	@Override
 	protected void cancelPressed() {
+		logger.debug("UI-DEBUG: Cancel button pressed on RegisterDialog");
 		launchWelcome();
 		super.cancelPressed();
 	}

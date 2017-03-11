@@ -4,16 +4,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.WarnList;
 import org.code.toboggan.filesystem.editor.DocumentManager;
+import org.code.toboggan.filesystem.extensionpoints.FSExtensionIDs;
 import org.code.toboggan.filesystem.extensionpoints.file.IFSFileRenameExt;
 import org.code.toboggan.filesystem.extensions.FileSystemExtensionManager;
 import org.code.toboggan.network.notification.extensionpoints.file.IFileRenameNotificationExtension;
@@ -48,7 +48,20 @@ public class FSFileRename implements IFileRenameResponse, IFileRenameNotificatio
 	
 	@Override
 	public void fileRenamed(long fileID, Path newFileLocation, String newName) {
-		new Thread(APIFactory.createFilePullDiffSendChanges(fileID)).start();
+		File file = ss.getFile(fileID);
+		Project project = ss.getProject(file.getProjectID());
+		
+		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(project.getName());
+		Path projectLocation = p.getLocation().toFile().toPath();
+		IFile newFile = p.getFile(projectLocation.relativize(newFileLocation).toString());
+		
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_RENAME_ID, IFSFileRenameExt.class);
+		for (ICoreExtension ext : extensions) {
+			IFSFileRenameExt renameExt = (IFSFileRenameExt) ext;
+			renameExt.fileRenamed(fileID, newName, newFile);
+		}
+		
+		APIFactory.createFilePullDiffSendChanges(fileID).runAsync();
 	}
 	
 	@Override
@@ -84,7 +97,7 @@ public class FSFileRename implements IFileRenameResponse, IFileRenameNotificatio
 	public void fileRenameFailed(long fileID, Path oldFileLocation, Path newFileLocation, String newName) {
 		IFile iFile = ResourcesPlugin.getWorkspace().getRoot()
 				.getFileForLocation(new org.eclipse.core.runtime.Path(newFileLocation.toString()));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID, IFSFileRenameExt.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_RENAME_ID, IFSFileRenameExt.class);
 		File file = CoreActivator.getSessionStorage().getFile(fileID);
 	
 		logger.error("Failed rename, unsubscribing from project");
@@ -93,11 +106,11 @@ public class FSFileRename implements IFileRenameResponse, IFileRenameNotificatio
 			moveExt.renameUndoFailed(fileID, newName, iFile, oldFileLocation, newFileLocation);
 		}
 		
-		new Thread(APIFactory.createProjectUnsubscribe(file.getProjectID())).start();
+		APIFactory.createProjectUnsubscribe(file.getProjectID()).runAsync();
 	}
 	
 	private void moveFile(IProject p, IFile iFile, IPath newWorkspaceRelativePath, String newName, long fileID, long projectID) {
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_RENAME_ID, IFSFileRenameExt.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_RENAME_ID, IFSFileRenameExt.class);
 		
 		if (iFile.exists()) {
 			
@@ -122,7 +135,7 @@ public class FSFileRename implements IFileRenameResponse, IFileRenameNotificatio
 							IFSFileRenameExt moveExt = (IFSFileRenameExt) ext;
 							moveExt.folderCreationFailed(fileID, currentFolder.toString());
 						}
-						new Thread(APIFactory.createProjectUnsubscribe(projectID)).start();
+						APIFactory.createProjectUnsubscribe(projectID).runAsync();
 						return;
 					}
 					
@@ -145,7 +158,7 @@ public class FSFileRename implements IFileRenameResponse, IFileRenameNotificatio
 			} catch (Exception e) {
 				logger.error("Failed to move file for rename, unsubscribing", e);
 				warnList.removeFileFromWarnList(fileLocation, FileRenameNotification.class);
-				new Thread(APIFactory.createProjectUnsubscribe(projectID)).start();
+				APIFactory.createProjectUnsubscribe(projectID).runAsync();
 				for (ICoreExtension ext : extensions) {
 					IFSFileRenameExt moveExt = (IFSFileRenameExt) ext;
 					moveExt.renameFailed(fileID, newName);

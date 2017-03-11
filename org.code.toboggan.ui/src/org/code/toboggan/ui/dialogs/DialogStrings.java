@@ -3,7 +3,7 @@ package org.code.toboggan.ui.dialogs;
 import org.eclipse.osgi.util.NLS;
 
 public class DialogStrings extends NLS {
-	private static final String BUNDLE_NAME = "cceclipseplugin.ui.dialogs.dialogstrings"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.code.toboggan.ui.dialogs.dialogstrings"; //$NON-NLS-1$
 	public static String NotInitialized;
 	public static String AddNewUserDialog_AddButton;
 	public static String AddNewUserDialog_AddByUsername;

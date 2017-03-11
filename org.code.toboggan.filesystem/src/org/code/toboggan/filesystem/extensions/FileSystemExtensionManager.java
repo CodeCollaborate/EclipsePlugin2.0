@@ -1,13 +1,20 @@
 package org.code.toboggan.filesystem.extensions;
 
-import org.apache.log4j.LogManager;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
+import org.apache.logging.log4j.LogManager;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.filesystem.FSActivator;
 
 public class FileSystemExtensionManager extends AbstractExtensionManager {
 	public static FileSystemExtensionManager getInstance() {
 		String className = FileSystemExtensionManager.class.getName();
 		if (instances.get(className) == null) {
-			instances.put(className, new FileSystemExtensionManager());
+			synchronized (FileSystemExtensionManager.class) {
+				if (instances.get(className) == null) {
+					FileSystemExtensionManager em = new FileSystemExtensionManager();
+					instances.put(className, em);
+					em.initExtensions(FSActivator.PLUGIN_ID);
+				}
+			}
 		}
 		return (FileSystemExtensionManager) instances.get(className);
 	}
@@ -18,9 +25,7 @@ public class FileSystemExtensionManager extends AbstractExtensionManager {
 	}
 
 	private FileSystemExtensionManager() {
-		for (String e : this.extensions.keySet()) {
-			this.updateExtensions(e);
-		}
-		logger = LogManager.getLogger(FileSystemExtensionManager.class); // TODO: breaking logger?
+		logger = LogManager.getLogger(FileSystemExtensionManager.class);
 	}
+	
 }

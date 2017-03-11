@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.code.toboggan.filesystem.FSActivator;
 import org.code.toboggan.filesystem.WarnList;
 import org.code.toboggan.filesystem.editor.DocumentManager;
+import org.code.toboggan.filesystem.extensionpoints.FSExtensionIDs;
 import org.code.toboggan.filesystem.extensionpoints.file.IFSFilePullExt;
 import org.code.toboggan.filesystem.extensions.FileSystemExtensionManager;
 import org.code.toboggan.network.NetworkActivator;
@@ -58,6 +58,7 @@ public class FSFilePull implements IFilePullResponse {
 
 	@Override
 	public void filePulled(long fileID, byte[] fileBytes, String[] changes) {
+		// Assumption: Project.GetFiles has already been run, therefore metadata has already been inserted.
 		File file = ss.getFile(fileID);
 		Project project = ss.getProject(file.getProjectID());
 		IPath relPath = new org.eclipse.core.runtime.Path(file.getRelativePath().toString());
@@ -74,7 +75,7 @@ public class FSFilePull implements IFilePullResponse {
 		
 		createFiles(fileBytes, changes, file, newFile, fileLocation);
 		
-		Set<ICoreExtension> extensions = extMgr.getExtensions(APIExtensionIDs.FILE_PULL_ID, IFSFilePullExt.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_PULL_ID, IFSFilePullExt.class);
 		for (ICoreExtension e : extensions) {
 			IFSFilePullExt createExt = (IFSFilePullExt) e;
 			createExt.filePulled(file, newFile);
@@ -100,7 +101,7 @@ public class FSFilePull implements IFilePullResponse {
 					}
 				} catch (Exception e1) {
 					logger.error(String.format("Could not create folder for %s, unsubscribing", currentFolder.toString()), e1);
-					new Thread(APIFactory.createProjectUnsubscribe(file.getProjectID())).start();
+					APIFactory.createProjectUnsubscribe(file.getProjectID()).runAsync();
 					return false;
 				}	
 			}
@@ -119,8 +120,6 @@ public class FSFilePull implements IFilePullResponse {
 				patches.add(new Patch(stringPatch));
 			}
 			fileContents = pm.applyPatch(fileContents, patches);
-			
-			fc.putFileLocation(fileLocation, file.getProjectID(), file.getFileID());
 			
 			if (newFile.exists()) {
 				// Force close, to make sure changelistener doesn't fire.
@@ -148,7 +147,7 @@ public class FSFilePull implements IFilePullResponse {
 			}
 		} catch (Exception e) {
 			logger.error("Error pulling file, unsubscribing", e);
-			new Thread(APIFactory.createProjectUnsubscribe(file.getProjectID())).start();
+			APIFactory.createProjectUnsubscribe(file.getProjectID()).runAsync();
 			// TODO: notify UI
 			return;
 		}

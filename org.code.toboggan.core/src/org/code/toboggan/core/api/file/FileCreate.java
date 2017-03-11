@@ -3,22 +3,21 @@ package org.code.toboggan.core.api.file;
 import java.nio.file.Path;
 
 import org.code.toboggan.core.api.AbstractAPICall;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
-import org.code.toboggan.core.extension.file.IFileCreateExtension;
+import org.code.toboggan.core.extensionpoints.APIExtensionIDs;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.file.IFileCreateExtension;
 
 public class FileCreate extends AbstractAPICall {
-
 	private String name;
-	private Path workspaceRelativePath;
+	private Path absolutePath;
 	private long projectID;
 	private byte[] fileBytes;
 	
-	public FileCreate(AbstractExtensionManager manager, String name, Path workspaceRelativePath, long projectID, byte[] fileBytes) {
+	public FileCreate(AbstractExtensionManager manager, String name, Path absolutePath, long projectID, byte[] fileBytes) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_CREATE_ID, IFileCreateExtension.class);
 		this.name = name;
-		this.workspaceRelativePath = workspaceRelativePath;
+		this.absolutePath = absolutePath;
 		this.projectID = projectID;
 		this.fileBytes = fileBytes;
 	}
@@ -27,7 +26,7 @@ public class FileCreate extends AbstractAPICall {
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {
 			IFileCreateExtension pExt = (IFileCreateExtension) e;
-			pExt.fileCreated(name, workspaceRelativePath, projectID, fileBytes);
+			pExt.fileCreated(name, absolutePath, projectID, fileBytes);
 		}
 	}
 
@@ -35,8 +34,8 @@ public class FileCreate extends AbstractAPICall {
 		return name;
 	}
 
-	public Path getWorkspaceRelativePath() {
-		return workspaceRelativePath;
+	public Path getAbsolutePath() {
+		return absolutePath;
 	}
 
 	public long getProjectID() {

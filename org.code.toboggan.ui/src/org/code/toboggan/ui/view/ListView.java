@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -8,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 public class ListView extends Composite {
+	private Logger logger = LogManager.getLogger(this.getClass());
 	
 	private Composite header;
 	private HListWithVButtons listWithButtons;
@@ -29,6 +32,7 @@ public class ListView extends Composite {
 	}
 	
 	private Composite createHeader(String title) {
+		logger.debug("UI-DEBUG: Creating listview Header: " + title);
 		// we are wrapping the header's label in a composite because
 		// the SWT border for labels looks stupid (imagine a pressed button)
 		Composite header = new Composite(this, SWT.BORDER);
@@ -44,6 +48,7 @@ public class ListView extends Composite {
 	}
 	
 	private HListWithVButtons createListWithButtons() {
+		logger.debug("UI-DEBUG: Creating ListView");
 		HListWithVButtons buttonList = new HListWithVButtons(this, SWT.NONE);
 		GridData data = new GridData();
 		data.grabExcessHorizontalSpace = true;

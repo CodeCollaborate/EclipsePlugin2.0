@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.code.toboggan.network.request.extensionpoints.project.*;
 import org.code.toboggan.ui.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+
 import com.google.common.collect.BiMap;
 
 import clientcore.websocket.models.File;
 import clientcore.websocket.models.Project;
 
-public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IProjectDeleteResponse, IProjectFetchAllResponse, IProjectFetchAndSubscribeAllResponse,
+public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IProjectDeleteResponse, IProjectFetchAndSubscribeAllResponse,
 		IProjectGetFilesResponse, IProjectGetPermissionConstantsResponse, IProjectLookupResponse, IProjectRenameResponse, IProjectRevokePermissionsResponse,
 		IProjectSubscribeResponse, IProjectUnsubscribeResponse
 {
@@ -22,7 +24,9 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void unsubscribeFailed(long projectID) {
-		MessageDialog.createDialog("Error unsubscribing from project. Please retry unsubscribing.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Error unsubscribing from project. Please retry unsubscribing.").open()
+		);
 	}
 
 	@Override
@@ -32,12 +36,16 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void permissionsRevokeFailed(long projectID, String username) {
-		MessageDialog.createDialog("Error revoking permissions for " + username + ". Please verify that you have a higher permission level than them.").open();
+		Display.getDefault().asyncExec(() -> 
+			MessageDialog.createDialog("Error revoking permissions for " + username + ". Please verify that you have a higher permission level than them.").open()
+		);
 	}
 
 	@Override
 	public void projectRenameFailed(long projectID, String newName) {
-		MessageDialog.createDialog("Error renaming project to " + newName + ". Please try again.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Error renaming project to " + newName + ". Please try again.").open()
+		);
 	}
 
 	@Override
@@ -47,7 +55,9 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void projectLookupFailed(List<Long> projectIDs) {
-		MessageDialog.createDialog("Error fetching project. Please try again.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Error fetching project. Please try again.").open()
+		);
 	}
 
 	@Override
@@ -57,12 +67,16 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void getPermissionConstantsFailed() {
-		MessageDialog.createDialog("Error fetching permission data. Please reconnect to the server through the preferences.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Error fetching permission data. Please reconnect to the server through the preferences.").open()
+		);
 	}
 
 	@Override
 	public void projectGetFilesFailed(long projectID) {
-		MessageDialog.createDialog("Failed to get files from the server. Please resubscribe to the project to try again.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Failed to get files from the server. Please resubscribe to the project to try again.").open()
+		);
 	}
 
 	@Override
@@ -72,7 +86,9 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void fetchAllFailed() {
-		MessageDialog.createDialog("Failed to fetch projects from the server. Please reconnect to the server through the preferences.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Failed to fetch projects from the server. Please reconnect to the server through the preferences.").open()
+		);
 	}
 
 	@Override
@@ -82,7 +98,9 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void projectDeleteFailed(long projectID) {
-		MessageDialog.createDialog("Failed to delete project from server. Please refresh the projects list and try again.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Failed to delete project from server. Please refresh the projects list and try again.").open()
+		);
 	}
 
 	@Override
@@ -92,7 +110,9 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void projectCreationFailed(String name) {
-		MessageDialog.createDialog("Failed to create project " + name + " on server. Please try again.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Failed to create project " + name + " on server. Please try again.").open()
+		);
 	}
 	
 	@Override
@@ -107,7 +127,9 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void subscribeFailed(long projectId) {
-		MessageDialog.createDialog("Failed to subscribe to project. Please reconnect to the server in the preferences and try again.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Failed to subscribe to project. Please reconnect to the server in the preferences and try again.").open()
+		);
 	}
 
 	@Override
@@ -117,7 +139,9 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void projectFetchFailed(long projectId) {
-		MessageDialog.createDialog("Failed to fetch project from the server. Please try again.").open();
+		Display.getDefault().asyncExec(() ->
+			MessageDialog.createDialog("Failed to fetch project from the server. Please try again.").open()
+		);
 	}
 
 	@Override

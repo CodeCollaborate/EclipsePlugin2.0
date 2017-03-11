@@ -1,5 +1,7 @@
 package org.code.toboggan.network.notification.extensionpoints.project;
 
-public interface IProjectRenameNotificationExtension {
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
+
+public interface IProjectRenameNotificationExtension extends ICoreExtension {
 	public void projectRenameNotification(long projectID, String newName);
 }

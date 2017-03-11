@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.dialogs;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -15,6 +17,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import clientcore.websocket.models.Project;
 
 public class DeleteProjectDialog extends Dialog {
+	private Logger logger = LogManager.getLogger(this.getClass());
 
 	private Project project;
 	
@@ -38,6 +41,7 @@ public class DeleteProjectDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+		logger.debug("UI-DEBUG: Creating dialog for DeleteProjectDialog");
 		Composite container = (Composite) super.createDialogArea(parent);
 		
 		Label lblAreYouSure = new Label(container, SWT.CENTER);
@@ -67,8 +71,8 @@ public class DeleteProjectDialog extends Dialog {
 	
 	@Override
 	protected void okPressed() {
-//		PluginManager.getInstance().getRequestManager().deleteProject(project.getProjectID());	
-		new Thread(APIFactory.createProjectDelete(project.getProjectID())).start();
+		logger.debug("UI-DEBUG: Ok button pressed for DeleteProjectDialog");
+		APIFactory.createProjectDelete(project.getProjectID()).runAsync();
 		super.okPressed();
 	}
 

@@ -1,13 +1,16 @@
 package org.code.toboggan.core.api.user;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.AbstractAPICall;
-import org.code.toboggan.core.extension.APIExtensionIDs;
-import org.code.toboggan.core.extension.AbstractExtensionManager;
-import org.code.toboggan.core.extension.ICoreExtension;
-import org.code.toboggan.core.extension.user.IUserLoginExtension;
+import org.code.toboggan.core.extensionpoints.APIExtensionIDs;
+import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
+import org.code.toboggan.core.extensionpoints.ICoreExtension;
+import org.code.toboggan.core.extensionpoints.user.IUserLoginExtension;
 
 public class UserLogin extends AbstractAPICall {
-
+	private Logger logger = LogManager.getLogger(UserLogin.class);
+	
 	private String username;
 	private String password;
 	
@@ -19,6 +22,7 @@ public class UserLogin extends AbstractAPICall {
 
 	@Override
 	public void execute() {
+		logger.debug("User.Login API call triggered");
 		for (ICoreExtension e : this.extensions) {
 			IUserLoginExtension pExt = (IUserLoginExtension) e;
 			pExt.userLogin(username, password);

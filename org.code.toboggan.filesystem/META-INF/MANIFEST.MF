@@ -24,4 +24,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.code.toboggan.filesystem,
  org.code.toboggan.filesystem.extensionpoints.file,
  org.code.toboggan.filesystem.extensionpoints.project,
+ org.code.toboggan.filesystem.extensions,
+ org.code.toboggan.filesystem.extensions.file,
+ org.code.toboggan.filesystem.extensions.project,
  org.code.toboggan.filesystem.utils

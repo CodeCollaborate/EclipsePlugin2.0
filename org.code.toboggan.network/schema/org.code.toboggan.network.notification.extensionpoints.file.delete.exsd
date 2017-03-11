@@ -44,6 +44,21 @@
       </complexType>
    </element>
 
+   <element name="create">
+      <complexType>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.code.toboggan.network.notification.extensionpoints.file.IFileDeleteNotificationExtension"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
    <annotation>
       <appinfo>
          <meta.section type="since"/>

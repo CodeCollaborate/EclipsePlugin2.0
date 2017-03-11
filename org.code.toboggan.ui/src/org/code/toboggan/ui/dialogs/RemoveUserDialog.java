@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.dialogs;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -13,6 +15,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 
 public class RemoveUserDialog extends Dialog {
+	private Logger logger = LogManager.getLogger(this.getClass());
 
 	private String username;
 	private String projectName;
@@ -42,6 +45,7 @@ public class RemoveUserDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+		logger.debug("UI-DEBUG: Creating RemoveUserDialog");
 		Composite container = (Composite) super.createDialogArea(parent);
 
 		Label lblAreYouSure = new Label(container, SWT.WRAP | SWT.CENTER);
@@ -66,7 +70,8 @@ public class RemoveUserDialog extends Dialog {
 	
 	@Override
 	public void okPressed() {
-		new Thread(APIFactory.createRevokePermissions(projectId, username)).start();
+		logger.debug("UI-DEBUG: Ok button pressed for RemoveUserDialog");
+		APIFactory.createRevokePermissions(projectId, username).runAsync();
 		super.okPressed();
 	}
 	

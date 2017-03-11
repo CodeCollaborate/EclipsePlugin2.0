@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.dialogs;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -17,6 +19,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
 
 public class AddProjectDialog extends Dialog {
+	private Logger logger = LogManager.getLogger(this.getClass());
 
 	private IProject[] localProjects;
 	private Combo combo;
@@ -35,6 +38,7 @@ public class AddProjectDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+		logger.debug("UI-DEBUG: Creating AddProjectDialog");
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setLayout(new GridLayout(1, false));
 		
@@ -58,6 +62,7 @@ public class AddProjectDialog extends Dialog {
 	
 	@Override 
 	protected void okPressed() {
+		logger.debug("UI-DEBUG: Ok button was pressed on AddProjectDialog");
 		if (combo.getItemCount() == 0) {
 			MessageDialog.createDialog(DialogStrings.AddProjectDialog_NoProjectsErr).open();
 			return;
@@ -66,7 +71,7 @@ public class AddProjectDialog extends Dialog {
 			return;
 		}
 		IProject selectedProject = localProjects[combo.getSelectionIndex()];
-		new Thread(APIFactory.createProjectCreate(selectedProject.getName())).start();
+		APIFactory.createProjectCreate(selectedProject.getName()).runAsync();
 		super.okPressed();
 	}
 

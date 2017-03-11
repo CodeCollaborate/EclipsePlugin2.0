@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.filesystem.CCIgnore;
 import org.code.toboggan.filesystem.utils.FSUtils;
@@ -51,10 +51,9 @@ public class DirectoryListener extends AbstractDirectoryListener {
 					warnList.removeProjectFromWarnList(iProject.getName(), ProjectRenameNotification.class);
 				} else {
 					String newName = delta.getMovedToPath().lastSegment();
-					String newPath = delta.getMovedToPath().toString();
+					Path newPath = delta.getMovedToPath().makeAbsolute().toFile().toPath();
 
-					new Thread(APIFactory.createProjectRename(project.getProjectID(), newName)).start();
-					;
+					APIFactory.createProjectRename(project.getProjectID(), newName, newPath).runAsync();
 					logger.debug(
 							String.format("sent project rename request: renamed to \"%s\"; path changed to : \"%s\"",
 									newName, newPath));
@@ -132,7 +131,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 				Path currFile = documentManager.getCurrFile();
 				if (currFile != null) {
 					if (currFile.equals(fileLocation)) {
-						logger.debug("Save did not trigger diffing for active document.");
+						logger.debug("Save did not trigger diffing for active document " + currFile);
 						return;
 					}
 				}
@@ -171,7 +170,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 						//
 						// If you have an idea, please let me know - Joel
 						// (jshap70)
-						new Thread(APIFactory.createFilePullDiffSendChanges(file.getFileID())).start();
+						APIFactory.createFilePullDiffSendChanges(file.getFileID()).runAsync();
 					}
 				}
 			}
@@ -186,7 +185,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 						logger.debug("No metadata found, ignoring file");
 						return;
 					}
-					new Thread(APIFactory.createFileDelete(file.getFileID())).start();
+					APIFactory.createFileDelete(file.getFileID()).runAsync();
 					logger.debug("Sent file delete request");
 				}
 			}
@@ -235,7 +234,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 		if (warnList.isFileInWarnList(fileLocation, FileRenameNotification.class)) {
 			warnList.removeFileFromWarnList(fileLocation, FileRenameNotification.class);
 		} else {
-			new Thread(APIFactory.createFileRename(file.getFileID(), movedFromLocation, fileLocation, newName)).start();
+			APIFactory.createFileRename(file.getFileID(), movedFromLocation, fileLocation, newName).runAsync();
 			logger.debug(String.format("Sent file rename request; changing to %s", newName));
 		}
 	}
@@ -251,7 +250,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 			Path movedToLocation = FSUtils
 					.getLocationForRelativePath(delta.getMovedToPath().toFile().toPath());
 			fileMeta = ss.getFile(movedToLocation);
-			new Thread(APIFactory.createFileMove(fileMeta.getFileID(), fileLocation, movedToLocation)).start();
+			APIFactory.createFileMove(fileMeta.getFileID(), fileLocation, movedToLocation).runAsync();
 			logger.debug(String.format("Sent file move request; moving from %s to %s",
 					fileLocation.toString(), movedToLocation));
 		}
@@ -270,7 +269,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 		if (warnList.isFileInWarnList(fileLocation, FileRenameNotification.class)) {
 			warnList.removeFileFromWarnList(fileLocation, FileRenameNotification.class);
 		} else {
-			new Thread(APIFactory.createFileRename(fileMeta.getFileID(), movedFromLocation, fileLocation, newName)).start();
+			APIFactory.createFileRename(fileMeta.getFileID(), movedFromLocation, fileLocation, newName).runAsync();
 			logger.debug(String.format("Sent file rename request; changing to %s", newName));
 		}
 	}
@@ -288,7 +287,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 				return;
 			}
 
-			new Thread(APIFactory.createFileMove(fileMeta.getFileID(), movedFromLocation, fileLocation)).start();
+			APIFactory.createFileMove(fileMeta.getFileID(), movedFromLocation, fileLocation).runAsync();
 			logger.debug(String.format("Sent file move request; moving from %s to %s",
 					movedFromLocation, fileLocation));
 		}
@@ -307,8 +306,8 @@ public class DirectoryListener extends AbstractDirectoryListener {
 		try (InputStream in = f.getContents()) {
 			byte[] fileBytes = FSUtils.inputStreamToByteArray(in);
 
-			new Thread(APIFactory.createFileCreate(f.getName(), f.getLocation().toFile().toPath(), pMeta.getProjectID(),
-					fileBytes)).start();
+			APIFactory.createFileCreate(f.getName(), f.getLocation().toFile().toPath(), pMeta.getProjectID(),
+					fileBytes).runAsync();
 
 			logger.debug(String.format("Sent file create request: %s", f.getName()));
 		} catch (IOException | CoreException e) {

@@ -18,9 +18,9 @@
          id="org.code.toboggan.ui.error.response.file.changeextension"
          name="org.code.toboggan.ui.error.response.file.changeextension"
          point="org.code.toboggan.network.request.extensionpoints.file.change">
-         <change
+         <create
          	class="org.code.toboggan.ui.error.response.FileResponseErrorDisplay">
-         </change>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.file.createextension"
@@ -34,41 +34,41 @@
          id="org.code.toboggan.ui.error.response.file.deleteextension"
          name="org.code.toboggan.ui.error.response.file.deleteextension"
          point="org.code.toboggan.network.request.extensionpoints.file.delete">
-         <delete
+         <create
          	class="org.code.toboggan.ui.error.response.FileResponseErrorDisplay">
-         </delete>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.file.moveextension"
          name="org.code.toboggan.ui.error.response.file.moveextension"
          point="org.code.toboggan.network.request.extensionpoints.file.move">
-         <move
+         <create
          	class="org.code.toboggan.ui.error.response.FileResponseErrorDisplay">
-         </move>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.file.pullextension"
          name="org.code.toboggan.ui.error.response.file.pullextension"
          point="org.code.toboggan.network.request.extensionpoints.file.pull">
-         <pull
+         <create
          	class="org.code.toboggan.ui.error.response.FileResponseErrorDisplay">
-         </pull>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.file.pulldiffsendchangesextension"
          name="org.code.toboggan.ui.error.response.file.pulldiffsendchangesextension"
          point="org.code.toboggan.network.request.extensionpoints.file.pulldiffsendchanges">
-         <pulldiffsendchanges
+         <create
          	class="org.code.toboggan.ui.error.response.FileResponseErrorDisplay">
-         </pulldiffsendchanges>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.file.renameextension"
          name="org.code.toboggan.ui.error.response.file.renameextension"
          point="org.code.toboggan.network.request.extensionpoints.file.rename">
-         <rename
+         <create
          	class="org.code.toboggan.ui.error.response.FileResponseErrorDisplay">
-         </rename>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.createextension"
@@ -82,113 +82,113 @@
          id="org.code.toboggan.ui.error.response.project.deleteextension"
          name="org.code.toboggan.ui.error.response.project.deleteextension"
          point="org.code.toboggan.network.request.extensionpoints.project.delete">
-         <delete
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </delete>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.fetchsubscribeallextension"
          name="org.code.toboggan.ui.error.response.project.fetchsubscribeallextension"
          point="org.code.toboggan.network.request.extensionpoints.project.fetchsubscribeall">
-         <fetchsubscribeall
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </fetchsubscribeall>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.getfilesextension"
          name="org.code.toboggan.ui.error.response.project.getfilesextension"
          point="org.code.toboggan.network.request.extensionpoints.project.getfiles">
-         <getfiles
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </getfiles>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.getpermissionconstantsextension"
          name="org.code.toboggan.ui.error.response.project.getpermissionconstantsextension"
          point="org.code.toboggan.network.request.extensionpoints.project.getpermissionconstants">
-         <getpermissionconstants
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </getpermissionconstants>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.grantpermissionsextension"
          name="org.code.toboggan.ui.error.response.project.grantpermissionsextension"
          point="org.code.toboggan.network.request.extensionpoints.project.grantpermissions">
-         <grantpermissions
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </grantpermissions>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.lookupextension"
          name="org.code.toboggan.ui.error.response.project.lookupextension"
          point="org.code.toboggan.network.request.extensionpoints.project.lookup">
-         <lookup
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </lookup>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.renameextension"
          name="org.code.toboggan.ui.error.response.project.renameextension"
          point="org.code.toboggan.network.request.extensionpoints.project.rename">
-         <rename
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </rename>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.revokepermissionsextension"
          name="org.code.toboggan.ui.error.response.project.revokepermissionsextension"
          point="org.code.toboggan.network.request.extensionpoints.project.revokepermissions">
-         <revokepermissions
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </revokepermissions>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.subscribeextension"
          name="org.code.toboggan.ui.error.response.project.subscribeextension"
          point="org.code.toboggan.network.request.extensionpoints.project.subscribe">
-         <subscribe
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </subscribe>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.project.unsubscribeextension"
          name="org.code.toboggan.ui.error.response.project.unsubscribeextension"
          point="org.code.toboggan.network.request.extensionpoints.project.unsubscribe">
-         <unsubscribe
+         <create
          	class="org.code.toboggan.ui.error.response.ProjectResponseErrorDisplay">
-         </unsubscribe>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.user.loginextension"
          name="org.code.toboggan.ui.error.response.user.loginextension"
          point="org.code.toboggan.network.request.extensionpoints.user.login">
-         <login
+         <create
          	class="org.code.toboggan.ui.error.response.UserResponseErrorDisplay">
-         </login>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.user.lookupextension"
          name="org.code.toboggan.ui.error.response.user.loginextension"
          point="org.code.toboggan.network.request.extensionpoints.user.lookup">
-         <lookup
+         <create
          	class="org.code.toboggan.ui.error.response.UserResponseErrorDisplay">
-         </lookup>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.user.projectsextension"
          name="org.code.toboggan.ui.error.response.user.projectsextension"
          point="org.code.toboggan.network.request.extensionpoints.user.projects">
-         <projects
+         <create
          	class="org.code.toboggan.ui.error.response.UserResponseErrorDisplay">
-         </projects>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.response.user.registerextension"
          name="org.code.toboggan.ui.error.response.user.registerextension"
          point="org.code.toboggan.network.request.extensionpoints.user.register">
-         <register
+         <create
          	class="org.code.toboggan.ui.error.response.UserResponseErrorDisplay">
-         </register>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.notification.file.createextension"
@@ -202,81 +202,81 @@
          id="org.code.toboggan.ui.error.notification.file.deleteextension"
          name="org.code.toboggan.ui.error.notification.file.createextension"
          point="org.code.toboggan.network.notification.extensionpoints.file.delete">
-         <delete
+         <create
          	class="org.code.toboggan.ui.error.notification.FileNotificationErrorDisplay">
-         </delete>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.notification.file.moveextension"
          name="org.code.toboggan.ui.error.notification.file.moveextension"
          point="org.code.toboggan.network.notification.extensionpoints.file.move">
-         <move
+         <create
          	class="org.code.toboggan.ui.error.notification.FileNotificationErrorDisplay">
-         </move>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.notification.file.renameextension"
          name="org.code.toboggan.ui.error.notification.file.renameextension"
          point="org.code.toboggan.network.notification.extensionpoints.file.rename">
-         <rename
+         <create
          	class="org.code.toboggan.ui.error.notification.FileNotificationErrorDisplay">
-         </rename>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.notification.project.deleteextension"
          name="org.code.toboggan.ui.error.notification.project.deleteextension"
          point="org.code.toboggan.network.notification.extensionpoints.project.delete">
-         <delete
+         <create
          	class="org.code.toboggan.ui.error.notification.ProjectNotificationErrorDisplay">
-         </delete>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.notification.project.grantpermissionsextension"
          name="org.code.toboggan.ui.error.notification.project.grantpermissionsextension"
          point="org.code.toboggan.network.notification.extensionpoints.project.grantpermissions">
-         <grantpermissions
+         <create
          	class="org.code.toboggan.ui.error.notification.ProjectNotificationErrorDisplay">
-         </grantpermissions>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.notification.project.renameextension"
          name="org.code.toboggan.ui.error.notification.project.renameextension"
          point="org.code.toboggan.network.notification.extensionpoints.project.rename">
-         <rename
+         <create
          	class="org.code.toboggan.ui.error.notification.ProjectNotificationErrorDisplay">
-         </rename>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.notification.project.revokepermissionsextension"
          name="org.code.toboggan.ui.error.notification.project.revokepermissionsextension"
          point="org.code.toboggan.network.notification.extensionpoints.project.revokepermissions">
-         <revokepermissions
+         <create
          	class="org.code.toboggan.ui.error.notification.ProjectNotificationErrorDisplay">
-         </revokepermissions>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.filesystem.file.moveextension"
          name="org.code.toboggan.ui.error.filesystem.file.moveextension"
          point="org.code.toboggan.filesystem.file.move">
-         <move
+         <create
          	class="org.code.toboggan.ui.error.filesystem.FileFilesystemErrorDisplay">
-         </move>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.filesystem.file.pullextension"
          name="org.code.toboggan.ui.error.filesystem.file.pullextension"
          point="org.code.toboggan.filesystem.file.pull">
-         <pull
+         <create
          	class="org.code.toboggan.ui.error.filesystem.FileFilesystemErrorDisplay">
-         </pull>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.filesystem.file.renameextension"
          name="org.code.toboggan.ui.error.filesystem.file.renameextension"
          point="org.code.toboggan.filesystem.file.rename">
-         <rename
+         <create
          	class="org.code.toboggan.ui.error.filesystem.FileFilesystemErrorDisplay">
-         </rename>
+         </create>
    </extension>
    <extension
          id="org.code.toboggan.ui.error.filesystem.project.createextension"
@@ -290,9 +290,32 @@
          id="org.code.toboggan.ui.error.filesystem.project.subscribeextension"
          name="org.code.toboggan.ui.error.filesystem.project.subscribeextension"
          point="org.code.toboggan.filesystem.project.subscribe">
-         <subscribe
+         <create
          	class="org.code.toboggan.ui.error.filesystem.ProjectFilesystemErrorDisplay">
-         </subscribe>
+         </create>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.code.toboggan.ui.preferences.GeneralPreferencesPage"
+            id="cceclipseplugin.preferences"
+            name="CodeCollaborate">
+      </page>
+   </extension>
+   <extension
+         id="org.code.toboggan.ui.dialogs.ws.event"
+         name="org.code.toboggan.ui.dialogs.ws.event"
+         point="org.code.toboggan.network.ws.event">
+         <create
+         	class="org.code.toboggan.ui.dialogs.extensions.DialogWSEvent">
+         </create>
+   </extension>
+   <extension
+         id="org.code.toboggan.ui.view.ws.event"
+         name="org.code.toboggan.ui.view.ws.event"
+         point="org.code.toboggan.network.ws.event">
+         <create
+         	class="org.code.toboggan.ui.view.extensions.ControlPanelWSEvent">
+         </create>
+   </extension>
 </plugin>

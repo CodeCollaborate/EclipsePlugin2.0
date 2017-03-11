@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.dialogs;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Composite;
@@ -19,6 +21,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
  *
  */
 public class MessageDialog extends Dialog {
+	private static Logger logger = LogManager.getLogger(MessageDialog.class);
 
 	private String displayMessage;
 	private int textColor = SWT.NONE;
@@ -52,21 +55,19 @@ public class MessageDialog extends Dialog {
 	}
 	
 	public static MessageDialog createDialog(String message) {
-        final MessageDialog[] dialog = new MessageDialog[1];
-        Display.getDefault().syncExec(() -> {
-            Shell shell = Display.getDefault().getActiveShell();
-            dialog[0] =  new MessageDialog(shell, message);
-        });
-		return dialog[0];
+		logger.debug("UI-DEBUG: Building new MessageDialog");
+		
+        Shell shell = Display.getDefault().getActiveShell();
+        MessageDialog dialog =  new MessageDialog(shell, message);
+		return dialog;
 	}
-	
+
 	public static MessageDialog createDialog(String message, int textColor) {
-        final MessageDialog[] dialog = new MessageDialog[1];
-        Display.getDefault().syncExec(() -> {
-            Shell shell = Display.getDefault().getActiveShell();
-            dialog[0] = new MessageDialog(shell, message, textColor);
-        });
-        return dialog[0];
+		logger.debug("UI-DEBUG: Building new MessageDialog with different textColor");
+
+        Shell shell = Display.getDefault().getActiveShell();
+        MessageDialog dialog = new MessageDialog(shell, message, textColor);
+        return dialog;
 	}
 
 	/**
@@ -76,6 +77,7 @@ public class MessageDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+		logger.debug("UI-DEBUG: Creating MessageDialog");
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 

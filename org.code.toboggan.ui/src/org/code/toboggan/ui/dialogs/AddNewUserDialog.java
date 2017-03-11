@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.ui.UIActivator;
 import org.eclipse.jface.dialogs.Dialog;
@@ -29,6 +31,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.google.common.collect.BiMap;
 
 public class AddNewUserDialog extends Dialog {
+	private Logger logger = LogManager.getLogger(this.getClass());
+	
 	private CCombo combo;
 	private Label errorLabel;
 	private String username;
@@ -54,6 +58,8 @@ public class AddNewUserDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+		logger.debug("UI-DEBUG: Creating AddNewUserDialog");
+		
 		Composite container = (Composite) super.createDialogArea(parent);
 		Label lblAddANew = new Label(container, SWT.NONE);
 		lblAddANew.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
@@ -134,10 +140,11 @@ public class AddNewUserDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
+		logger.debug("UI-DEBUG: Ok button for AddNewUserDialog was pressed");
 		username = usernameBox.getText();
 		permission = Integer.parseInt(combo.getItem(combo.getSelectionIndex()).split(" . ")[0]);
 		if (username != null && permission != -1) {
-			new Thread(APIFactory.createProjectGrantPermissions(selectedProject.getProjectID(), username, permission)).start();
+			APIFactory.createProjectGrantPermissions(selectedProject.getProjectID(), username, permission).runAsync();
 			super.okPressed();
 		}
 	}

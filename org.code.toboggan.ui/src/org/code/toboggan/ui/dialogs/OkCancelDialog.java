@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.dialogs;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -12,21 +14,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class OkCancelDialog extends Dialog {
+	private static Logger logger = LogManager.getLogger(OkCancelDialog.class);
 
 	private String message;
 	private String okText = IDialogConstants.OK_LABEL;
 	private String cancelText = IDialogConstants.CANCEL_LABEL;
 	private boolean swapDefaults = false;
-	
+
 	protected OkCancelDialog(Shell parentShell) {
 		super(parentShell);
 	}
-	
+
 	protected OkCancelDialog(Shell parentShell, String msg) {
 		super(parentShell);
 		message = msg;
 	}
-	
+
 	protected OkCancelDialog(Shell parentShell, String msg, String okText, String cancelText, boolean swapDefaults) {
 		super(parentShell);
 		message = msg;
@@ -34,31 +37,29 @@ public class OkCancelDialog extends Dialog {
 		this.cancelText = cancelText;
 		this.swapDefaults = swapDefaults;
 	}
-	
+
 	public static OkCancelDialog createDialog(String msg) {
-        final OkCancelDialog[] dialog = new OkCancelDialog[1];
-        Display.getDefault().syncExec(() -> {
-            Shell shell = Display.getDefault().getActiveShell();
-            dialog[0] = new OkCancelDialog(shell, msg);
-        });
-        return dialog[0];
+		logger.debug("UI-DEBUG: Building new OkCancelDialog");
+		
+		Shell shell = Display.getDefault().getActiveShell();
+		OkCancelDialog dialog = new OkCancelDialog(shell, msg);
+		return dialog;
 	}
-	
+
 	public static OkCancelDialog createDialog(String msg, String okText, String cancelText, boolean swapDefaults) {
-		final OkCancelDialog[] dialog = new OkCancelDialog[1];
-        Display.getDefault().syncExec(() -> {
-            Shell shell = Display.getDefault().getActiveShell();
-            dialog[0] = new OkCancelDialog(shell, msg, okText, cancelText, swapDefaults);
-        });
-        return dialog[0];
+		logger.debug("UI-DEBUG: Building new OkCancelDialog with different ok, cancel texts");
+
+		Shell shell = Display.getDefault().getActiveShell();
+		OkCancelDialog dialog = new OkCancelDialog(shell, msg, okText, cancelText, swapDefaults);
+		return dialog;
 	}
-	
+
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		createButton(parent, IDialogConstants.OK_ID, okText, !swapDefaults);
 		createButton(parent, IDialogConstants.CANCEL_ID, cancelText, swapDefaults);
 	}
-	
+
 	/**
 	 * Create contents of the dialog.
 	 * 
@@ -66,6 +67,7 @@ public class OkCancelDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+		logger.debug("UI-DEBUG: Creating OkCancelDialog");
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 
@@ -76,10 +78,10 @@ public class OkCancelDialog extends Dialog {
 
 		return container;
 	}
-	
+
 	@Override
 	protected void configureShell(Shell shell) {
-	      super.configureShell(shell);
-	      shell.setText("CodeCollaborate");
+		super.configureShell(shell);
+		shell.setText("CodeCollaborate");
 	}
 }

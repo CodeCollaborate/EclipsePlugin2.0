@@ -1,5 +1,7 @@
 package org.code.toboggan.ui.preferences;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.code.toboggan.ui.UIActivator;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -8,6 +10,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * Class used to initialize default preference values.
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
+	private Logger logger = LogManager.getLogger(this.getClass());
 
 	/*
 	 * (non-Javadoc)

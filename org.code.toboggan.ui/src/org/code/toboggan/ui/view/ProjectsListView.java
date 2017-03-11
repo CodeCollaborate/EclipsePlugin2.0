@@ -3,6 +3,9 @@ package org.code.toboggan.ui.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.ui.UIActivator;
 import org.code.toboggan.ui.dialogs.AddProjectDialog;
 import org.code.toboggan.ui.dialogs.DeleteProjectDialog;
@@ -23,6 +26,7 @@ import clientcore.dataMgmt.SessionStorage;
 import clientcore.websocket.models.Project;
 
 public class ProjectsListView extends ListView {
+	private Logger logger = LogManager.getLogger(this.getClass());
 
 	public ProjectsListView(Composite parent, int style) {
 		super(parent, style, "Projects");
@@ -38,6 +42,7 @@ public class ProjectsListView extends ListView {
 		list.setMenu(menu);
 		menu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e) {
+				logger.debug("UI-DEBUG: MenuListener was notified that the context menu was triggered");
 				int selected = list.getSelectionIndex();
 
 				for (MenuItem item : menu.getItems()) {
@@ -75,6 +80,7 @@ public class ProjectsListView extends ListView {
 		projectListListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
+				logger.debug("UI-DEBUG: ProjectListListener was notified of a change in the sessionStorage projectList, for event " + event.toString());
 				if (event.getPropertyName() != SessionStorage.PROJECT_LIST) {
 					return;
 				}
@@ -106,6 +112,7 @@ public class ProjectsListView extends ListView {
 
 			@Override
 			public void handleEvent(Event arg0) {
+				logger.debug("UI-DEBUG: Projects list plus button pressed");
 				Shell shell = Display.getDefault().getActiveShell();
 				AddProjectDialog dialog = new AddProjectDialog(shell);
 				getShell().getDisplay().asyncExec(()-> dialog.open());
@@ -117,6 +124,7 @@ public class ProjectsListView extends ListView {
 
 			@Override
 			public void handleEvent(Event arg0) {
+				logger.debug("UI-DEBUG: Projects list minus button pressed");
 				if (list.getSelectionIndex() == -1) {
 					MessageDialog.createDialog("No project is selected.").open();
 					return;
@@ -136,7 +144,9 @@ public class ProjectsListView extends ListView {
 
 			@Override
 			public void handleEvent(Event arg0) {
-//				PluginManager.getInstance().getRequestManager().fetchProjects();
+				logger.debug("UI-DEBUG: Projects list reload button pressed");
+				
+				APIFactory.createUserProjects().runAsync();
 			}
 
 		});

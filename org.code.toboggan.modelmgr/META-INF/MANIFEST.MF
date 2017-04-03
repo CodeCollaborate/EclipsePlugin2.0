@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CCModelManager
 Bundle-SymbolicName: org.code.toboggan.modelmgr;singleton:=true
-Bundle-Version: 0.0.39
+Bundle-Version: 0.0.40
 Bundle-Activator: org.code.toboggan.modelmgr.ModelMgrActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.code.toboggan.network,

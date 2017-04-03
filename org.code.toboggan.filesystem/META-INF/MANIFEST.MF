@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CCFilesystem
 Bundle-SymbolicName: org.code.toboggan.filesystem;singleton:=true
-Bundle-Version: 0.0.39
+Bundle-Version: 0.0.40
 Bundle-Activator: org.code.toboggan.filesystem.FSActivator
 Bundle-Vendor: CodeCollaborate
 Require-Bundle: org.eclipse.core.runtime,

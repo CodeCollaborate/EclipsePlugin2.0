@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <!-- Extension Points -->
+   <extension-point id="org.code.toboggan.filesystem.file.create" name="org.code.toboggan.filesystem.file.create" schema="schema/org.code.toboggan.filesystem.file.create.exsd"/>
    <extension-point id="org.code.toboggan.filesystem.file.change" name="org.code.toboggan.filesystem.file.change" schema="schema/org.code.toboggan.filesystem.file.change.exsd"/>
    <extension-point id="org.code.toboggan.filesystem.file.delete" name="org.code.toboggan.filesystem.file.delete" schema="schema/org.code.toboggan.filesystem.file.delete.exsd"/>
    <extension-point id="org.code.toboggan.filesystem.file.move" name="org.code.toboggan.filesystem.file.move" schema="schema/org.code.toboggan.filesystem.file.move.exsd"/>
@@ -12,6 +13,14 @@
    <extension-point id="org.code.toboggan.filesystem.project.subscribe" name="org.code.toboggan.filesystem.project.subscribe" schema="schema/org.code.toboggan.filesystem.project.subscribe.exsd"/>
    
    <!-- Notifications -->
+   <extension
+         id="org.code.toboggan.filesystem.extensions.request.file.changeextension"
+         name="org.code.toboggan.filesystem.extensions.request.file.changeextension"
+         point="org.code.toboggan.network.request.extensionpoints.file.change">
+         <create
+         	class="org.code.toboggan.filesystem.extensions.file.FSFileChange">
+         </create>
+   </extension>
    <extension
          id="org.code.toboggan.filesystem.extensions.notification.file.createextension"
          name="org.code.toboggan.filesystem.extensions.notification.file.createextension"
@@ -53,7 +62,15 @@
          </create>
    </extension>
    
-   <!-- Responses -->
+   <!-- Responses -->   
+   <extension
+	     id="org.code.toboggan.filesystem.extensions.request.file.createextension"
+	     name="org.code.toboggan.filesystem.extensions.request.file.createextension"
+	     point="org.code.toboggan.network.request.extensionpoints.file.create">
+	     <create
+	     	class="org.code.toboggan.filesystem.extensions.file.FSFileCreate">
+	     </create>
+   </extension>
    <extension
          id="org.code.toboggan.filesystem.extensions.request.file.moveextension"
          name="org.code.toboggan.filesystem.extensions.request.file.moveextension"

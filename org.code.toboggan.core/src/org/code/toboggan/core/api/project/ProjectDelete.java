@@ -9,12 +9,12 @@ import org.code.toboggan.core.extensionpoints.project.IProjectDeleteExtension;
 public class ProjectDelete extends AbstractAPICall {
 
 	private long projectID;
-	
+
 	public ProjectDelete(AbstractExtensionManager manager, long projectID) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_DELETE_ID, IProjectDeleteExtension.class);
 		this.projectID = projectID;
 	}
-	
+
 	@Override
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {

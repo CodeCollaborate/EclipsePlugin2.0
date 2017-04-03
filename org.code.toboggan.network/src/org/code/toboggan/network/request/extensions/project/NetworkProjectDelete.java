@@ -17,11 +17,11 @@ import clientcore.websocket.models.requests.ProjectDeleteRequest;
 
 public class NetworkProjectDelete extends AbstractNetworkExtension implements IProjectDeleteExtension {
 	private Logger logger = LogManager.getLogger(NetworkProjectDelete.class);
-	
+
 	public NetworkProjectDelete() {
 		super();
 	}
-	
+
 	@Override
 	public void projectDeleted(long projectID) {
 		extMgr = NetworkExtensionManager.getInstance();
@@ -29,25 +29,27 @@ public class NetworkProjectDelete extends AbstractNetworkExtension implements IP
 		Request request = (new ProjectDeleteRequest(projectID)).getRequest(response -> {
 			int status = response.getStatus();
 			if (status == 200) {
-            	logger.info("Successfully deleted project " + projectID + " from server");
+				logger.info("Successfully deleted project " + projectID + " from server");
 				// Trigger extensions
-				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_DELETE_REQUEST_ID, IProjectDeleteResponse.class);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_DELETE_REQUEST_ID,
+						IProjectDeleteResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectDeleteResponse p = (IProjectDeleteResponse) e;
 					p.projectDeleted(projectID);
 				}
-				
+
 			} else {
 				handleDeletionError(projectID);
 			}
 		}, getRequestSendHandler(projectID));
-		
+
 		wsMgr.sendAuthenticatedRequest(request);
 	}
-	
+
 	private void handleDeletionError(long projectID) {
 		logger.error("Failed to delete project from server");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_DELETE_REQUEST_ID, IProjectDeleteResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_DELETE_REQUEST_ID,
+				IProjectDeleteResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectDeleteResponse p = (IProjectDeleteResponse) e;
 			p.projectDeleteFailed(projectID);

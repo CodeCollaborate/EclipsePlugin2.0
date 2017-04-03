@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CCNetwork
 Bundle-SymbolicName: org.code.toboggan.network;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 0.0.36
 Bundle-Activator: org.code.toboggan.network.NetworkActivator
 Bundle-Vendor: CodeCollaborate
 Require-Bundle: org.eclipse.core.runtime,
@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.code.toboggan.clientcore,
  org.eclipse.core.resources,
  org.apache.log4j;bundle-version="1.2.15",
- org.eclipse.equinox.registry
+ org.eclipse.equinox.registry,
+ org.eclipse.equinox.security
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.code.toboggan.network,

@@ -6,7 +6,8 @@ import org.code.toboggan.network.request.extensionpoints.project.IProjectFetchAn
 
 import clientcore.websocket.models.Project;
 
-public class ModelMgrProjectFetchAndSubscribeAll extends AbstractProjectModelMgrHandler implements IProjectFetchAndSubscribeAllResponse {
+public class ModelMgrProjectFetchAndSubscribeAll extends AbstractProjectModelMgrHandler
+		implements IProjectFetchAndSubscribeAllResponse {
 	@Override
 	public void fetchedAll(List<Project> projects) {
 		ss.setProjects(projects);
@@ -15,5 +16,5 @@ public class ModelMgrProjectFetchAndSubscribeAll extends AbstractProjectModelMgr
 	@Override
 	public void fetchAllFailed() {
 		// do nothing
-	}	
+	}
 }

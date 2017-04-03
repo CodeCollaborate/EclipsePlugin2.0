@@ -18,7 +18,7 @@ import clientcore.websocket.models.requests.ProjectRenameRequest;
 
 public class NetworkProjectRename extends AbstractNetworkExtension implements IProjectRenameExtension {
 	private Logger logger = LogManager.getLogger(NetworkProjectRename.class);
-	
+
 	public NetworkProjectRename() {
 		super();
 	}
@@ -30,7 +30,8 @@ public class NetworkProjectRename extends AbstractNetworkExtension implements IP
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.debug("Renamed project: " + projectID + " to name " + newName);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_RENAME_REQUEST_ID, IProjectRenameResponse.class);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_RENAME_REQUEST_ID,
+						IProjectRenameResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectRenameResponse p = (IProjectRenameResponse) e;
 					p.projectRenamed(projectID, newName, newProjectLocation);
@@ -41,16 +42,17 @@ public class NetworkProjectRename extends AbstractNetworkExtension implements IP
 		}, getRequestSendHandler(projectID, newName));
 		wsMgr.sendAuthenticatedRequest(renameRequest);
 	}
-	
+
 	private void handleProjectRenameFailure(long projectID, String newName) {
 		logger.error("Failed to rename project: " + projectID + " to name " + newName);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_RENAME_REQUEST_ID, IProjectRenameResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_RENAME_REQUEST_ID,
+				IProjectRenameResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectRenameResponse p = (IProjectRenameResponse) e;
 			p.projectRenameFailed(projectID, newName);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getRequestSendHandler(long projectID, String newName) {
 		return () -> handleProjectRenameFailure(projectID, newName);
 	}

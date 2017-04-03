@@ -9,9 +9,10 @@ import org.code.toboggan.core.extensionpoints.project.IProjectGetPermissionConst
 public class ProjectGetPermissionConstants extends AbstractAPICall {
 
 	public ProjectGetPermissionConstants(AbstractExtensionManager manager) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_ID, IProjectGetPermissionConstantsExtension.class);
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_ID,
+				IProjectGetPermissionConstantsExtension.class);
 	}
-	
+
 	@Override
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {

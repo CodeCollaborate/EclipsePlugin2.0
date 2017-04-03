@@ -46,7 +46,12 @@ public class DocumentChangeListener implements IDocumentListener {
 		docMgr = FSActivator.getDocumentManager();
 		ss = CoreActivator.getSessionStorage();
 		pm = NetworkActivator.getPatchManager();
+		logger.debug("New documentChangeListener created");
 	}
+
+	// Can be kept here, since this class can only ever be fired from the main thread; thus
+	// it will always be called in documentAboutToBeChange -> documentChanged
+	private String fileContents;
 
 	/**
 	 * Called when document is about to be changed.
@@ -56,11 +61,20 @@ public class DocumentChangeListener implements IDocumentListener {
 	 */
 	@Override
 	public void documentAboutToBeChanged(DocumentEvent event) {
-		logger.debug(String.format("DocumentChangeListener %s got event %s", this, event.toString()));
+		logger.debug(String.format("DocumentChangeListener [%s] got event [%s]", this, event.toString()));
 
-		List<Diff> diffs = new ArrayList<>();
 		String currDocument = event.getDocument().get();
+		this.fileContents = currDocument;
+	}
 
+	/**
+	 * No nothing, simple stub.
+	 * 
+	 * @param event
+	 *            The DocumentEvent that triggered this listener.
+	 */
+	@Override
+	public void documentChanged(DocumentEvent event) {
 		Path currFile = docMgr.getCurrFile();
 		ITextEditor editor = docMgr.getEditor(currFile);
 		IFile iFile = editor.getEditorInput().getAdapter(IFile.class);
@@ -72,6 +86,14 @@ public class DocumentChangeListener implements IDocumentListener {
 				|| file.getFilename().contains(CoreStringConstants.CONFIG_FILE_NAME)) {
 			return;
 		}
+		List<Diff> diffs = new ArrayList<>();
+
+		// If document is not in a dirty state (not a user-initiated change,
+		// trigger PullFileDiffSendChanges, and don't send this change.
+		if (!editor.getDocumentProvider().canSaveDocument(editor.getEditorInput())) {
+			APIFactory.createFilePullDiffSendChanges(file.getFileID()).runAsync();
+			return;
+		}
 
 		if (file.getFileVersion() == 0) {
 			logger.error("File version was 0");
@@ -80,7 +102,7 @@ public class DocumentChangeListener implements IDocumentListener {
 		// Create removal diffs if needed
 		if (event.getLength() > 0) {
 			Diff diff = new Diff(false, event.getOffset(),
-					currDocument.substring(event.getOffset(), event.getOffset() + event.getLength()));
+					fileContents.substring(event.getOffset(), event.getOffset() + event.getLength()));
 			diffs.add(diff);
 		}
 		// Create insertion diffs if needed
@@ -99,7 +121,7 @@ public class DocumentChangeListener implements IDocumentListener {
 					// Find first diff that matches, if any.
 					for (int j = 0; j < appliedDiffs.size(); j++) {
 						Diff appliedDiff = appliedDiffs.get(j);
-						logger.debug(String.format("isNotification: %s ?= %s; %b\n", diffs.get(i).toString(),
+						logger.debug(String.format("isNotification: [%s] ?= [%s]; %b\n", diffs.get(i).toString(),
 								appliedDiff.toString(), diffs.get(i).equals(appliedDiff)));
 						// If found matching diff, remove all previous diffs.
 						if (appliedDiff.equals(diffs.get(i))) {
@@ -111,8 +133,6 @@ public class DocumentChangeListener implements IDocumentListener {
 						}
 					}
 				}
-				// Do this in the API FileCreate.execute() call
-				// newDiffs.add(diffs.get(i).convertToLF(currDocument));
 				newDiffs.add(diffs.get(i));
 			}
 
@@ -123,37 +143,20 @@ public class DocumentChangeListener implements IDocumentListener {
 			}
 
 			// Create the patch
-			Patch patch = new Patch(file.getFileVersion(), newDiffs);
+			Patch patch = new Patch(file.getFileVersion(), newDiffs, fileContents.length());
 
-			logger.debug(String.format("DocumentManager sending change request, with patch " + patch.toString()));
-
-			APIFactory.createFileChange(file.getFileID(), new Patch[] { patch }, currDocument).runAsync();
+			logger.debug(String.format("DocumentManager sending change request, with patch [%s]", patch.toString()));
 			
-		}
-	}
+			// Must be run synchronously, since the batching queue must be updated before document modificationStamps
+			APIFactory.createFileChange(file.getFileID(), new Patch[] { patch }, fileContents).run();
 
-	/**
-	 * No nothing, simple stub.
-	 * 
-	 * @param event
-	 *            The DocumentEvent that triggered this listener.
-	 */
-	@Override
-	public void documentChanged(DocumentEvent event) {
-		Path currFile = docMgr.getCurrFile();
-		ITextEditor editor = docMgr.getEditor(currFile);
-		IFile iFile = editor.getEditorInput().getAdapter(IFile.class);
-		IProject iProj = iFile.getProject();
-		Project proj = ss.getProject(iProj.getLocation().toFile().toPath());
-		Path fileLocation = iFile.getLocation().toFile().toPath();
-		File file = ss.getFile(fileLocation);
-		if (proj == null || file == null || !ss.getSubscribedIds().contains(proj.getProjectID())
-				|| file.getFilename().contains(CoreStringConstants.CONFIG_FILE_NAME)) {
-			return;
+			logger.debug("DocumentChange-NewModificationStamp: "
+					+ ((SynchronizableDocument) event.getDocument()).getModificationStamp());
+			pm.setModificationStamp(file.getFileID(),
+					((SynchronizableDocument) event.getDocument()).getModificationStamp());
 		}
-		logger.debug("DocumentChange-NewModificationStamp: "
-				+ ((SynchronizableDocument) event.getDocument()).getModificationStamp());
-		pm.setModificationStamp(file.getFileID(),
-				((SynchronizableDocument) event.getDocument()).getModificationStamp());
+
+		// Nullify local fileContents.
+		this.fileContents = null;
 	}
 }

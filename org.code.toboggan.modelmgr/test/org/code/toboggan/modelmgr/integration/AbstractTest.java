@@ -5,15 +5,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.code.toboggan.core.CoreActivator;
+import org.code.toboggan.core.extensionpoints.APIExtensionManager;
 import org.code.toboggan.core.extensionpoints.AbstractExtensionManager;
 import org.code.toboggan.filesystem.FSActivator;
+import org.code.toboggan.filesystem.extensions.FileSystemExtensionManager;
 import org.code.toboggan.filesystem.extensions.project.FSProjectCreate;
 import org.code.toboggan.modelmgr.extensions.project.ModelMgrProjectCreate;
 import org.code.toboggan.modelmgr.extensions.project.ModelMgrProjectGetFiles;
 import org.code.toboggan.network.NetworkActivator;
 import org.code.toboggan.network.WSService;
+import org.code.toboggan.network.request.extensions.NetworkExtensionManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -25,10 +29,15 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.mockito.Mockito;
 
+import com.google.common.collect.HashBiMap;
+
+import clientcore.patching.PatchManager;
 import clientcore.websocket.WSManager;
 import clientcore.websocket.models.File;
+import clientcore.websocket.models.Permission;
 import clientcore.websocket.models.Project;
 import clientcore.websocket.models.Request;
+import clientcore.websocket.models.requests.FileCreateRequest;
 
 public abstract class AbstractTest {
 	private final String DEFAULT_TEST_USER = "testUser";
@@ -49,10 +58,11 @@ public abstract class AbstractTest {
 
 	protected void resetExtensionsAndBuildStandardMocks() {
 		// Clean any extension handlers.
-		AbstractExtensionManager.resetAll();
 		CoreActivator.reset();
 		NetworkActivator.reset();
 		FSActivator.reset();
+
+		AbstractExtensionManager.resetAll();
 
 		// Setup WebSocket service and manager
 		wsMgr = Mockito.mock(WSManager.class);
@@ -60,6 +70,15 @@ public abstract class AbstractTest {
 		Mockito.when(wsServiceMock.getWSManager()).thenReturn(wsMgr);
 		NetworkActivator.setWSService(wsServiceMock);
 		NetworkActivator.getPatchManager().setWsMgr(wsMgr);
+		PatchManager.notifyOnSend = true;
+		NetworkActivator.registerNotificationHandlers();
+
+		FileSystemExtensionManager.getInstance();
+		NetworkExtensionManager.getInstance();
+		APIExtensionManager.getInstance();
+
+		CoreActivator.getSessionStorage().removeAllPropertyChangeListeners();
+		FSActivator.deregisterResourceListeners();
 	}
 
 	private void createFolders(File file, IPath relPath, IProject p) throws CoreException {
@@ -109,6 +128,8 @@ public abstract class AbstractTest {
 			IPath fileDirectory = iFile.getProjectRelativePath().removeLastSegments(1);
 			createFolders(fData, fileDirectory, testIProject);
 
+			FSActivator.getWarnList().putFileInWarnList(iFile.getLocation().toFile().toPath(), FileCreateRequest.class);
+
 			InputStream source = new ByteArrayInputStream(fContent.getBytes());
 			iFile.create(source, IFile.FORCE, null);
 		}
@@ -129,11 +150,29 @@ public abstract class AbstractTest {
 
 	protected void registerFiles(File[] testFiles, String[] testFileContents) throws CoreException, IOException {
 		new ModelMgrProjectGetFiles().projectGetFiles(testProject.getProjectID(), testFiles);
+
+		// Add document shadows
+		for (int i = 0; i < testFiles.length; i++) {
+			File fData = testFiles[i];
+			String fContent = testFileContents[i];
+
+			FSActivator.getShadowDocumentManager().putShadow(fData.getFileID(), fContent.replace("\r\n", "\n"));
+		}
 	}
 
 	protected void deleteTestProject() throws CoreException {
 		this.testIProject = ResourcesPlugin.getWorkspace().getRoot().getProject(testProject.getName());
 		testIProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 		testIProject.delete(true, true, new NullProgressMonitor());
+	}
+
+	protected void setupUserProjectPermissions() {
+		// Setup permissions constants
+		Map<String, Integer> permissions = new HashMap<>();
+		permissions.put("read", 1);
+		permissions.put("write", 5);
+		CoreActivator.getSessionStorage().setUsername(testUser);
+		CoreActivator.getSessionStorage().setPermissionConstants(HashBiMap.create(permissions));
+		testProject.getPermissions().put(testUser, new Permission(testUser, permissions.get("write"), testUser, "NOW"));
 	}
 }

@@ -3,10 +3,9 @@ package org.code.toboggan.network.utils;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.apache.commons.io.FilenameUtils;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.core.resources.ResourcesPlugin;
 
 public class NetworkUtils {
 	private static Logger logger = LogManager.getLogger(NetworkUtils.class);
@@ -17,21 +16,24 @@ public class NetworkUtils {
 	 * string format.
 	 * 
 	 * @param projectLocation
-	 * 		The absolute path of the project root
+	 *            The absolute path of the project root
 	 * @param fileLocation
-	 * 		The absolute path of the file
-	 * @return
-	 * 		The string of the relativized path with no filename
+	 *            The absolute path of the file
+	 * @return The string of the relativized path with no filename
 	 */
 	public static String toStringRelativePath(Path projectLocation, Path fileLocation) {
 		Path projectRelativePath = projectLocation.relativize(fileLocation);
-		String stringProjectRelative = FilenameUtils.getPath(projectRelativePath.toString());
+		if (projectRelativePath.getParent() == null) {
+			return "";
+		}
+		String stringProjectRelative = projectRelativePath.getParent().normalize().toString().replace('\\', '/');
 		logger.debug("Project relativized path: " + stringProjectRelative);
 		return stringProjectRelative;
 	}
-	
+
 	/**
 	 * Turns a relative path and a filename into an absolute path.
+	 * 
 	 * @param relativePath
 	 * @param filename
 	 * @return The Path object of the absolute path.

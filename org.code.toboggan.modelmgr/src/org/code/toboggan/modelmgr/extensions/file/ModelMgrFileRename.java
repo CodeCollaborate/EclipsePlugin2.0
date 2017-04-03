@@ -10,13 +10,12 @@ import clientcore.websocket.models.File;
 public class ModelMgrFileRename extends AbstractFileModelMgrHandler implements IFSFileRenameExt {
 
 	@Override
-	public void fileRenamed(long fileID, String newName, IFile iFile) {
+	public void fileRenamed(long fileID, String newName, Path fileLocation) {
 		File file = ss.getFile(fileID);
 		long projectID = file.getProjectID();
-		Path newFileLocation = iFile.getLocation().toFile().toPath();
-		fc.renameFile(fileID, projectID, newName, newFileLocation);
+		fc.moveFile(fileID, projectID, fileLocation, file.getRelativePath());
 	}
-	
+
 	@Override
 	public void renameUndone(long fileID, String undoneName, IFile iFile, Path originalFileLocation,
 			Path undoneFileLocation) {

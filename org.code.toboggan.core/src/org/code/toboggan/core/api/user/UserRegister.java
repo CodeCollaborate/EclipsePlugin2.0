@@ -13,9 +13,9 @@ public class UserRegister extends AbstractAPICall {
 	private String lastName;
 	private String email;
 	private String password;
-	
 
-	public UserRegister(AbstractExtensionManager manager, String username, String firstName, String lastName, String email, String password) {
+	public UserRegister(AbstractExtensionManager manager, String username, String firstName, String lastName,
+			String email, String password) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.USER_REGISTER_ID, IUserRegisterExtension.class);
 		this.username = username;
 		this.firstName = firstName;
@@ -23,7 +23,6 @@ public class UserRegister extends AbstractAPICall {
 		this.email = email;
 		this.password = password;
 	}
-
 
 	@Override
 	public void execute() {

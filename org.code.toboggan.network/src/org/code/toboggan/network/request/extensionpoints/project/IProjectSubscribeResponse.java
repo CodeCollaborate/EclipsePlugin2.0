@@ -8,5 +8,6 @@ import clientcore.websocket.models.File;
 
 public interface IProjectSubscribeResponse extends ICoreExtension {
 	public void subscribed(long projectID, List<File> files);
+
 	public void subscribeFailed(long projectID);
 }

@@ -8,5 +8,6 @@ import clientcore.websocket.models.Project;
 
 public interface IUserProjectsResponse extends ICoreExtension {
 	public void projectsRetrieved(List<Project> projects);
+
 	public void userProjectsFailed();
 }

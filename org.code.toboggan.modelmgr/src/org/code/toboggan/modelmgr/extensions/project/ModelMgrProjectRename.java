@@ -8,17 +8,17 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 
 import clientcore.websocket.models.File;
-import clientcore.websocket.models.Project;
 
-public class ModelMgrProjectRename extends AbstractProjectModelMgrHandler implements IProjectRenameResponse, IFSProjectRenameExt {
+public class ModelMgrProjectRename extends AbstractProjectModelMgrHandler
+		implements IProjectRenameResponse, IFSProjectRenameExt {
 
 	@Override
 	public void projectRenamed(long projectID, String newName, Path newProjectLocation) {
 		pc.renameProject(projectID, newName, newProjectLocation);
-		
-		Project p = ss.getProject(projectID);
-		for(File f : ss.getProject(projectID).getFiles()){
-			p.changeFilePath(f.getFileID(), newProjectLocation.resolve(f.getRelativePath().resolve(f.getFilename())));
+
+		for (File f : ss.getProject(projectID).getFiles()) {
+			ss.setAbsoluteFilePath(newProjectLocation.resolve(f.getRelativePath().resolve(f.getFilename())), projectID,
+					f.getFileID());
 		}
 	}
 
@@ -32,6 +32,16 @@ public class ModelMgrProjectRename extends AbstractProjectModelMgrHandler implem
 		IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(newName);
 		Path newProjectLocation = iProject.getLocation().toFile().toPath();
 		pc.renameProject(projectID, newName, newProjectLocation);
+
+		for (File f : ss.getProject(projectID).getFiles()) {
+			ss.setAbsoluteFilePath(newProjectLocation.resolve(f.getRelativePath().resolve(f.getFilename())), projectID,
+					f.getFileID());
+		}
 	}
-	
+
+	@Override
+	public void projectRenamedFailed(long projectID) {
+		// Do nothing
+	}
+
 }

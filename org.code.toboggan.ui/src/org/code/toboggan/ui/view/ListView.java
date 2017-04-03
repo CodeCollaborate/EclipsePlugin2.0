@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Label;
 
 public class ListView extends Composite {
 	private Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	private Composite header;
 	private HListWithVButtons listWithButtons;
 
@@ -30,7 +30,7 @@ public class ListView extends Composite {
 		this.header = this.createHeader(header);
 		this.listWithButtons = this.createListWithButtons();
 	}
-	
+
 	private Composite createHeader(String title) {
 		logger.debug("UI-DEBUG: Creating listview Header: " + title);
 		// we are wrapping the header's label in a composite because
@@ -46,7 +46,7 @@ public class ListView extends Composite {
 		headerLabel.setText(title);
 		return header;
 	}
-	
+
 	private HListWithVButtons createListWithButtons() {
 		logger.debug("UI-DEBUG: Creating ListView");
 		HListWithVButtons buttonList = new HListWithVButtons(this, SWT.NONE);

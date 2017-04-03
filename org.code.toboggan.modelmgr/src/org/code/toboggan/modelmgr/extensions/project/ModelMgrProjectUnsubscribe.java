@@ -13,5 +13,5 @@ public class ModelMgrProjectUnsubscribe extends AbstractProjectModelMgrHandler i
 	public void unsubscribeFailed(long projectID) {
 		// Do nothing
 	}
-	
+
 }

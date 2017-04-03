@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class ListViewsParent extends Composite {
 	private Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	private ProjectsListView projectListView;
 	private UsersListView userListView;
 
@@ -18,14 +18,14 @@ public class ListViewsParent extends Composite {
 		super(parent, style);
 		this.initialize();
 	}
-	
+
 	private void initialize() {
 		FormLayout formLayout = new FormLayout();
 		this.setLayout(formLayout);
 		this.projectListView = this.createProjectsList();
 		this.userListView = this.createUsersList(this.projectListView);
 	}
-	
+
 	private ProjectsListView createProjectsList() {
 		logger.debug("UI-DEBUG: Creating Projects list");
 		ProjectsListView listView = new ProjectsListView(this, SWT.BORDER);
@@ -37,7 +37,7 @@ public class ListViewsParent extends Composite {
 		listView.setLayoutData(data);
 		return listView;
 	}
-	
+
 	private UsersListView createUsersList(ProjectsListView projectsListView) {
 		logger.debug("UI-DEBUG: Creating Users List");
 		UsersListView listView = new UsersListView(this, SWT.BORDER, projectListView);
@@ -49,11 +49,11 @@ public class ListViewsParent extends Composite {
 		listView.setLayoutData(data);
 		return listView;
 	}
-	
+
 	public ProjectsListView getProjectListView() {
 		return projectListView;
 	}
-	
+
 	public UsersListView getUserListView() {
 		return userListView;
 	}

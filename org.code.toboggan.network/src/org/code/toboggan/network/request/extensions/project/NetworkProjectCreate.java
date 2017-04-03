@@ -22,11 +22,12 @@ import clientcore.websocket.models.responses.ProjectLookupResponse;
 
 /**
  * Extends the ProjectCreate API call to create a project on the server.
+ * 
  * @author fahslaj
  */
 public class NetworkProjectCreate extends AbstractNetworkExtension implements IProjectCreateExtension {
 	private Logger logger = LogManager.getLogger(NetworkProjectCreate.class);
-	
+
 	public NetworkProjectCreate() {
 		super();
 	}
@@ -37,12 +38,13 @@ public class NetworkProjectCreate extends AbstractNetworkExtension implements IP
 		// Make project create request
 		Request createRequest = (new ProjectCreateRequest(name)).getRequest(createResponse -> {
 			int createStatus = createResponse.getStatus();
-			
+
 			if (createStatus == 200) {
 				long projectId = ((ProjectCreateResponse) createResponse.getData()).projectID;
 				logger.info("Successfully created project: " + projectId);
-				
-				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_CREATE_REQUEST_ID, IProjectCreateResponse.class);
+
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_CREATE_REQUEST_ID,
+						IProjectCreateResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectCreateResponse p = (IProjectCreateResponse) e;
 					p.projectCreated(projectId);
@@ -50,21 +52,21 @@ public class NetworkProjectCreate extends AbstractNetworkExtension implements IP
 				// Make subscribe request
 				Request subscribeRequest = (new ProjectSubscribeRequest(projectId)).getRequest(subscribeResponse -> {
 					int subscribeStatus = subscribeResponse.getStatus();
-					
+
 					if (subscribeStatus == 200) {
 						logger.info("Successfullly subscribed to project: " + projectId);
-						
+
 						for (ICoreExtension e : extensions) {
 							IProjectCreateResponse p = (IProjectCreateResponse) e;
 							p.subscribed(projectId);
 						}
 						// Make lookup request
-						Long[] ids = {projectId};
+						Long[] ids = { projectId };
 						Request lookupRequest = (new ProjectLookupRequest(ids)).getRequest(lookupResponse -> {
 							int lookupStatus = lookupResponse.getStatus();
 							if (lookupStatus == 200) {
 								logger.info("Successfully fetched project " + projectId + " from server");
-								// Trigger extensions 
+								// Trigger extensions
 								Project project = ((ProjectLookupResponse) lookupResponse.getData()).projects[0];
 								for (ICoreExtension e : extensions) {
 									IProjectCreateResponse p = (IProjectCreateResponse) e;
@@ -86,42 +88,45 @@ public class NetworkProjectCreate extends AbstractNetworkExtension implements IP
 		}, getCreateSendHandler(name));
 		wsMgr.sendAuthenticatedRequest(createRequest);
 	}
-	
+
 	private void handleCreateError(String name) {
 		logger.error("Failed to create project: " + name);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_CREATE_REQUEST_ID, IProjectCreateResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_CREATE_REQUEST_ID,
+				IProjectCreateResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectCreateResponse p = (IProjectCreateResponse) e;
 			p.projectCreationFailed(name);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getCreateSendHandler(String name) {
 		return () -> handleCreateError(name);
 	}
-	
+
 	private void handleSubscribeError(long id) {
 		logger.error("Failed to subscribe to project: " + id);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_CREATE_REQUEST_ID, IProjectCreateResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_CREATE_REQUEST_ID,
+				IProjectCreateResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectCreateResponse p = (IProjectCreateResponse) e;
 			p.subscribeFailed(id);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getSubscribeSendHandler(long projectId) {
 		return () -> handleSubscribeError(projectId);
 	}
-	
+
 	private void handleLookupError(long id) {
 		logger.error("Failed to lookup project: " + id);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_CREATE_REQUEST_ID, IProjectCreateResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_CREATE_REQUEST_ID,
+				IProjectCreateResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectCreateResponse p = (IProjectCreateResponse) e;
 			p.projectFetchFailed(id);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getLookupSendHandler(long id) {
 		return () -> handleLookupError(id);
 	}

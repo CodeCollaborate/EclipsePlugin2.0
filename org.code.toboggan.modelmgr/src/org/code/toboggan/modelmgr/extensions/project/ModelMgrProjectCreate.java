@@ -11,6 +11,7 @@ public class ModelMgrProjectCreate extends AbstractProjectModelMgrHandler implem
 	public void projectCreated(Project project, IProject iProject) {
 		pc.createProject(project);
 		pc.putProjectLocation(iProject.getLocation().toFile().toPath(), project.getProjectID());
+		ss.setSubscribed(project.getProjectID());
 	}
 
 }

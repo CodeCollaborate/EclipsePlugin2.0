@@ -3,7 +3,17 @@ package org.code.toboggan.ui.error.response;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.code.toboggan.network.request.extensionpoints.project.*;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectCreateResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectDeleteResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectFetchAndSubscribeAllResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectGetFilesResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectGetPermissionConstantsResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectGrantPermissionsResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectLookupResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectRenameResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectRevokePermissionsResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectSubscribeResponse;
+import org.code.toboggan.network.request.extensionpoints.project.IProjectUnsubscribeResponse;
 import org.code.toboggan.ui.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
@@ -12,10 +22,10 @@ import com.google.common.collect.BiMap;
 import clientcore.websocket.models.File;
 import clientcore.websocket.models.Project;
 
-public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IProjectDeleteResponse, IProjectFetchAndSubscribeAllResponse,
-		IProjectGetFilesResponse, IProjectGetPermissionConstantsResponse, IProjectLookupResponse, IProjectRenameResponse, IProjectRevokePermissionsResponse,
-		IProjectSubscribeResponse, IProjectUnsubscribeResponse
-{
+public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IProjectDeleteResponse,
+		IProjectFetchAndSubscribeAllResponse, IProjectGetFilesResponse, IProjectGetPermissionConstantsResponse,
+		IProjectLookupResponse, IProjectRenameResponse, IProjectRevokePermissionsResponse,
+		IProjectGrantPermissionsResponse, IProjectSubscribeResponse, IProjectUnsubscribeResponse {
 
 	@Override
 	public void unsubscribed(long projectID) {
@@ -24,9 +34,8 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void unsubscribeFailed(long projectID) {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Error unsubscribing from project. Please retry unsubscribing.").open()
-		);
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Error unsubscribing from project. Please retry unsubscribing.").open());
 	}
 
 	@Override
@@ -36,16 +45,14 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void permissionsRevokeFailed(long projectID, String username) {
-		Display.getDefault().asyncExec(() -> 
-			MessageDialog.createDialog("Error revoking permissions for " + username + ". Please verify that you have a higher permission level than them.").open()
-		);
+		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Error revoking permissions for " + username
+				+ ". Please verify that you have a higher permission level than them.").open());
 	}
 
 	@Override
 	public void projectRenameFailed(long projectID, String newName) {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Error renaming project to " + newName + ". Please try again.").open()
-		);
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Error renaming project to " + newName + ". Please try again.").open());
 	}
 
 	@Override
@@ -55,28 +62,31 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void projectLookupFailed(List<Long> projectIDs) {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Error fetching project. Please try again.").open()
-		);
+		Display.getDefault()
+				.asyncExec(() -> MessageDialog.createDialog("Error fetching project. Please try again.").open());
 	}
 
 	@Override
-	public void getPermissionConstants(BiMap<String, Byte> permConstants) {
+	public void getPermissionConstants(BiMap<String, Integer> permConstants) {
 		// Do nothing
 	}
 
 	@Override
 	public void getPermissionConstantsFailed() {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Error fetching permission data. Please reconnect to the server through the preferences.").open()
-		);
+		Display.getDefault()
+				.asyncExec(() -> MessageDialog
+						.createDialog(
+								"Error fetching permission data. Please reconnect to the server through the preferences.")
+						.open());
 	}
 
 	@Override
 	public void projectGetFilesFailed(long projectID) {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Failed to get files from the server. Please resubscribe to the project to try again.").open()
-		);
+		Display.getDefault()
+				.asyncExec(() -> MessageDialog
+						.createDialog(
+								"Failed to get files from the server. Please resubscribe to the project to try again.")
+						.open());
 	}
 
 	@Override
@@ -86,9 +96,11 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void fetchAllFailed() {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Failed to fetch projects from the server. Please reconnect to the server through the preferences.").open()
-		);
+		Display.getDefault()
+				.asyncExec(() -> MessageDialog
+						.createDialog(
+								"Failed to fetch projects from the server. Please reconnect to the server through the preferences.")
+						.open());
 	}
 
 	@Override
@@ -98,9 +110,11 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void projectDeleteFailed(long projectID) {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Failed to delete project from server. Please refresh the projects list and try again.").open()
-		);
+		Display.getDefault()
+				.asyncExec(() -> MessageDialog
+						.createDialog(
+								"Failed to delete project from server. Please refresh the projects list and try again.")
+						.open());
 	}
 
 	@Override
@@ -110,16 +124,15 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void projectCreationFailed(String name) {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Failed to create project " + name + " on server. Please try again.").open()
-		);
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Failed to create project " + name + " on server. Please try again.").open());
 	}
-	
+
 	@Override
 	public void subscribed(long projectId) {
 		// Do nothing
 	}
-	
+
 	@Override
 	public void subscribed(long projectID, List<File> files) {
 		// Do nothing
@@ -127,9 +140,11 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void subscribeFailed(long projectId) {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Failed to subscribe to project. Please reconnect to the server in the preferences and try again.").open()
-		);
+		Display.getDefault()
+				.asyncExec(() -> MessageDialog
+						.createDialog(
+								"Failed to subscribe to project. Please reconnect to the server in the preferences and try again.")
+						.open());
 	}
 
 	@Override
@@ -139,18 +154,29 @@ public class ProjectResponseErrorDisplay implements IProjectCreateResponse, IPro
 
 	@Override
 	public void projectFetchFailed(long projectId) {
-		Display.getDefault().asyncExec(() ->
-			MessageDialog.createDialog("Failed to fetch project from the server. Please try again.").open()
-		);
+		Display.getDefault().asyncExec(
+				() -> MessageDialog.createDialog("Failed to fetch project from the server. Please try again.").open());
 	}
 
 	@Override
 	public void projectRenamed(long projectID, String newName, Path newProjectLocation) {
-		// Do nothing		
+		// Do nothing
 	}
 
 	@Override
 	public void projectGetFiles(long projectID, File[] files) {
 		// Do nothing
+	}
+
+	@Override
+	public void permissionGranted(long projectID, String grantUsername, int permissionLevel) {
+		// Do nothing
+	}
+
+	@Override
+	public void permissionGrantFailed(long projectID, String grantUsername, int permissionLevel) {
+		Display.getDefault().asyncExec(() -> MessageDialog.createDialog(
+				"Error granting permissions to " + grantUsername + ". Please verify that the username is correct.")
+				.open());
 	}
 }

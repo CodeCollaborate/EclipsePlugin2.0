@@ -19,21 +19,22 @@ import clientcore.websocket.models.responses.UserLookupResponse;
 
 public class NetworkUserLookup extends AbstractNetworkExtension implements IUserLookupExtension {
 	private Logger logger = LogManager.getLogger(NetworkUserLookup.class);
-	
+
 	public NetworkUserLookup() {
 		super();
 	}
-	
+
 	@Override
 	public void userLookup(String username) {
 		extMgr = NetworkExtensionManager.getInstance();
-		String[] usernames = {username};
+		String[] usernames = { username };
 		Request lookupRequest = (new UserLookupRequest(usernames)).getRequest(response -> {
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.info("Successfully looked up user " + username);
 				User user = ((UserLookupResponse) response.getData()).users[0];
-				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.USER_LOOKUP_REQUEST_ID, IUserLookupResponse.class);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.USER_LOOKUP_REQUEST_ID,
+						IUserLookupResponse.class);
 				for (ICoreExtension e : extensions) {
 					IUserLookupResponse p = (IUserLookupResponse) e;
 					p.userFound(user);
@@ -47,13 +48,14 @@ public class NetworkUserLookup extends AbstractNetworkExtension implements IUser
 
 	private void handleLookupError(String username) {
 		logger.error("Error looking up user " + username);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.USER_LOOKUP_REQUEST_ID, IUserLookupResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.USER_LOOKUP_REQUEST_ID,
+				IUserLookupResponse.class);
 		for (ICoreExtension e : extensions) {
 			IUserLookupResponse p = (IUserLookupResponse) e;
 			p.userLookupFailed(username);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getLookupSendHandler(String username) {
 		return () -> handleLookupError(username);
 	}

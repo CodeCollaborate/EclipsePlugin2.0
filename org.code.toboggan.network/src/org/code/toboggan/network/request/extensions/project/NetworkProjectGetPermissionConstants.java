@@ -19,9 +19,10 @@ import clientcore.websocket.models.Request;
 import clientcore.websocket.models.requests.ProjectGetPermissionConstantsRequest;
 import clientcore.websocket.models.responses.ProjectGetPermissionConstantsResponse;
 
-public class NetworkProjectGetPermissionConstants extends AbstractNetworkExtension implements IProjectGetPermissionConstantsExtension {
+public class NetworkProjectGetPermissionConstants extends AbstractNetworkExtension
+		implements IProjectGetPermissionConstantsExtension {
 	private Logger logger = LogManager.getLogger(NetworkProjectGetPermissionConstants.class);
-	
+
 	public NetworkProjectGetPermissionConstants() {
 		super();
 	}
@@ -30,26 +31,30 @@ public class NetworkProjectGetPermissionConstants extends AbstractNetworkExtensi
 	public void getPermissionConstants() {
 		extMgr = NetworkExtensionManager.getInstance();
 		Request getPermConstants = new ProjectGetPermissionConstantsRequest().getRequest(response -> {
-            int status = response.getStatus();
-            if (status == 200) {
-            	logger.info("Successfully fetched permission constants");
-                BiMap<String, Byte> permConstants =
-                		HashBiMap.create((((ProjectGetPermissionConstantsResponse) response.getData()).constants));
-                Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_REQUEST_ID, IProjectGetPermissionConstantsResponse.class);
-        		for (ICoreExtension e : extensions) {
-        			IProjectGetPermissionConstantsResponse p = (IProjectGetPermissionConstantsResponse) e;
-        			p.getPermissionConstants(permConstants);
-        		}
-            } else {
-                handleGetPermissionConstantsError();
-            }
-        }, getRequestSendHandler());
-        this.wsMgr.sendAuthenticatedRequest(getPermConstants);
+			int status = response.getStatus();
+			if (status == 200) {
+				logger.info("Successfully fetched permission constants");
+				BiMap<String, Integer> permConstants = HashBiMap
+						.create((((ProjectGetPermissionConstantsResponse) response.getData()).constants));
+				Set<ICoreExtension> extensions = extMgr.getExtensions(
+						NetworkExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_REQUEST_ID,
+						IProjectGetPermissionConstantsResponse.class);
+				for (ICoreExtension e : extensions) {
+					IProjectGetPermissionConstantsResponse p = (IProjectGetPermissionConstantsResponse) e;
+					p.getPermissionConstants(permConstants);
+				}
+			} else {
+				handleGetPermissionConstantsError();
+			}
+		}, getRequestSendHandler());
+		this.wsMgr.sendAuthenticatedRequest(getPermConstants);
 	}
-	
+
 	private void handleGetPermissionConstantsError() {
 		logger.error("Failed to get permission constants from server");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_REQUEST_ID, IProjectGetPermissionConstantsResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(
+				NetworkExtensionIDs.PROJECT_GET_PERMISSIONS_CONST_REQUEST_ID,
+				IProjectGetPermissionConstantsResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectGetPermissionConstantsResponse p = (IProjectGetPermissionConstantsResponse) e;
 			p.getPermissionConstantsFailed();
@@ -61,5 +66,5 @@ public class NetworkProjectGetPermissionConstants extends AbstractNetworkExtensi
 			handleGetPermissionConstantsError();
 		};
 	}
-	
+
 }

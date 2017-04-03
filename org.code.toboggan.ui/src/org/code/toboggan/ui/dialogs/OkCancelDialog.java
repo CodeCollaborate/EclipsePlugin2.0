@@ -40,7 +40,7 @@ public class OkCancelDialog extends Dialog {
 
 	public static OkCancelDialog createDialog(String msg) {
 		logger.debug("UI-DEBUG: Building new OkCancelDialog");
-		
+
 		Shell shell = Display.getDefault().getActiveShell();
 		OkCancelDialog dialog = new OkCancelDialog(shell, msg);
 		return dialog;

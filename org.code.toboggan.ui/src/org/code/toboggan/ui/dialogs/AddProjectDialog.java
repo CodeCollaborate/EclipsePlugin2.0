@@ -7,25 +7,25 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
-
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Shell;
 
 public class AddProjectDialog extends Dialog {
 	private Logger logger = LogManager.getLogger(this.getClass());
 
 	private IProject[] localProjects;
-	private Combo combo;
-	
+	private CCombo combo;
+
 	/**
 	 * Create the dialog.
+	 * 
 	 * @param parentShell
 	 */
 	public AddProjectDialog(Shell parentShell) {
@@ -34,6 +34,7 @@ public class AddProjectDialog extends Dialog {
 
 	/**
 	 * Create contents of the dialog.
+	 * 
 	 * @param parent
 	 */
 	@Override
@@ -41,26 +42,28 @@ public class AddProjectDialog extends Dialog {
 		logger.debug("UI-DEBUG: Creating AddProjectDialog");
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setLayout(new GridLayout(1, false));
-		
+
 		Label lblProjectsArePulled = new Label(container, SWT.WRAP | SWT.CENTER);
 		GridData gd_lblProjectsArePulled = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		lblProjectsArePulled.setLayoutData(gd_lblProjectsArePulled);
 		lblProjectsArePulled.setText(DialogStrings.AddProjectDialog_Label1);
-		
-		combo = new Combo(container, SWT.NONE);
+
+		combo = new CCombo(container, SWT.BORDER);
 		GridData gd_combo = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		combo.setLayoutData(gd_combo);
-		
+		combo.setEditable(false);
+		combo.setText(DialogStrings.AddProjectDialog_AddProjectBox);
+
 		localProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		
+
 		for (IProject p : localProjects) {
 			combo.add(p.getName());
 		}
 
 		return container;
 	}
-	
-	@Override 
+
+	@Override
 	protected void okPressed() {
 		logger.debug("UI-DEBUG: Ok button was pressed on AddProjectDialog");
 		if (combo.getItemCount() == 0) {
@@ -77,6 +80,7 @@ public class AddProjectDialog extends Dialog {
 
 	/**
 	 * Create contents of the button bar.
+	 * 
 	 * @param parent
 	 */
 	@Override
@@ -85,11 +89,11 @@ public class AddProjectDialog extends Dialog {
 		button.setText(DialogStrings.AddProjectDialog_AddButton);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
-	
+
 	@Override
 	protected void configureShell(Shell shell) {
-	      super.configureShell(shell);
-	      shell.setText(DialogStrings.AddProjectDialog_WindowTitle);
+		super.configureShell(shell);
+		shell.setText(DialogStrings.AddProjectDialog_WindowTitle);
 	}
 
 }

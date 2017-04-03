@@ -6,9 +6,9 @@ import clientcore.dataMgmt.FileController;
 import clientcore.dataMgmt.SessionStorage;
 
 public abstract class AbstractFileModelMgrHandler {
-	protected SessionStorage ss;
-	protected FileController fc;
-	
+	protected final SessionStorage ss;
+	protected final FileController fc;
+
 	public AbstractFileModelMgrHandler() {
 		this.ss = CoreActivator.getSessionStorage();
 		this.fc = new FileController(ss);

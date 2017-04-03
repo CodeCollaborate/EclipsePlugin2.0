@@ -22,11 +22,11 @@ import clientcore.websocket.models.responses.UserProjectsResponse;
 
 public class NetworkUserProjects extends AbstractNetworkExtension implements IUserProjectsExtension {
 	private Logger logger = LogManager.getLogger(NetworkUserProjects.class);
-	
+
 	public NetworkUserProjects() {
 		super();
 	}
-	
+
 	@Override
 	public void userProjects() {
 		extMgr = NetworkExtensionManager.getInstance();
@@ -34,10 +34,10 @@ public class NetworkUserProjects extends AbstractNetworkExtension implements IUs
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.info("Successfully fetched projects");
-				List<Project> projects = Collections.unmodifiableList(
-						Arrays.asList(((UserProjectsResponse) response.getData()).projects)
-						);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.USER_PROJECTS_REQUEST_ID, IUserProjectsResponse.class);
+				List<Project> projects = Collections
+						.unmodifiableList(Arrays.asList(((UserProjectsResponse) response.getData()).projects));
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.USER_PROJECTS_REQUEST_ID,
+						IUserProjectsResponse.class);
 				for (ICoreExtension e : extensions) {
 					IUserProjectsResponse p = (IUserProjectsResponse) e;
 					p.projectsRetrieved(projects);
@@ -48,16 +48,17 @@ public class NetworkUserProjects extends AbstractNetworkExtension implements IUs
 		}, getSendRequestHandler());
 		wsMgr.sendAuthenticatedRequest(projectsRequest);
 	}
-	
+
 	private void handleFetchError() {
 		logger.error("Error fetching projects for user");
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.USER_PROJECTS_REQUEST_ID, IUserProjectsResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.USER_PROJECTS_REQUEST_ID,
+				IUserProjectsResponse.class);
 		for (ICoreExtension e : extensions) {
 			IUserProjectsResponse p = (IUserProjectsResponse) e;
 			p.userProjectsFailed();
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getSendRequestHandler() {
 		return () -> handleFetchError();
 	}

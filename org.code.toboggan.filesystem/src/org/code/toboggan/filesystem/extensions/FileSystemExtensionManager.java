@@ -8,7 +8,7 @@ public class FileSystemExtensionManager extends AbstractExtensionManager {
 	public static FileSystemExtensionManager getInstance() {
 		String className = FileSystemExtensionManager.class.getName();
 		if (instances.get(className) == null) {
-			synchronized (FileSystemExtensionManager.class) {
+			synchronized (instances) {
 				if (instances.get(className) == null) {
 					FileSystemExtensionManager em = new FileSystemExtensionManager();
 					instances.put(className, em);
@@ -18,14 +18,16 @@ public class FileSystemExtensionManager extends AbstractExtensionManager {
 		}
 		return (FileSystemExtensionManager) instances.get(className);
 	}
-	
+
 	@Override
 	public void reset() {
-		instances.put(FileSystemExtensionManager.class.getName(), null);
+		synchronized (instances) {
+			instances.put(FileSystemExtensionManager.class.getName(), null);
+		}
 	}
 
 	private FileSystemExtensionManager() {
 		logger = LogManager.getLogger(FileSystemExtensionManager.class);
 	}
-	
+
 }

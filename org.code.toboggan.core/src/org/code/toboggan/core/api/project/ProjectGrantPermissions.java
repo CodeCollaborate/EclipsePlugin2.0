@@ -10,9 +10,11 @@ public class ProjectGrantPermissions extends AbstractAPICall {
 	private long projectID;
 	private String grantUsername;
 	private int permission;
-	
-	public ProjectGrantPermissions(AbstractExtensionManager manager, long projectID, String grantUsername, int permission) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_GRANT_PERMISSIONS_ID, IProjectGrantPermissionsExtension.class);
+
+	public ProjectGrantPermissions(AbstractExtensionManager manager, long projectID, String grantUsername,
+			int permission) {
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_GRANT_PERMISSIONS_ID,
+				IProjectGrantPermissionsExtension.class);
 		this.projectID = projectID;
 		this.grantUsername = grantUsername;
 		this.permission = permission;

@@ -2,10 +2,12 @@ package org.code.toboggan.ui.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.ui.UIActivator;
 import org.code.toboggan.ui.dialogs.AddNewUserDialog;
 import org.code.toboggan.ui.dialogs.RemoveUserDialog;
@@ -30,28 +32,25 @@ public class UsersListView extends ListView {
 		super(parent, style, "Users");
 		this.initializeListeners(listView);
 	}
-	
+
 	private Project getProjectAt(int index) {
-		java.util.List<Project> projects = UIActivator.getDefault().getSessionStorage().getSortedProjects();
+		java.util.List<Project> projects = UIActivator.getSessionStorage().getSortedProjects();
 		if (index < 0 || index >= projects.size()) {
 			return null;
 		}
 		return projects.get(index);
 	}
-	
+
 	private void refreshSelected(ProjectsListView listView) {
 		Display.getDefault().asyncExec(() -> {
 			int selectedListIndex = listView.getListWithButtons().getList().getSelectionIndex();
 			Project proj = getProjectAt(selectedListIndex);
-			if (proj != null && UIActivator.getDefault().getSessionStorage()
-					.getSubscribedIds().contains(proj.getProjectID())) {
+			if (proj != null && UIActivator.getSessionStorage().getSubscribedIds().contains(proj.getProjectID())) {
 				setProject(proj);
-				listView.getListWithButtons().getButtonBar().getMinusButton().setEnabled(true);
 			} else {
 				getListWithButtons().getList().removeAll();
 				String projName = proj == null ? "a project" : proj.getName();
-				String message = "You must be subscribed to " + 
-						projName + " to view users.";
+				String message = "You must be subscribed to " + projName + " to view users.";
 				getListWithButtons().getList().add(message);
 				VerticalButtonBar bar = getListWithButtons().getButtonBar();
 				bar.getPlusButton().setEnabled(false);
@@ -62,7 +61,8 @@ public class UsersListView extends ListView {
 	}
 
 	PropertyChangeListener projectListListener;
-	
+	PropertyChangeListener projectPermissionListListener;
+
 	private void initializeListeners(ProjectsListView listView) {
 		// project listview selection
 		listView.initSelectionListener(new Listener() {
@@ -71,7 +71,7 @@ public class UsersListView extends ListView {
 				refreshSelected(listView);
 			}
 		});
-		
+
 		// project list property change
 		projectListListener = new PropertyChangeListener() {
 			@Override
@@ -95,8 +95,29 @@ public class UsersListView extends ListView {
 				}
 			}
 		};
-		UIActivator.getDefault().getSessionStorage().addPropertyChangeListener(projectListListener);
-		
+		UIActivator.getSessionStorage().addPropertyChangeListener(projectListListener);
+
+		projectPermissionListListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				logger.debug(
+						"UI-DEBUG: ProjectListListener was notified of a change in the sessionStorage projectPermissionList, for event "
+								+ event.toString());
+				if (currentProject != null && event.getPropertyName().equals(CoreActivator.getSessionStorage()
+						.getProjectPermissionListIdentifer(currentProject.getProjectID()))) {
+					if (!listView.isDisposed()) {
+						Display.getDefault().asyncExec(() -> {
+							// Run the update permission list
+							setProject(currentProject);
+						});
+					}
+				} else if (event.getPropertyName().equals(SessionStorage.SUBSCRIBED_PROJECTS)) {
+					refreshSelected(listView);
+				}
+			}
+		};
+		UIActivator.getSessionStorage().addPropertyChangeListener(projectPermissionListListener);
+
 		// plus button pressed
 		VerticalButtonBar bar = this.getListWithButtons().getButtonBar();
 		bar.getPlusButton().addListener(SWT.Selection, new Listener() {
@@ -109,14 +130,14 @@ public class UsersListView extends ListView {
 					if (projectList.getSelectionIndex() == -1) {
 						return;
 					}
-					Project p = UIActivator.getDefault().getSessionStorage()
-							.getSortedProjects().get(projectList.getSelectionIndex());
+					Project p = UIActivator.getSessionStorage().getSortedProjects()
+							.get(projectList.getSelectionIndex());
 					AddNewUserDialog addUserDialog = new AddNewUserDialog(shell, p);
 					addUserDialog.open();
 				});
 			}
 		});
-		
+
 		// minus button pressed
 		bar.getMinusButton().addListener(SWT.Selection, new Listener() {
 			@Override
@@ -127,7 +148,12 @@ public class UsersListView extends ListView {
 				}
 				List list = getListWithButtons().getList();
 				Shell shell = Display.getDefault().getActiveShell();
-				Dialog removeUserDialog = new RemoveUserDialog(shell, list.getItem(list.getSelectionIndex()),
+
+				String[] keyset = currentProject.getPermissions().keySet()
+						.toArray(new String[currentProject.getPermissions().keySet().size()]);
+				Arrays.sort(keyset);
+
+				Dialog removeUserDialog = new RemoveUserDialog(shell, keyset[list.getSelectionIndex()],
 						currentProject.getName(), currentProject.getProjectID());
 				removeUserDialog.open();
 			}
@@ -147,16 +173,15 @@ public class UsersListView extends ListView {
 		// user list selection
 		List list = this.getListWithButtons().getList();
 		list.addListener(SWT.Selection, new Listener() {
-
 			@Override
 			public void handleEvent(Event arg0) {
 				getListWithButtons().getButtonBar().getMinusButton().setEnabled(true);
 			}
 		});
 	}
-	
+
 	private void removePropertyChangeListeners() {
-		UIActivator.getDefault().getSessionStorage().removePropertyChangeListener(projectListListener);
+		UIActivator.getSessionStorage().removePropertyChangeListener(projectListListener);
 	}
 
 	public void setProject(Project project) {
@@ -167,25 +192,30 @@ public class UsersListView extends ListView {
 			if (!list.isDisposed()) {
 				list.removeAll();
 			}
-			getListWithButtons().getButtonBar().getPlusButton().setEnabled(false);
-			getListWithButtons().getButtonBar().getMinusButton().setEnabled(false);
 			if (project == null) {
-				return;
-			}
-			Map<String, Permission> permissions = project.getPermissions();
-			if (permissions != null) {
-				for (String key : permissions.keySet()) {
-					if (!list.isDisposed()) {
-						list.add(key);
+				getListWithButtons().getButtonBar().getPlusButton().setEnabled(false);
+				getListWithButtons().getButtonBar().getMinusButton().setEnabled(false);
+			} else {
+				Map<String, Permission> permissions = project.getPermissions();
+				if (permissions != null) {
+					String[] keyset = permissions.keySet().toArray(new String[permissions.keySet().size()]);
+					Arrays.sort(keyset);
+					for (String username : keyset) {
+						if (!list.isDisposed()) {
+							Permission p = permissions.get(username);
+							String permissionString = CoreActivator.getSessionStorage().getPermissionConstants()
+									.inverse().get(p.getPermissionLevel());
+							list.add(String.format("%s: %s", permissionString, username));
+						}
 					}
 				}
+				VerticalButtonBar bar = getListWithButtons().getButtonBar();
+				bar.getPlusButton().setEnabled(true);
+				bar.getReloadButton().setEnabled(true);
 			}
-			VerticalButtonBar bar = getListWithButtons().getButtonBar();
-			bar.getPlusButton().setEnabled(true);
-			bar.getReloadButton().setEnabled(true);
 		});
 	}
-	
+
 	@Override
 	public void dispose() {
 		removePropertyChangeListeners();

@@ -1,8 +1,5 @@
 package org.code.toboggan.network;
 
-import clientcore.websocket.WSManager;
-import clientcore.websocket.models.ConnectionConfig;
-
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,15 +10,19 @@ import org.code.toboggan.network.request.extensionpoints.websocket.IWSEvent;
 import org.code.toboggan.network.request.extensions.NetworkExtensionManager;
 
 import clientcore.websocket.WSConnection;
+import clientcore.websocket.WSManager;
+import clientcore.websocket.models.ConnectionConfig;
 
 public class WSService {
-	final private static String WS_ADDRESS = "wss://codecollaborate.obsessiveorange.com:8000/ws/";
+	// final private static String WS_ADDRESS =
+	// "wss://codecollaborate.obsessiveorange.com:8000/ws/";
+	final private static String WS_ADDRESS = "wss://codecollaborate-cody.obsessiveorange.com/ws/";
 	final private static boolean RECONNECT = true;
 	final private static int MAX_RETRY_COUNT = 3;
-	
+
 	private WSManager wsManager;
 	private static Logger logger = LogManager.getLogger(WSService.class);
-	
+
 	public WSService() {
 		initConnectionListeners();
 	}
@@ -49,23 +50,23 @@ public class WSService {
 
 	private void notifyWSEventListeners(WSConnection.EventType wsEvent) {
 		NetworkExtensionManager extMgr = NetworkExtensionManager.getInstance();
-		
+
 		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.WS_EVENT, IWSEvent.class);
 		for (ICoreExtension e : extensions) {
 			IWSEvent p = (IWSEvent) e;
-			switch(wsEvent) {
-				case ON_CLOSE:
-					p.onClose();
-					break;
-				case ON_CONNECT:
-					p.onConnect();
-					break;
-				case ON_ERROR:
-					p.onError();
-					break;
-				default:
-					logger.error("Notified for a WS event that is not being listened to - something is seriously wrong");
-					break;
+			switch (wsEvent) {
+			case ON_CLOSE:
+				p.onClose();
+				break;
+			case ON_CONNECT:
+				p.onConnect();
+				break;
+			case ON_ERROR:
+				p.onError();
+				break;
+			default:
+				logger.error("Notified for a WS event that is not being listened to - something is seriously wrong");
+				break;
 			}
 		}
 	}

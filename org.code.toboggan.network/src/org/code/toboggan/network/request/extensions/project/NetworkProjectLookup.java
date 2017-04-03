@@ -22,7 +22,7 @@ import clientcore.websocket.models.responses.ProjectLookupResponse;
 
 public class NetworkProjectLookup extends AbstractNetworkExtension implements IProjectLookupExtension {
 	private Logger logger = LogManager.getLogger(NetworkProjectLookup.class);
-	
+
 	public NetworkProjectLookup() {
 		super();
 	}
@@ -33,11 +33,11 @@ public class NetworkProjectLookup extends AbstractNetworkExtension implements IP
 		Request lookupRequest = (new ProjectLookupRequest(projectIDs)).getRequest(response -> {
 			int status = response.getStatus();
 			if (status == 200) {
-				logger.info("Performed project lookup for projects: " + projectIDs.stream()
-																			.map(Object::toString)
-																			.collect(Collectors.joining(", ")));
+				logger.info("Performed project lookup for projects: "
+						+ projectIDs.stream().map(Object::toString).collect(Collectors.joining(", ")));
 				List<Project> projects = Arrays.asList(((ProjectLookupResponse) response.getData()).projects);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_LOOKUP_REQUEST_ID, IProjectLookupResponse.class);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_LOOKUP_REQUEST_ID,
+						IProjectLookupResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectLookupResponse p = (IProjectLookupResponse) e;
 					p.projectFound(projects);
@@ -48,18 +48,18 @@ public class NetworkProjectLookup extends AbstractNetworkExtension implements IP
 		}, getRequestSendHandler(projectIDs));
 		this.wsMgr.sendAuthenticatedRequest(lookupRequest);
 	}
-	
+
 	private void handleProjectLookupError(List<Long> projectIDs) {
-		logger.error("Failed to lookup projects: " + projectIDs.stream()
-														.map(Object::toString)
-														.collect(Collectors.joining(", ")));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_LOOKUP_REQUEST_ID, IProjectLookupResponse.class);
+		logger.error("Failed to lookup projects: "
+				+ projectIDs.stream().map(Object::toString).collect(Collectors.joining(", ")));
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_LOOKUP_REQUEST_ID,
+				IProjectLookupResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectLookupResponse p = (IProjectLookupResponse) e;
 			p.projectLookupFailed(projectIDs);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getRequestSendHandler(List<Long> projectIDs) {
 		return () -> handleProjectLookupError(projectIDs);
 	}

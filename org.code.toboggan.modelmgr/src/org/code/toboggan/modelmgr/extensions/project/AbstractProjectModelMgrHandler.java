@@ -6,9 +6,9 @@ import clientcore.dataMgmt.ProjectController;
 import clientcore.dataMgmt.SessionStorage;
 
 public abstract class AbstractProjectModelMgrHandler {
-	protected SessionStorage ss;
-	protected ProjectController pc;
-	
+	protected final SessionStorage ss;
+	protected final ProjectController pc;
+
 	public AbstractProjectModelMgrHandler() {
 		this.ss = CoreActivator.getSessionStorage();
 		this.pc = new ProjectController(ss);

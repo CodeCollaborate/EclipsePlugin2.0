@@ -9,7 +9,7 @@ import org.code.toboggan.core.extensionpoints.file.IFileDeleteExtension;
 public class FileDelete extends AbstractAPICall {
 
 	private long fileID;
-	
+
 	public FileDelete(AbstractExtensionManager manager, long fileID) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_DELETE_ID, IFileDeleteExtension.class);
 		this.fileID = fileID;

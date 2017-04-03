@@ -9,12 +9,13 @@ import org.code.toboggan.core.extensionpoints.project.IProjectUnsubscribeExtensi
 public class ProjectUnsubscribe extends AbstractAPICall {
 
 	private long projectID;
-	
+
 	public ProjectUnsubscribe(AbstractExtensionManager manager, long projectID) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_UNSUBSCRIBE_ID, IProjectUnsubscribeExtension.class);
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_UNSUBSCRIBE_ID,
+				IProjectUnsubscribeExtension.class);
 		this.projectID = projectID;
 	}
-	
+
 	@Override
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {

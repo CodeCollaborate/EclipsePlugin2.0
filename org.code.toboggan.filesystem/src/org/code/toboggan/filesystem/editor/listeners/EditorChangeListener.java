@@ -26,7 +26,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 public class EditorChangeListener extends AbstractEditorChangeListener {
 
 	private final Logger logger = LogManager.getLogger("editorChangeListener");
-	
+
 	private DocumentChangeListener currListener = null;
 	private final DocumentManager documentMgr = FSActivator.getDocumentManager();
 
@@ -52,10 +52,12 @@ public class EditorChangeListener extends AbstractEditorChangeListener {
 	 */
 	@Override
 	public void partOpened(IWorkbenchPartReference ref) {
+		logger.debug(String.format("Part [%s] opened: [%s]", ref.getPartName(), ref.getTitle()));
 		if (ref.getPart(false) instanceof ITextEditor) {
 			ITextEditor editor = (ITextEditor) ref.getPart(false);
 
-			// editor is not a text editor, we don't support realtime changes for it
+			// editor is not a text editor, we don't support realtime changes
+			// for it
 			if (!(editor.getEditorInput() instanceof IFileEditorInput)) {
 				return;
 			}
@@ -63,7 +65,7 @@ public class EditorChangeListener extends AbstractEditorChangeListener {
 			Path filePath = ((IFileEditorInput) editor.getEditorInput()).getFile().getLocation().toFile().toPath();
 
 			this.documentMgr.openedEditor(filePath, editor);
-			logger.debug(String.format("Opened document %s", editor.getTitle()));
+			logger.debug(String.format("Editor opened [%s]", editor.getTitle()));
 		}
 	}
 
@@ -73,10 +75,12 @@ public class EditorChangeListener extends AbstractEditorChangeListener {
 	 */
 	@Override
 	public void partClosed(IWorkbenchPartReference ref) {
+		logger.debug(String.format("Part [%s] closed: [%s]", ref.getPartName(), ref.getTitle()));
 		if (ref.getPart(false) instanceof ITextEditor) {
 			ITextEditor editor = (ITextEditor) ref.getPart(false);
 
-			// editor is not an IFileEditorInput editor, we don't support realtime changes for it
+			// editor is not an IFileEditorInput editor, we don't support
+			// realtime changes for it
 			if (!(editor.getEditorInput() instanceof IFileEditorInput)) {
 				return;
 			}
@@ -87,7 +91,7 @@ public class EditorChangeListener extends AbstractEditorChangeListener {
 			}
 			Path filePath = f.getLocation().toFile().toPath();
 			this.documentMgr.closedDocument(filePath);
-			logger.debug(String.format("Closed document %s", editor.getTitle()));
+			logger.debug(String.format("Editor closed [%s]", editor.getTitle()));
 		}
 	}
 
@@ -96,24 +100,27 @@ public class EditorChangeListener extends AbstractEditorChangeListener {
 	 */
 	@Override
 	public void partActivated(IWorkbenchPartReference ref) {
+		logger.debug(String.format("Part [%s] activated: [%s]", ref.getPartName(), ref.getTitle()));
 		if (ref.getPart(false) instanceof ITextEditor) {
-			ITextEditor editor = (ITextEditor) ref.getPart(false);			
+			ITextEditor editor = (ITextEditor) ref.getPart(false);
 			AbstractDocument document = (AbstractDocument) editor.getDocumentProvider()
 					.getDocument(editor.getEditorInput());
 
-			// editor is not a text editor, we don't support realtime changes for it
+			// editor is not a text editor, we don't support realtime changes
+			// for it
 			if (!(editor.getEditorInput() instanceof IFileEditorInput)) {
 				return;
 			}
 
 			Path filePath = ((IFileEditorInput) editor.getEditorInput()).getFile().getLocation().toFile().toPath();
 
-			if(!filePath.equals(this.documentMgr.getCurrFile())){					
+			if (!filePath.equals(this.documentMgr.getCurrFile())) {
 				currListener = new DocumentChangeListener();
 
 				this.documentMgr.setCurrFile(filePath);
 				document.addDocumentListener(currListener);
 			}
+			logger.debug(String.format("Editor activated [%s]", editor.getTitle()));
 		}
 	}
 
@@ -122,13 +129,17 @@ public class EditorChangeListener extends AbstractEditorChangeListener {
 	 */
 	@Override
 	public void partDeactivated(IWorkbenchPartReference ref) {
+		logger.debug(String.format("Part [%s] deactivated: [%s]", ref.getPartName(), ref.getTitle()));
 		if (ref.getPart(false) instanceof ITextEditor) {
-			ITextEditor editor = (ITextEditor) ref.getPart(false);			
+			ITextEditor editor = (ITextEditor) ref.getPart(false);
 			IDocument document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
 
 			if (currListener != null) {
 				document.removeDocumentListener(currListener);
 			}
+			this.documentMgr.setCurrFile(null);
+
+			logger.debug(String.format("Editor deactivated [%s]", editor.getTitle()));
 		}
 	}
 }

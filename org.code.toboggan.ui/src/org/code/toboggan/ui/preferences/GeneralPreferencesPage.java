@@ -17,6 +17,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import clientcore.websocket.ConnectException;
+import constants.PreferenceConstants;
 
 public class GeneralPreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	private Logger logger = LogManager.getLogger(this.getClass());
@@ -43,23 +44,23 @@ public class GeneralPreferencesPage extends FieldEditorPreferencePage implements
 				new WelcomeDialog(shell, secureStore).open();
 			});
 		});
-		
-		BooleanFieldEditor autoConnect = new BooleanFieldEditor(PreferenceConstants.AUTO_CONNECT, "Auto-connect on startup",
-				getFieldEditorParent());
+
+		BooleanFieldEditor autoConnect = new BooleanFieldEditor(PreferenceConstants.AUTO_CONNECT,
+				"Auto-connect on startup", getFieldEditorParent());
 		// change when implementing other ways to connect other than on startup
 		autoConnect.setEnabled(false, getFieldEditorParent());
-		
+
 		Button reconnect = new Button(getFieldEditorParent(), SWT.PUSH);
 		reconnect.setText("Reconnect to Server");
 		reconnect.addListener(SWT.Selection, (event) -> {
-			 new Thread(() -> {
-				 try {
-					 logger.debug("UI-DEBUG: Preferences Reconnect to server button pressed");
-					 UIActivator.getWSManager().connect();
-				 } catch (ConnectException e) {
-					 e.printStackTrace();
-				 }
-			 }).start();
+			new Thread(() -> {
+				try {
+					logger.debug("UI-DEBUG: Preferences Reconnect to server button pressed");
+					UIActivator.getWSManager().connect();
+				} catch (ConnectException e) {
+					e.printStackTrace();
+				}
+			}).start();
 		});
 
 		Button forgotPassword = new Button(getFieldEditorParent(), SWT.PUSH);

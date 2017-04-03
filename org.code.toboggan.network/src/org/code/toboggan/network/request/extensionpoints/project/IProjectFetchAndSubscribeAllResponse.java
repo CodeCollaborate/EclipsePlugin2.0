@@ -8,5 +8,6 @@ import clientcore.websocket.models.Project;
 
 public interface IProjectFetchAndSubscribeAllResponse extends ICoreExtension {
 	public void fetchedAll(List<Project> projects);
+
 	public void fetchAllFailed();
 }

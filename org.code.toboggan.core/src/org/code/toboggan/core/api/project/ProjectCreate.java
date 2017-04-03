@@ -7,9 +7,9 @@ import org.code.toboggan.core.extensionpoints.ICoreExtension;
 import org.code.toboggan.core.extensionpoints.project.IProjectCreateExtension;
 
 public class ProjectCreate extends AbstractAPICall {
-	
+
 	private String name;
-	
+
 	public ProjectCreate(AbstractExtensionManager manager, String name) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_CREATE_ID, IProjectCreateExtension.class);
 		this.name = name;

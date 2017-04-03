@@ -3,27 +3,27 @@ package org.code.toboggan.ui.dialogs;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
-import org.code.toboggan.ui.preferences.PreferenceConstants;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Text;
-
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
+import constants.PreferenceConstants;
 
 public class WelcomeDialog extends Dialog {
 	private Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	private Text usernameBox;
 	private Text passwordBox;
 	private ISecurePreferences prefStore;
@@ -72,7 +72,7 @@ public class WelcomeDialog extends Dialog {
 
 		passwordBox = new Text(composite, SWT.BORDER | SWT.PASSWORD);
 		passwordBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
+
 		Composite composite_1 = new Composite(container, SWT.NONE);
 		composite_1.setLayout(new GridLayout(5, false));
 		GridData gd_composite_1 = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
@@ -80,10 +80,10 @@ public class WelcomeDialog extends Dialog {
 		new Label(composite_1, SWT.NONE);
 		new Label(composite_1, SWT.NONE);
 		new Label(composite_1, SWT.NONE);
-		
+
 		Label lblDontHaveAn = new Label(composite_1, SWT.NONE);
 		lblDontHaveAn.setText(DialogStrings.WelcomeDialog_DontHaveAccount);
-		
+
 		Button btnRegister = new Button(composite_1, SWT.NONE);
 		Shell parentShell = this.getParentShell();
 		btnRegister.addSelectionListener(new SelectionAdapter() {
@@ -118,19 +118,20 @@ public class WelcomeDialog extends Dialog {
 		logger.debug("UI-DEBUG: Ok button pressed for WelcomeDialog");
 		String username = usernameBox.getText();
 		String password = passwordBox.getText();
-		
+
 		APIFactory.createUserLogin(username, password).runAsync();
-		
+
 		try {
 			prefStore.put(PreferenceConstants.USERNAME, username, true);
 			prefStore.put(PreferenceConstants.PASSWORD, password, true);
 		} catch (StorageException e) {
-			MessageDialog.createDialog("Failed to store login credentials. Please ensure Eclipse secure storage is properly initialized and try again.");
+			MessageDialog.createDialog(
+					"Failed to store login credentials. Please ensure Eclipse secure storage is properly initialized and try again.");
 		}
 
 		super.okPressed();
 	}
-	
+
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);

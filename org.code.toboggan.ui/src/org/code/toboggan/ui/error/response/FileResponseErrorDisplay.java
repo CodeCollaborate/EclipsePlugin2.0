@@ -24,7 +24,8 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void fileRenameFailed(long fileID, Path oldFileLocation, Path newFileLocation, String newName) {
-		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to rename the file on the server. Please resubscribe to the project.").open());
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Failed to rename the file on the server. Please resubscribe to the project.").open());
 	}
 
 	@Override
@@ -34,7 +35,8 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void filePullFailed(long fileID) {
-		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to pull file from the server. Please resubscribe to the project.").open());
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Failed to pull file from the server. Please resubscribe to the project.").open());
 	}
 
 	@Override
@@ -44,7 +46,8 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void fileMoveFailed(long fileID, Path oldFileLocation, Path newFileLocation) {
-		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to move the file on the server. Please resubscribe to the project.").open());
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Failed to move the file on the server. Please resubscribe to the project.").open());
 	}
 
 	@Override
@@ -54,27 +57,31 @@ public class FileResponseErrorDisplay implements IFileChangeResponse, IFileCreat
 
 	@Override
 	public void fileDeleteFailed(long fileID) {
-		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to delete the file on the server. The file has been recreated locally.").open());
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Failed to delete the file on the server. The file has been recreated locally.").open());
 	}
 
 	@Override
-	public void fileCreated(long fileID, String name, Path absolutePath, String projectRelativePath, long projectID) {
+	public void fileCreated(long fileID, String name, Path absolutePath, String projectRelativePath, long projectID,
+			String fileContents) {
 		// Do nothing
 	}
 
 	@Override
 	public void fileCreateFailed(String fileName, Path absolutePath, long projectID, byte[] fileBytes) {
-		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to create the file on the server. The file has been deleted locally.").open());
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Failed to create the file on the server. The file has been deleted locally.").open());
 	}
 
 	@Override
-	public void fileChanged(long fileID, long fileVersion) {
+	public void fileChanged(long fileID, Patch patches, Patch[] missingPatches, long fileVersion) {
 		// Do nothing
 	}
 
 	@Override
-	public void fileChangeFailed(long fileID, Patch[] patches) {
-		Display.getDefault().asyncExec(() -> MessageDialog.createDialog("Failed to change the file on the server. Please resubscribe to the project.").open());
+	public void fileChangeFailed(long fileID, Patch patches) {
+		Display.getDefault().asyncExec(() -> MessageDialog
+				.createDialog("Failed to change the file on the server. Please resubscribe to the project.").open());
 	}
 
 }

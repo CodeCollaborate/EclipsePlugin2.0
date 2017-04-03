@@ -15,7 +15,7 @@ public class ModelMgrProjectLookup extends AbstractProjectModelMgrHandler implem
 
 	@Override
 	public void projectLookupFailed(List<Long> projectIDs) {
-		// Do nothing		
+		// Do nothing
 	}
 
 }

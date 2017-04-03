@@ -11,12 +11,12 @@ import org.code.toboggan.core.extensionpoints.project.IProjectLookupExtension;
 public class ProjectLookup extends AbstractAPICall {
 
 	private List<Long> projectIDs;
-	
+
 	public ProjectLookup(AbstractExtensionManager manager, List<Long> projectIDs) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_LOOKUP_ID, IProjectLookupExtension.class);
 		this.projectIDs = projectIDs;
 	}
-	
+
 	@Override
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {
@@ -24,7 +24,7 @@ public class ProjectLookup extends AbstractAPICall {
 			pExt.lookupProject(projectIDs);
 		}
 	}
-	
+
 	public List<Long> getProjectIDs() {
 		return projectIDs;
 	}

@@ -1,25 +1,25 @@
 package org.code.toboggan.modelmgr.extensions.file;
 
 import java.nio.file.Path;
-import java.util.Date;
 
-import org.code.toboggan.network.request.extensionpoints.file.IFileCreateResponse;
+import org.code.toboggan.filesystem.extensionpoints.file.IFSFileCreateExt;
 
 import clientcore.websocket.models.File;
 
-public class ModelMgrFileCreate extends AbstractFileModelMgrHandler implements IFileCreateResponse {
-	
+public class ModelMgrFileCreate extends AbstractFileModelMgrHandler implements IFSFileCreateExt {
+	/**
+	 * fileCreated adds the relevant File object, reconstructing the absolute
+	 * path from the project's absolute path, and the project-relative filepath
+	 * It then adds it into the SessionStore, persisting the data.
+	 */
 	@Override
-	public void fileCreated(long fileID, String name, Path absolutePath, String projectRelativePath, long projectID) {
-		File f = new File(fileID, name, projectRelativePath, 1, ss.getUsername(), new Date().toString()); // doing date like this is questionable, but it's not being used
-		ss.setFile(projectID, f);
-		// put the location since this client created it
-		fc.putFileLocation(absolutePath, projectID, fileID);
-	}
+	public void fileCreated(long projectID, File file) {
+		ss.setFile(projectID, file);
 
-	@Override
-	public void fileCreateFailed(String fileName, Path absolutePath, long projectID, byte[] fileBytes) {
-		// Do nothing
+		// put the location, since we're about to pull.
+		Path absolutePath = ss.getProjectLocation(projectID)
+				.resolve(file.getRelativePath().resolve(file.getFilename()));
+		fc.putFileLocation(absolutePath, projectID, file.getFileID());
 	}
 
 }

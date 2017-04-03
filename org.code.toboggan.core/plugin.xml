@@ -23,5 +23,5 @@
 	<extension-point id="org.code.toboggan.core.file.move" name="org.code.toboggan.core.file.move" schema="schema/org.code.toboggan.core.file.move.exsd"/>
 	<extension-point id="org.code.toboggan.core.file.pulldiffsendchanges" name="org.code.toboggan.core.file.pulldiffsendchanges" schema="schema/org.code.toboggan.core.file.pulldiffsendchanges.exsd"/>
 	<extension-point id="org.code.toboggan.core.file.pull" name="org.code.toboggan.core.file.pull" schema="schema/org.code.toboggan.core.file.pull.exsd"/>
-   
+	<extension-point id="org.code.toboggan.core.storagelistener" name="org.code.toboggan.core.storagelistener" schema="schema/org.code.toboggan.core.storagelistener.exsd"/>
 </plugin>

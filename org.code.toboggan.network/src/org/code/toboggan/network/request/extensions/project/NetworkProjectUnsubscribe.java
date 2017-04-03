@@ -17,11 +17,11 @@ import clientcore.websocket.models.requests.ProjectUnsubscribeRequest;
 
 public class NetworkProjectUnsubscribe extends AbstractNetworkExtension implements IProjectUnsubscribeExtension {
 	private Logger logger = LogManager.getLogger(NetworkProjectUnsubscribe.class);
-	
+
 	public NetworkProjectUnsubscribe() {
 		super();
 	}
-	
+
 	@Override
 	public void unsubscribed(long projectID) {
 		extMgr = NetworkExtensionManager.getInstance();
@@ -29,7 +29,8 @@ public class NetworkProjectUnsubscribe extends AbstractNetworkExtension implemen
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.info("Success unsubscribing from project: " + projectID);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_UNSUBSCRIBE_REQUEST_ID, IProjectUnsubscribeResponse.class);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(
+						NetworkExtensionIDs.PROJECT_UNSUBSCRIBE_REQUEST_ID, IProjectUnsubscribeResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectUnsubscribeResponse p = (IProjectUnsubscribeResponse) e;
 					p.unsubscribed(projectID);
@@ -40,16 +41,17 @@ public class NetworkProjectUnsubscribe extends AbstractNetworkExtension implemen
 		}, getRequestSendHandler(projectID));
 		wsMgr.sendAuthenticatedRequest(unsubRequest);
 	}
-	
+
 	private void handleUnsubscribeError(long projectID) {
 		logger.error("Failed to unsubscribe from project: " + projectID);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_UNSUBSCRIBE_REQUEST_ID, IProjectUnsubscribeResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_UNSUBSCRIBE_REQUEST_ID,
+				IProjectUnsubscribeResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectUnsubscribeResponse p = (IProjectUnsubscribeResponse) e;
 			p.unsubscribeFailed(projectID);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getRequestSendHandler(long projectID) {
 		return () -> handleUnsubscribeError(projectID);
 	}

@@ -10,13 +10,14 @@ public class ProjectRevokePermissions extends AbstractAPICall {
 
 	private long projectID;
 	private String name;
-	
+
 	public ProjectRevokePermissions(AbstractExtensionManager manager, long projectID, String name) {
-		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID, IProjectRevokePermissionsExtension.class);
+		this.extensions = manager.getExtensions(APIExtensionIDs.PROJECT_REVOKE_PERMISSIONS_ID,
+				IProjectRevokePermissionsExtension.class);
 		this.projectID = projectID;
 		this.name = name;
 	}
-	
+
 	@Override
 	public void execute() {
 		for (ICoreExtension e : this.extensions) {

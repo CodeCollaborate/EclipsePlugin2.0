@@ -20,65 +20,71 @@ public class NetworkActivator implements BundleActivator {
 	private static BundleContext context;
 	private static PatchManager patchManager;
 	private static WSService wsService;
-	
+
 	static BundleContext getContext() {
 		return context;
 	}
-	
+
 	public static PatchManager getPatchManager() {
 		return patchManager;
 	}
-	
+
 	public static void reset() {
 		patchManager = new PatchManager();
+
+		patchManager.setWsMgr(getWSService().getWSManager());
+		registerNotificationHandlers();
 	}
-	
+
 	public static WSService getWSService() {
-		if (wsService == null){
-			synchronized(NetworkActivator.class){
-				if(wsService == null){
+		if (wsService == null) {
+			synchronized (NetworkActivator.class) {
+				if (wsService == null) {
 					wsService = new WSService();
 				}
 			}
 		}
 		return wsService;
 	}
-	
+
 	public static void setWSService(WSService wsService) {
 		NetworkActivator.wsService = wsService;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.
+	 * BundleContext)
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		NetworkActivator.context = bundleContext;
-		// Start WS connection when this plugin is activated
-		getWSService();
-		
-		reset();
-		patchManager.setWsMgr(wsService.getWSManager());
-		registerNotificationHandlers(wsService.getWSManager());
 
-		// Don't connect - let the websocket lazily connect upon first request
-//		 wsService.getWSManager().connect();
+		reset();
+
 	}
-	
-	private void registerNotificationHandlers(WSManager m) {
-		m.registerNotificationHandler("Project", "Delete", new ProjectDeleteNotificationHandler());
-		m.registerNotificationHandler("Project", "GrantPermissions", new ProjectGrantPermissionsNotificationHandler());
-		m.registerNotificationHandler("Project", "Rename", new ProjectRenameNotificationHandler());
-		m.registerNotificationHandler("Project", "RevokePermissions", new ProjectRevokePermissionsNotificationHandler());
-		m.registerNotificationHandler("File", "Create", new FileCreateNotificationHandler());
-		m.registerNotificationHandler("File", "Delete", new FileDeleteNotificationHandler());
-		m.registerNotificationHandler("File", "Move", new FileMoveNotificationHandler());
-		m.registerNotificationHandler("File", "Rename", new FileRenameNotificationHandler());
+
+	public static void registerNotificationHandlers() {
+		WSManager wsMgr = getWSService().getWSManager();
+
+		wsMgr.registerNotificationHandler("Project", "Delete", new ProjectDeleteNotificationHandler());
+		wsMgr.registerNotificationHandler("Project", "GrantPermissions",
+				new ProjectGrantPermissionsNotificationHandler());
+		wsMgr.registerNotificationHandler("Project", "Rename", new ProjectRenameNotificationHandler());
+		wsMgr.registerNotificationHandler("Project", "RevokePermissions",
+				new ProjectRevokePermissionsNotificationHandler());
+		wsMgr.registerNotificationHandler("File", "Change", patchManager);
+		wsMgr.registerNotificationHandler("File", "Create", new FileCreateNotificationHandler());
+		wsMgr.registerNotificationHandler("File", "Delete", new FileDeleteNotificationHandler());
+		wsMgr.registerNotificationHandler("File", "Move", new FileMoveNotificationHandler());
+		wsMgr.registerNotificationHandler("File", "Rename", new FileRenameNotificationHandler());
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		NetworkActivator.context = null;

@@ -30,19 +30,19 @@ import clientcore.websocket.models.notifications.FileDeleteNotification;
 
 public class FSFileDelete implements IFileDeleteNotificationExtension {
 	private Logger logger = LogManager.getLogger(FSFileDelete.class);
-	
+
 	private SessionStorage ss;
 	private DocumentManager dm;
 	private WarnList warnList;
 	private AbstractExtensionManager extMgr;
-	
+
 	public FSFileDelete() {
 		this.ss = CoreActivator.getSessionStorage();
 		this.dm = FSActivator.getDocumentManager();
 		this.warnList = FSActivator.getWarnList();
 		this.extMgr = FileSystemExtensionManager.getInstance();
 	}
-	
+
 	@Override
 	public void fileDeleteNotification(long deletedId) {
 		File file = ss.getFile(deletedId);
@@ -50,37 +50,41 @@ public class FSFileDelete implements IFileDeleteNotificationExtension {
 			logger.warn("Received delete notification for a file that does not exist in storage");
 			return;
 		}
-		
+
 		Project project = ss.getProject(file.getProjectID());
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(project.getName());
 		IFile iFile = p.getFile(Paths.get(file.getRelativePath().toString(), file.getFilename()).toString());
 		String workspaceRelativePath = iFile.getFullPath().toString();
-		
+
 		CCIgnore ignoreFile = CCIgnore.createForProject(p);
 		if (ignoreFile.containsEntry(file.getRelativePath().toString())) {
-			logger.info(String.format("did not delete %s because it was excluded by .ccignore", file.getRelativePath().toString()));
+			logger.info(String.format("did not delete [%s] because it was excluded by .ccignore",
+					file.getRelativePath().toString()));
 			return;
 		}
 		Path fileLocation = iFile.getLocation().toFile().toPath();
 
-		
 		Set<ICoreExtension> extensions = extMgr.getExtensions(FSExtensionIDs.FILE_DELETE_ID, IFSFileDeleteExt.class);
 
 		if (iFile.exists()) {
 			if (dm.getEditor(fileLocation) != null) {
-				// TODO: implement new API call for TryRestore (not part of client refactor)
-//				Display.getDefault().asyncExec(() -> {
-//					String message = String.format(DialogStrings.DeleteWarningDialog_Message, file.getName());
-//					OkCancelDialog dialog = OkCancelDialog.createDialog(message,
-//							"Restore", IDialogConstants.OK_LABEL, true);
-//					// Restore is the "ok" option, because it should not be the default option
-//					if (dialog.open() == Window.OK) {
-//						tryRestoreFile(resId, file, meta, project.getProjectID());
-//					} else {
-//						deleteFile(workspaceRelativePath, file, resId, project);
-//					}
-//				});
-//				return;
+				// TODO: implement new API call for TryRestore (not part of
+				// client refactor)
+				// Display.getDefault().asyncExec(() -> {
+				// String message =
+				// String.format(DialogStrings.DeleteWarningDialog_Message,
+				// file.getName());
+				// OkCancelDialog dialog = OkCancelDialog.createDialog(message,
+				// "Restore", IDialogConstants.OK_LABEL, true);
+				// // Restore is the "ok" option, because it should not be the
+				// default option
+				// if (dialog.open() == Window.OK) {
+				// tryRestoreFile(resId, file, meta, project.getProjectID());
+				// } else {
+				// deleteFile(workspaceRelativePath, file, resId, project);
+				// }
+				// });
+				// return;
 				for (ICoreExtension e : extensions) {
 					IFSFileDeleteExt ext = (IFSFileDeleteExt) e;
 					ext.fileOpenInEditor(deletedId, fileLocation);
@@ -89,11 +93,13 @@ public class FSFileDelete implements IFileDeleteNotificationExtension {
 			try {
 				warnList.putFileInWarnList(fileLocation, FileDeleteNotification.class);
 				iFile.delete(true, new NullProgressMonitor());
-				
+
+				// If deleted successfully, process all extensions
 				for (ICoreExtension ext : extensions) {
 					IFSFileDeleteExt delExt = (IFSFileDeleteExt) ext;
 					delExt.fileDeleted(deletedId);
 				}
+
 				return;
 			} catch (CoreException e) {
 				logger.error("Failed to delete file on disk, unsubscribing from project", e);
@@ -105,7 +111,7 @@ public class FSFileDelete implements IFileDeleteNotificationExtension {
 				return;
 			}
 		} else {
-			logger.warn(String.format("Tried to delete file that does not exist: %s", workspaceRelativePath));
+			logger.warn(String.format("Tried to delete file that does not exist: [%s]", workspaceRelativePath));
 		}
 	}
 

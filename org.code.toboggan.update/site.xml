@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.code.toboggan_0.0.36.jar" id="org.code.toboggan" version="0.0.36">
+      <category name="org.code.toboggan.collaborative-editing"/>
+   </feature>
+   <category-def name="org.code.toboggan.collaborative-editing" label="Collaborative Editing">
+      <description>
+         A collection of tools and plugins to enable more efficient collaborative editing
+      </description>
+   </category-def>
+</site>

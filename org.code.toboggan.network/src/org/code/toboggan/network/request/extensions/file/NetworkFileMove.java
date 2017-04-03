@@ -24,49 +24,51 @@ public class NetworkFileMove extends AbstractNetworkExtension implements IFileMo
 
 	private SessionStorage ss;
 	private Logger logger = LogManager.getLogger(NetworkFileMove.class);
-	
+
 	public NetworkFileMove() {
 		super();
 		this.ss = CoreActivator.getSessionStorage();
 	}
-	
+
 	@Override
 	public void fileMoved(long fileID, Path oldAbsolutePath, Path newFileLocation) {
 		extMgr = NetworkExtensionManager.getInstance();
-		
+
 		File file = ss.getFile(fileID);
 		long projectID = file.getProjectID();
 		Path projectLocation = ss.getProjectLocation(projectID);
-		
-		if (!newFileLocation.isAbsolute()){
+
+		if (!newFileLocation.isAbsolute()) {
 			throw new IllegalArgumentException("newFileLocation was not absolute: " + newFileLocation.toString());
 		}
 		String stringProjectRelative = NetworkUtils.toStringRelativePath(projectLocation, newFileLocation);
-		
+
 		Request moveFileReq = new FileMoveRequest(fileID, stringProjectRelative).getRequest(response -> {
-            int status = response.getStatus();
-            if (status == 200) {
-            	Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.FILE_MOVE_REQUEST_ID, IFileMoveResponse.class);
-                for (ICoreExtension e : extensions) {
-        			IFileMoveResponse p = (IFileMoveResponse) e;
-        			p.fileMoved(fileID, newFileLocation);
-        		}
-            } else {
-            	handleMoveError(fileID, oldAbsolutePath, newFileLocation);
-            }
-        }, getMoveSendHandler(fileID, oldAbsolutePath, newFileLocation));
-        this.wsMgr.sendAuthenticatedRequest(moveFileReq);
+			int status = response.getStatus();
+			if (status == 200) {
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.FILE_MOVE_REQUEST_ID,
+						IFileMoveResponse.class);
+				for (ICoreExtension e : extensions) {
+					IFileMoveResponse p = (IFileMoveResponse) e;
+					p.fileMoved(fileID, newFileLocation);
+				}
+			} else {
+				handleMoveError(fileID, oldAbsolutePath, newFileLocation);
+			}
+		}, getMoveSendHandler(fileID, oldAbsolutePath, newFileLocation));
+		this.wsMgr.sendAuthenticatedRequest(moveFileReq);
 	}
-	
+
 	private void handleMoveError(long fileID, Path oldAbsolutePath, Path newAbsolutePath) {
-		logger.error(String.format("Failed to move file on server: %d", fileID));
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.FILE_MOVE_REQUEST_ID, IFileMoveResponse.class);
-        for (ICoreExtension e : extensions) {
+		logger.error(String.format("Failed to move file on server: [%d]", fileID));
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.FILE_MOVE_REQUEST_ID,
+				IFileMoveResponse.class);
+		for (ICoreExtension e : extensions) {
 			IFileMoveResponse p = (IFileMoveResponse) e;
 			p.fileMoveFailed(fileID, oldAbsolutePath, newAbsolutePath);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getMoveSendHandler(long fileID, Path oldAbsolutePath, Path newAbsolutePath) {
 		return () -> handleMoveError(fileID, oldAbsolutePath, newAbsolutePath);
 	}

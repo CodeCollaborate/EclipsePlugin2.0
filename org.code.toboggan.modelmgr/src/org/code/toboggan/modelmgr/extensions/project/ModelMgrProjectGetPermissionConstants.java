@@ -4,10 +4,11 @@ import org.code.toboggan.network.request.extensionpoints.project.IProjectGetPerm
 
 import com.google.common.collect.BiMap;
 
-public class ModelMgrProjectGetPermissionConstants extends AbstractProjectModelMgrHandler implements IProjectGetPermissionConstantsResponse {
+public class ModelMgrProjectGetPermissionConstants extends AbstractProjectModelMgrHandler
+		implements IProjectGetPermissionConstantsResponse {
 
 	@Override
-	public void getPermissionConstants(BiMap<String, Byte> permConstants) {
+	public void getPermissionConstants(BiMap<String, Integer> permConstants) {
 		ss.setPermissionConstants(permConstants);
 	}
 
@@ -15,5 +16,5 @@ public class ModelMgrProjectGetPermissionConstants extends AbstractProjectModelM
 	public void getPermissionConstantsFailed() {
 		// Do nothing
 	}
-	
+
 }

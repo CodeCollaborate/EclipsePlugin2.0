@@ -15,13 +15,14 @@ import clientcore.websocket.IRequestSendErrorHandler;
 import clientcore.websocket.models.Request;
 import clientcore.websocket.models.requests.ProjectRevokePermissionsRequest;
 
-public class NetworkProjectRevokePermissions extends AbstractNetworkExtension implements IProjectRevokePermissionsExtension {
+public class NetworkProjectRevokePermissions extends AbstractNetworkExtension
+		implements IProjectRevokePermissionsExtension {
 	private Logger logger = LogManager.getLogger(NetworkProjectRevokePermissions.class);
-	
+
 	public NetworkProjectRevokePermissions() {
 		super();
 	}
-	
+
 	@Override
 	public void permissionRevoked(long projectID, String name) {
 		extMgr = NetworkExtensionManager.getInstance();
@@ -29,7 +30,9 @@ public class NetworkProjectRevokePermissions extends AbstractNetworkExtension im
 			int status = response.getStatus();
 			if (status == 200) {
 				logger.info("Project permissions revoked for project: " + projectID + " and user " + name);
-				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_REVOKE_PERMISSIONS_REQUEST_ID, IProjectRevokePermissionsResponse.class);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(
+						NetworkExtensionIDs.PROJECT_REVOKE_PERMISSIONS_REQUEST_ID,
+						IProjectRevokePermissionsResponse.class);
 				for (ICoreExtension e : extensions) {
 					IProjectRevokePermissionsResponse p = (IProjectRevokePermissionsResponse) e;
 					p.permissionsRevoked(projectID, name);
@@ -40,16 +43,17 @@ public class NetworkProjectRevokePermissions extends AbstractNetworkExtension im
 		}, getRequestSendHandler(projectID, name));
 		this.wsMgr.sendAuthenticatedRequest(revokeRequest);
 	}
-	
+
 	private void handleProjectRevokeError(long projectID, String name) {
 		logger.error("Failed to revoke project permissions for project: " + projectID + " and user " + name);
-		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_REVOKE_PERMISSIONS_REQUEST_ID, IProjectRevokePermissionsResponse.class);
+		Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.PROJECT_REVOKE_PERMISSIONS_REQUEST_ID,
+				IProjectRevokePermissionsResponse.class);
 		for (ICoreExtension e : extensions) {
 			IProjectRevokePermissionsResponse p = (IProjectRevokePermissionsResponse) e;
 			p.permissionsRevokeFailed(projectID, name);
 		}
 	}
-	
+
 	private IRequestSendErrorHandler getRequestSendHandler(long projectID, String name) {
 		return () -> handleProjectRevokeError(projectID, name);
 	}

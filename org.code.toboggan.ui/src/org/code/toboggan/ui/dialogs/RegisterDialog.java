@@ -7,22 +7,21 @@ import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
-import org.eclipse.swt.events.ModifyListener;
 
 public class RegisterDialog extends Dialog {
 	private Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	private Text usernameBox;
 	private Text firstNameBox;
 	private Text lastNameBox;
@@ -38,7 +37,7 @@ public class RegisterDialog extends Dialog {
 	 */
 	public RegisterDialog(Shell parentShell) {
 		super(parentShell);
-        setShellStyle(SWT.SHELL_TRIM);
+		setShellStyle(SWT.SHELL_TRIM);
 	}
 
 	/**
@@ -66,7 +65,7 @@ public class RegisterDialog extends Dialog {
 
 		usernameBox = new Text(composite, SWT.BORDER);
 		usernameBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
+
 		Label lblEmail = new Label(composite, SWT.NONE);
 		lblEmail.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEmail.setText(DialogStrings.RegisterDialog_EmailLabel);
@@ -119,8 +118,6 @@ public class RegisterDialog extends Dialog {
 		emailBox.addModifyListener(listener);
 		passwordBox.addModifyListener(listener);
 		confirmPasswordBox.addModifyListener(listener);
-		
-		
 
 		return container;
 	}
@@ -153,14 +150,14 @@ public class RegisterDialog extends Dialog {
 		APIFactory.createUserRegister(username, firstName, lastName, password, email).runAsync();
 		super.okPressed();
 	}
-	
+
 	private void launchWelcome() {
 		logger.debug("UI-DEBUG: RegisterDialog launching WelcomeDialog");
 		ISecurePreferences prefStore = SecurePreferencesFactory.getDefault();
 		Shell shell = Display.getDefault().getActiveShell();
 		new WelcomeDialog(shell, prefStore).open();
 	}
-	
+
 	@Override
 	protected void cancelPressed() {
 		logger.debug("UI-DEBUG: Cancel button pressed on RegisterDialog");

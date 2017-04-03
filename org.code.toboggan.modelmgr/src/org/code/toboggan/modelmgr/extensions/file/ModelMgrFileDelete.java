@@ -1,9 +1,11 @@
 package org.code.toboggan.modelmgr.extensions.file;
 
-import org.code.toboggan.network.notification.extensionpoints.file.IFileDeleteNotificationExtension;
+import java.nio.file.Path;
+
+import org.code.toboggan.filesystem.extensionpoints.file.IFSFileDeleteExt;
 import org.code.toboggan.network.request.extensionpoints.file.IFileDeleteResponse;
 
-public class ModelMgrFileDelete extends AbstractFileModelMgrHandler implements IFileDeleteResponse, IFileDeleteNotificationExtension {
+public class ModelMgrFileDelete extends AbstractFileModelMgrHandler implements IFileDeleteResponse, IFSFileDeleteExt {
 
 	@Override
 	public void fileDeleted(long fileID) {
@@ -11,14 +13,20 @@ public class ModelMgrFileDelete extends AbstractFileModelMgrHandler implements I
 	}
 
 	@Override
-	public void fileDeleteNotification(long deletedId) {
-		fc.deleteFile(deletedId);
-	}
-
-	@Override
 	public void fileDeleteFailed(long fileID) {
 		// Do nothing
 	}
 
-	
+	@Override
+	public void fileOpenInEditor(long fileID, Path fileLocation) {
+		// Do nothing
+
+	}
+
+	@Override
+	public void deleteFailed(long fileID, Path fileLocation) {
+		// Do nothing
+
+	}
+
 }

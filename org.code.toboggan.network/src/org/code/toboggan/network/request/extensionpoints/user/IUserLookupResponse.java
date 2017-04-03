@@ -6,5 +6,6 @@ import clientcore.websocket.models.User;
 
 public interface IUserLookupResponse extends ICoreExtension {
 	public void userFound(User u);
+
 	public void userLookupFailed(String username);
 }

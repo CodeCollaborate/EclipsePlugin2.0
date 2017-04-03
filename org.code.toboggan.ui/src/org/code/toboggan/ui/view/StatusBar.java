@@ -10,15 +10,15 @@ import org.eclipse.swt.widgets.Label;
 
 public class StatusBar extends Composite {
 	private Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	private Label label;
-	
+
 	public StatusBar(Composite parent, int style) {
 		super(parent, style);
 		this.initialize();
 		this.setBackground(new Color(null, 245, 245, 245)); // Grey
 	}
-	
+
 	private void initialize() {
 		logger.debug("UI-DEBUG: ");
 		RowLayout layout = new RowLayout();
@@ -29,8 +29,8 @@ public class StatusBar extends Composite {
 		this.setLayout(layout);
 		label = new Label(this, SWT.NONE);
 	}
-	
+
 	public void setStatus(String status) {
-		label.setText("Status: "+status);
+		label.setText("Status: " + status);
 	}
 }

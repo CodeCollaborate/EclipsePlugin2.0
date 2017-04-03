@@ -22,6 +22,10 @@ public class DialogStrings extends NLS {
 	public static String AddProjectDialog_ReadFileErr;
 	public static String AddProjectDialog_TimeoutErr;
 	public static String AddProjectDialog_WindowTitle;
+	public static String AddProjectDialog_AddProjectBox;
+	public static String SubscribeAllDialog_Message;
+	public static String SubscribeAllDialog_ConfirmButton;
+	public static String SubscribeAllDialog_Title;
 	public static String DeleteProjectDialog_AreYouSure;
 	public static String DeleteProjectDialog_ConfirmButton;
 	public static String DeleteProjectDialog_DeleteWarning;
@@ -37,6 +41,7 @@ public class DialogStrings extends NLS {
 	public static String ProjectSettingsDialog_CreationDateLabel;
 	public static String ProjectSettingsDialog_DeleteProjectButton;
 	public static String ProjectSettingsDialog_GrantPermissionErr;
+	public static String ProjectSettingsDialog_GrantPermissionCurrUser;
 	public static String ProjectSettingsDialog_InternalError;
 	public static String ProjectSettingsDialog_PermissionRevokeRespHandlerMsg;
 	public static String ProjectSettingsDialog_PermissionTableColumn;
@@ -90,12 +95,15 @@ public class DialogStrings extends NLS {
 	public static String WelcomeDialog_TryAgainMsg;
 	public static String WelcomeDialog_UserLoginErr;
 	public static String WelcomeDialog_UsernameLabel;
-	
+
 	public static String DeleteWarningDialog_Message;
 	public static String RecoverPasswordDialog_Title;
 	public static String RecoverPasswordDialog_Message;
-	
+
+	public static String StartingUp_Message;
+	public static String Connecting_Message;
 	public static String Connected_Message;
+	public static String Disconnecting_Message;
 	public static String Disconnected_Message;
 	public static String Error_Connecting_Message;
 

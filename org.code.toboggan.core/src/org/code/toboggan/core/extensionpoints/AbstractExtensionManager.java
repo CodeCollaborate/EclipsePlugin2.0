@@ -16,12 +16,18 @@ import org.eclipse.core.runtime.Platform;
 
 public abstract class AbstractExtensionManager {
 
-	protected static Map<String, AbstractExtensionManager> instances = new HashMap<>();
+	protected static final Map<String, AbstractExtensionManager> instances = new HashMap<>();
 	protected Map<String, Set<ICoreExtension>> extensions = new HashMap<>();
 	protected Logger logger;
 
 	public static void resetAll() {
-		instances = new HashMap<>();
+		synchronized (instances) {
+			instances.clear();
+		}
+	}
+	
+	public static Map<String, AbstractExtensionManager> getInstances(){
+		return instances;
 	}
 
 	public abstract void reset();
@@ -89,7 +95,7 @@ public abstract class AbstractExtensionManager {
 				namespaces.add(s);
 			}
 		}
-		
+
 		for (String s : namespaces) {
 			IExtensionPoint[] extPts = Platform.getExtensionRegistry().getExtensionPoints(s);
 			for (IExtensionPoint e : extPts) {

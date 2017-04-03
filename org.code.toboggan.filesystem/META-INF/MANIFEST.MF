@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CCFilesystem
 Bundle-SymbolicName: org.code.toboggan.filesystem;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 0.0.36
 Bundle-Activator: org.code.toboggan.filesystem.FSActivator
 Bundle-Vendor: CodeCollaborate
 Require-Bundle: org.eclipse.core.runtime,
@@ -22,6 +22,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.code.toboggan.filesystem,
+ org.code.toboggan.filesystem.editor,
  org.code.toboggan.filesystem.extensionpoints.file,
  org.code.toboggan.filesystem.extensionpoints.project,
  org.code.toboggan.filesystem.extensions,

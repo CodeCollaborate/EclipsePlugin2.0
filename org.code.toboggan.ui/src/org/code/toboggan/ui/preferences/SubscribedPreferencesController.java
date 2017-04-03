@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.ui.UIActivator;
 import org.code.toboggan.ui.dialogs.MessageDialog;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -16,42 +15,11 @@ import org.osgi.service.prefs.Preferences;
 
 import clientcore.dataMgmt.SessionStorage;
 import clientcore.websocket.models.Project;
+import constants.PreferenceConstants;
 
 public class SubscribedPreferencesController {
 	private static final Logger logger = LogManager.getLogger("");
-	
-	private static void autoSubscribe() {
-		SessionStorage storage = UIActivator.getDefault().getSessionStorage();
-		List<Long> subscribedIdsFromPrefs = getSubscribedProjectIds();
-		Set<Long> subscribedIds = storage.getSubscribedIds();
 
-		for (Long id : subscribedIdsFromPrefs) {
-			Project p = storage.getProject(id);
-			if (p == null) {
-				removeProjectIdFromPrefs(id);
-			} else if (!subscribedIds.contains(id)) {
-				APIFactory.createProjectSubscribe(id).runAsync();
-			}
-		}
-	}
-	
-	private static void removeProjectIdFromPrefs(long id) {
-		logger.debug(String.format("Removing project %d from auto-subscribe prefs", id));
-		Preferences pluginPrefs = InstanceScope.INSTANCE.getNode(UIActivator.PLUGIN_ID);
-		Preferences projectPrefs = pluginPrefs.node(PreferenceConstants.NODE_PROJECTS);
-		try {
-			String sid = Long.toString(id);
-			if (projectPrefs.nodeExists(sid)) {
-				Preferences thisProjectPrefs = projectPrefs.node(sid);
-				thisProjectPrefs.removeNode();
-				logger.debug(String.format("Node removed for %s", sid));
-			}
-		} catch (BackingStoreException e) {
-			MessageDialog.createDialog("Could not remove project from subscribe preferences.").open();
-			e.printStackTrace();
-		}
-	}
-	
 	public static List<Long> getSubscribedProjectIds() {
 		List<Long> subscribedProjectIds = new ArrayList<>();
 		Preferences pluginPrefs = InstanceScope.INSTANCE.getNode(UIActivator.PLUGIN_ID);
@@ -59,9 +27,9 @@ public class SubscribedPreferencesController {
 		String[] projectIDs;
 		try {
 			projectIDs = projectPrefs.childrenNames();
-			logger.debug(String.format("Found %d auto-subscribe preferences", projectIDs.length));
+			logger.debug(String.format("Found [%d] auto-subscribe preferences", projectIDs.length));
 			for (int i = 0; i < projectIDs.length; i++) {
-				logger.debug(String.format("Read subscribe pref for project %s", projectIDs[i]));
+				logger.debug(String.format("Read subscribe pref for project [%s]", projectIDs[i]));
 				subscribedProjectIds.add(Long.parseLong(projectIDs[i]));
 			}
 		} catch (BackingStoreException e) {
@@ -70,8 +38,8 @@ public class SubscribedPreferencesController {
 		}
 		return Collections.unmodifiableList(subscribedProjectIds);
 	}
-	
-	private static void removeAllSubscribedPrefs(boolean b) {
+
+	public static void removeAllSubscribedPrefs() {
 		Preferences pluginPrefs = InstanceScope.INSTANCE.getNode(UIActivator.PLUGIN_ID);
 		Preferences projectPrefs = pluginPrefs.node(PreferenceConstants.NODE_PROJECTS);
 		String[] projectIDs;
@@ -87,10 +55,10 @@ public class SubscribedPreferencesController {
 			e.printStackTrace();
 		}
 	}
-	
-	private static void writeSubscribedProjects() {
+
+	public static void writeSubscribedProjects() {
 		logger.debug("Writing subscribed projects to auto-subscribe preferences...");
-		SessionStorage ss = UIActivator.getDefault().getSessionStorage();
+		SessionStorage ss = UIActivator.getSessionStorage();
 		Set<Long> subscribedIDs = ss.getSubscribedIds();
 		List<Project> projects = ss.getProjects();
 		Preferences pluginPrefs = InstanceScope.INSTANCE.getNode(UIActivator.PLUGIN_ID);
@@ -105,7 +73,7 @@ public class SubscribedPreferencesController {
 					if (projectPrefs.nodeExists(p.getProjectID() + "")) {
 						Preferences thisProjectPrefs = projectPrefs.node(p.getProjectID() + "");
 						thisProjectPrefs.removeNode();
-						logger.debug(String.format("Node removed for %d", p.getProjectID()));
+						logger.debug(String.format("Node removed for [%d]", p.getProjectID()));
 					}
 				} catch (BackingStoreException e) {
 					e.printStackTrace();
@@ -116,7 +84,7 @@ public class SubscribedPreferencesController {
 				// have to put something in it, otherwise the node will be
 				// dumped
 				thisProjectPrefs.putBoolean(PreferenceConstants.VAR_SUBSCRIBED, true);
-				logger.debug(String.format("Wrote subscribed pref for project %d", p.getProjectID()));
+				logger.debug(String.format("Wrote subscribed pref for project [%d]", p.getProjectID()));
 			}
 		}
 		try {

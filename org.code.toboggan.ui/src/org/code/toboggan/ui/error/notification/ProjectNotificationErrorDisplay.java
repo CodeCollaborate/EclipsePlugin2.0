@@ -10,7 +10,7 @@ public class ProjectNotificationErrorDisplay
 		IProjectRenameNotificationExtension, IProjectRevokePermissionsNotificationExtension {
 
 	@Override
-	public void permissionRevokedNotification(long projectID, String name) {
+	public void permissionsRevoked(long projectID, String name) {
 		// Do nothing
 	}
 

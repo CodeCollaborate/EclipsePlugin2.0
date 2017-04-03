@@ -4,13 +4,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
@@ -25,7 +25,7 @@ public class MessageDialog extends Dialog {
 
 	private String displayMessage;
 	private int textColor = SWT.NONE;
-	
+
 	/**
 	 * Create the dialog with a non-initialized error message. should only be
 	 * used for testing.
@@ -48,26 +48,26 @@ public class MessageDialog extends Dialog {
 		super(parentShell);
 		this.displayMessage = message;
 	}
-	
+
 	private MessageDialog(Shell parentShell, String message, int color) {
 		this(parentShell, message);
 		this.textColor = color;
 	}
-	
+
 	public static MessageDialog createDialog(String message) {
 		logger.debug("UI-DEBUG: Building new MessageDialog");
-		
-        Shell shell = Display.getDefault().getActiveShell();
-        MessageDialog dialog =  new MessageDialog(shell, message);
+
+		Shell shell = Display.getDefault().getActiveShell();
+		MessageDialog dialog = new MessageDialog(shell, message);
 		return dialog;
 	}
 
 	public static MessageDialog createDialog(String message, int textColor) {
 		logger.debug("UI-DEBUG: Building new MessageDialog with different textColor");
 
-        Shell shell = Display.getDefault().getActiveShell();
-        MessageDialog dialog = new MessageDialog(shell, message, textColor);
-        return dialog;
+		Shell shell = Display.getDefault().getActiveShell();
+		MessageDialog dialog = new MessageDialog(shell, message, textColor);
+		return dialog;
 	}
 
 	/**
@@ -107,11 +107,11 @@ public class MessageDialog extends Dialog {
 		// cancel button inherently exists in superclass, but is removed since
 		// it serves the same functionality in this instance
 	}
-	
+
 	@Override
 	protected void configureShell(Shell shell) {
-	      super.configureShell(shell);
-	      shell.setText("CodeCollaborate");
+		super.configureShell(shell);
+		shell.setText("CodeCollaborate");
 	}
 
 }

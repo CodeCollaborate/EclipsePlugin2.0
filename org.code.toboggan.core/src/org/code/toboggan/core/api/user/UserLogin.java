@@ -10,10 +10,10 @@ import org.code.toboggan.core.extensionpoints.user.IUserLoginExtension;
 
 public class UserLogin extends AbstractAPICall {
 	private Logger logger = LogManager.getLogger(UserLogin.class);
-	
+
 	private String username;
 	private String password;
-	
+
 	public UserLogin(AbstractExtensionManager manager, String username, String password) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.USER_LOGIN_ID, IUserLoginExtension.class);
 		this.username = username;

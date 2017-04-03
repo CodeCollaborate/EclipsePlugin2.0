@@ -15,11 +15,12 @@ public class FileRename extends AbstractAPICall {
 	private Path newAbsolutePath;
 	private String newName;
 
-	public FileRename(AbstractExtensionManager manager, long fileID, Path oldAbsolutePath, Path newWorkspaceRelativePath, String newName) {
+	public FileRename(AbstractExtensionManager manager, long fileID, Path oldAbsolutePath, Path newAbsolutePath,
+			String newName) {
 		this.extensions = manager.getExtensions(APIExtensionIDs.FILE_RENAME_ID, IFileRenameExtension.class);
 		this.fileID = fileID;
 		this.oldAbsolutePath = oldAbsolutePath;
-		this.newAbsolutePath = newWorkspaceRelativePath;
+		this.newAbsolutePath = newAbsolutePath;
 		this.newName = newName;
 	}
 

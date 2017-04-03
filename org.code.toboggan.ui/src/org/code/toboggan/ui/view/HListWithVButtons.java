@@ -10,10 +10,10 @@ import org.eclipse.swt.widgets.List;
 
 public class HListWithVButtons extends Composite {
 	private Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	private List list;
 	private VerticalButtonBar buttonBar;
-	
+
 	public HListWithVButtons(Composite parent, int style) {
 		super(parent, style);
 		GridLayout gridLayout = new GridLayout();
@@ -25,7 +25,7 @@ public class HListWithVButtons extends Composite {
 		this.list = this.createList();
 		this.buttonBar = this.createButtonBar();
 	}
-	
+
 	private List createList() {
 		logger.debug("UI-DEBUG: Creating Horizontal List with Vertical Buttons");
 		List listy = new List(this, SWT.BORDER);
@@ -37,7 +37,7 @@ public class HListWithVButtons extends Composite {
 		listy.setLayoutData(data);
 		return listy;
 	}
-	
+
 	private VerticalButtonBar createButtonBar() {
 		logger.debug("UI-DEBUG: Creating VerticalButtonBar");
 		VerticalButtonBar buttonBar = new VerticalButtonBar(this, SWT.BORDER);
@@ -46,15 +46,15 @@ public class HListWithVButtons extends Composite {
 		buttonBar.setLayoutData(data);
 		return buttonBar;
 	}
-	
+
 	List getList() {
 		return list;
 	}
-	
+
 	VerticalButtonBar getButtonBar() {
 		return buttonBar;
 	}
-	
+
 	@Override
 	public void setEnabled(boolean b) {
 		buttonBar.getReloadButton().setEnabled(b);
@@ -64,6 +64,6 @@ public class HListWithVButtons extends Composite {
 		} else {
 			buttonBar.getMinusButton().setEnabled(b);
 		}
-		super.setEnabled(b);	
+		super.setEnabled(b);
 	}
 }

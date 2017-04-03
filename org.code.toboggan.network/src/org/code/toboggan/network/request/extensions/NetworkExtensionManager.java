@@ -8,7 +8,7 @@ public class NetworkExtensionManager extends AbstractExtensionManager {
 	public static NetworkExtensionManager getInstance() {
 		String className = NetworkExtensionManager.class.getName();
 		if (instances.get(className) == null) {
-			synchronized(NetworkExtensionManager.class) {
+			synchronized (instances) {
 				if (instances.get(className) == null) {
 					NetworkExtensionManager em = new NetworkExtensionManager();
 					instances.put(className, em);
@@ -18,14 +18,16 @@ public class NetworkExtensionManager extends AbstractExtensionManager {
 		}
 		return (NetworkExtensionManager) instances.get(className);
 	}
-	
+
 	@Override
 	public void reset() {
-		instances.put(NetworkExtensionManager.class.getName(), null);
+		synchronized (instances) {
+			instances.put(NetworkExtensionManager.class.getName(), null);
+		}
 	}
 
 	private NetworkExtensionManager() {
 		logger = LogManager.getLogger(NetworkExtensionManager.class);
 	}
-	
+
 }

@@ -2,11 +2,12 @@ package org.code.toboggan.ui.dialogs;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.code.toboggan.core.CoreActivator;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.ui.UIActivator;
 import org.eclipse.jface.dialogs.Dialog;
@@ -22,25 +23,26 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
-import clientcore.dataMgmt.SessionStorage;
-import clientcore.websocket.models.Permission;
-import clientcore.websocket.models.Project;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.google.common.collect.BiMap;
 
+import clientcore.dataMgmt.SessionStorage;
+import clientcore.websocket.models.Permission;
+import clientcore.websocket.models.Project;
+
 public class AddNewUserDialog extends Dialog {
 	private Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	private CCombo combo;
 	private Label errorLabel;
 	private String username;
 	private int permission;
 	private Button okButton;
 	private Project selectedProject;
-	private BiMap<String, Byte> permissionMap;
+	private BiMap<String, Integer> permissionMap;
 	private Text usernameBox;
+
 	/**
 	 * Create the dialog.
 	 * 
@@ -59,7 +61,7 @@ public class AddNewUserDialog extends Dialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		logger.debug("UI-DEBUG: Creating AddNewUserDialog");
-		
+
 		Composite container = (Composite) super.createDialogArea(parent);
 		Label lblAddANew = new Label(container, SWT.NONE);
 		lblAddANew.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
@@ -74,21 +76,21 @@ public class AddNewUserDialog extends Dialog {
 		combo.setText(DialogStrings.AddNewUserDialog_ChoosePermission);
 		GridData gd_combo = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		combo.setLayoutData(gd_combo);
-		
-		SessionStorage ss = UIActivator.getDefault().getSessionStorage();
+
+		SessionStorage ss = UIActivator.getSessionStorage();
 		permissionMap = ss.getPermissionConstants();
-		BiMap<Byte, String> inversePermissionMap = permissionMap.inverse();
-		List<Byte> permissionCodes = new ArrayList<>(permissionMap.values());
+		BiMap<Integer, String> inversePermissionMap = permissionMap.inverse();
+		List<Integer> permissionCodes = new ArrayList<>(permissionMap.values());
 		Map<String, Permission> userPermissions = selectedProject.getPermissions();
 		int userLevel = userPermissions.get(ss.getUsername()).getPermissionLevel();
 		Collections.sort(permissionCodes);
-		for (Byte b : permissionCodes) {
-			if (userLevel > b) {
-				combo.add(b + " : " + inversePermissionMap.get(b));
+		for (Integer perm : permissionCodes) {
+			if (userLevel > perm) {
+				combo.add(perm + " : " + inversePermissionMap.get(perm));
 			}
 		}
-		final boolean[] permissionSelected = {false};
-		final boolean[] usernameNotEmpty = {false};
+		final boolean[] permissionSelected = { false };
+		final boolean[] usernameNotEmpty = { false };
 		combo.addListener(SWT.Selection, new Listener() {
 
 			@Override
@@ -100,8 +102,8 @@ public class AddNewUserDialog extends Dialog {
 					okButton.setEnabled(false);
 				}
 			}
-		});		
-		
+		});
+
 		usernameBox.addModifyListener((event) -> {
 			if (usernameBox.getText() != "") {
 				usernameNotEmpty[0] = true;
@@ -114,7 +116,7 @@ public class AddNewUserDialog extends Dialog {
 				okButton.setEnabled(false);
 			}
 		});
-		
+
 		errorLabel = new Label(container, SWT.NONE);
 		errorLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		GridData gd_errorLabel = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
@@ -124,7 +126,7 @@ public class AddNewUserDialog extends Dialog {
 
 		return container;
 	}
-	
+
 	/**
 	 * Create contents of the button bar.
 	 * 
@@ -144,22 +146,27 @@ public class AddNewUserDialog extends Dialog {
 		username = usernameBox.getText();
 		permission = Integer.parseInt(combo.getItem(combo.getSelectionIndex()).split(" . ")[0]);
 		if (username != null && permission != -1) {
-			APIFactory.createProjectGrantPermissions(selectedProject.getProjectID(), username, permission).runAsync();
-			super.okPressed();
+			if (username.equals(CoreActivator.getSessionStorage().getUsername())) {
+				MessageDialog.createDialog(DialogStrings.ProjectSettingsDialog_GrantPermissionCurrUser).open();
+			} else {
+				APIFactory.createProjectGrantPermissions(selectedProject.getProjectID(), username, permission)
+						.runAsync();
+				super.okPressed();
+			}
 		}
 	}
 
 	public String getNewUserName() {
 		return username;
 	}
-	
+
 	public int getNewUserPermission() {
 		return permission;
 	}
 
 	@Override
 	protected void configureShell(Shell shell) {
-	      super.configureShell(shell);
-	      shell.setText(DialogStrings.AddNewUserDialog_Title);
+		super.configureShell(shell);
+		shell.setText(DialogStrings.AddNewUserDialog_Title);
 	}
 }

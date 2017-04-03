@@ -9,12 +9,17 @@ import clientcore.dataMgmt.SessionStorage;
 
 public class ModelMgrUserLogin implements IUserLoginResponse {
 	Logger logger = LogManager.getLogger(ModelMgrUserLogin.class);
-	
+
 	@Override
 	public void loggedIn(String username, String authToken) {
 		logger.debug("Setting username and auth token in storage");
 		SessionStorage ss = CoreActivator.getSessionStorage();
-		ss.setUsername(username);
+
+		// Only set this the first time, to make sure the fetchAndSubscribeAll
+		// is only fired the first time.
+		if (ss.getUsername() == null || !ss.getUsername().equals(username)) {
+			ss.setUsername(username);
+		}
 		ss.setAuthenticationToken(authToken);
 	}
 

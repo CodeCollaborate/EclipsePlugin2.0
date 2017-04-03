@@ -14,9 +14,7 @@ import clientcore.websocket.WSManager;
 import clientcore.websocket.models.ConnectionConfig;
 
 public class WSService {
-	// final private static String WS_ADDRESS =
-	// "wss://codecollaborate.obsessiveorange.com:8000/ws/";
-	final private static String WS_ADDRESS = "wss://codecollaborate-cody.obsessiveorange.com/ws/";
+	final private static String WS_ADDRESS = "wss://codecollaborate.obsessiveorange.com/ws/";
 	final private static boolean RECONNECT = true;
 	final private static int MAX_RETRY_COUNT = 3;
 

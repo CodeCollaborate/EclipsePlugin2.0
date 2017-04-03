@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CCCore
 Bundle-SymbolicName: org.code.toboggan.core;singleton:=true
-Bundle-Version: 0.0.36
+Bundle-Version: 0.0.37
 Bundle-Activator: org.code.toboggan.core.CoreActivator
 Bundle-Vendor: CodeCollaborate
 Require-Bundle: org.eclipse.core.runtime,

@@ -1,6 +1,5 @@
 package org.code.toboggan.network.request.extensions.user;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Set;
 

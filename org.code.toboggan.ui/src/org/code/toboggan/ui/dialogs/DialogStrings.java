@@ -103,6 +103,7 @@ public class DialogStrings extends NLS {
 	public static String StartingUp_Message;
 	public static String Connecting_Message;
 	public static String Connected_Message;
+	public static String Connected_LoggedIn_Message;
 	public static String Disconnecting_Message;
 	public static String Disconnected_Message;
 	public static String Error_Connecting_Message;

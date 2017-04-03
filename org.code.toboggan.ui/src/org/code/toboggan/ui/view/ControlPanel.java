@@ -2,12 +2,10 @@ package org.code.toboggan.ui.view;
 
 import java.beans.PropertyChangeListener;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.code.toboggan.core.api.APIFactory;
 import org.code.toboggan.network.NetworkActivator;
 import org.code.toboggan.ui.UIActivator;
-import org.code.toboggan.ui.dialogs.DialogStrings;
+import org.code.toboggan.ui.view.extensions.ControlPanelWSEvent;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -19,12 +17,9 @@ import org.eclipse.ui.part.ViewPart;
 import clientcore.dataMgmt.SessionStorage;
 import clientcore.websocket.ConnectException;
 import clientcore.websocket.WSConnection;
-import clientcore.websocket.WSConnection.State;
 import clientcore.websocket.WSManager;
 
 public class ControlPanel extends ViewPart {
-	private final Logger logger = LogManager.getLogger(ControlPanel.class);
-
 	static ControlPanel instance;
 
 	public static ControlPanel getInstance() {
@@ -62,15 +57,15 @@ public class ControlPanel extends ViewPart {
 
 		GridData viewsData = new GridData();
 		viewsData.grabExcessHorizontalSpace = true;
-		viewsData.horizontalAlignment = GridData.FILL;
+		viewsData.horizontalAlignment = SWT.FILL;
 		viewsData.grabExcessVerticalSpace = true;
-		viewsData.verticalAlignment = GridData.FILL;
+		viewsData.verticalAlignment = SWT.FILL;
 		views.setLayoutData(viewsData);
 
 		statusBar = new StatusBar(parent, SWT.BORDER);
 		GridData statusData = new GridData();
 		statusData.grabExcessHorizontalSpace = true;
-		statusData.horizontalAlignment = GridData.FILL;
+		statusData.horizontalAlignment = SWT.FILL;
 		statusBar.setLayoutData(statusData);
 		initializePropertyChangeListeners();
 		initializeStatusBar();
@@ -100,32 +95,7 @@ public class ControlPanel extends ViewPart {
 	}
 
 	private void initializeStatusBar() {
-		WSManager wsManager = UIActivator.getWSManager();
-		State s = wsManager.getConnectionState();
-		logger.debug(String.format("STATE: [%s]", s.toString()));
-		switch (s) {
-		case CREATED:
-			statusBar.setStatus(DialogStrings.StartingUp_Message);
-			break;
-		case CONNECT:
-			statusBar.setStatus(DialogStrings.Connecting_Message);
-			break;
-		case READY:
-			statusBar.setStatus(DialogStrings.Connected_Message);
-			break;
-		case CLOSE:
-			statusBar.setStatus(DialogStrings.Disconnecting_Message);
-			break;
-		case EXIT:
-			statusBar.setStatus(DialogStrings.Disconnected_Message);
-			break;
-		case ERROR:
-			statusBar.setStatus(DialogStrings.Error_Connecting_Message);
-			break;
-		default:
-			statusBar.setStatus(DialogStrings.Error_Connecting_Message);
-			break;
-		}
+		new ControlPanelWSEvent().updateStatus();
 	}
 
 	private void undoNotificationHandlers() {

@@ -326,4 +326,12 @@
          	class="org.code.toboggan.ui.dialogs.extensions.DialogStorageListener">
          </create>
    </extension>
+   <extension
+		 id="org.code.toboggan.ui.dialogs.storagelistener"
+         name="org.code.toboggan.ui.dialogs.storagelistener"
+         point="org.code.toboggan.core.storagelistener">
+         <create
+         	class="org.code.toboggan.ui.view.extensions.ControlPanelWSEvent">
+         </create>
+   </extension>
 </plugin>

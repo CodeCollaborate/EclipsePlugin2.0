@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Shell;
 import clientcore.dataMgmt.SessionStorage;
 
 public class DialogStorageListener implements IStorageListener {
-
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// Only check username; tokens can be updated without breaking the
@@ -22,5 +21,4 @@ public class DialogStorageListener implements IStorageListener {
 			});
 		}
 	}
-
 }

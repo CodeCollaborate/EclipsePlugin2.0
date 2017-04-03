@@ -1,0 +1,27 @@
+----- API File Flows -----
+APIFileChange              -> NetworkFileChange              -> ModelMgrFileChange
+APIFileCreate              -> NetworkFileCreate              -> ModelMgrFileCreate
+APIFileDelete              -> NetworkFileDelete              -> ModelMgrFileDelete
+APIFileMove                -> NetworkFileMove                -> FSFileMove                -> ModelMgrFileMove
+APIFilePull                -> NetworkFilePull                -> FSFilePull
+APIFilePullDiffSendChanges -> NetworkFilePullDiffSendChanges -> FSFilePullDiffSendChanges
+APIFileRename              -> NetworkFileRename              -> FSFileRename              -> ModelMgrFileRename
+
+----- API Project Flows -----
+APIProjectCreate                 -> NetworkProjectCreate                 -> FSProjectCreate                       -> ModelMgrProjectCreate
+APIProjectDelete                 -> NetworkProjectDelete                 -> ModelMgrProjectDelete
+APIProjectFetchAndSubscribeAll   -> NetworkProjectFetchAndSubscribeAll   -> ModelMgrProjectFetchAndSubscribeAll
+APIProjectGetFiles               -> NetworkProjectGetFiles               -> ModelMgrProjectGetFiles
+APIProjectGetPermissionConstants -> NetworkProjectGetPermissionConstants -> ModelMgrProjectGetPermissionConstants
+APIProjectGrantPermissions       -> NetworkProjectGrantPermissions       -> ModelMgrProjectGrantPermissions
+APIProjectLookup                 -> NetworkProjectLookup                 -> ModelMgrProjectLookup
+APIProjectRename                 -> NetworkProjectRename                 -> ModelMgrProjectRename
+APIProjectRevokePermissions      -> NetworkProjectRevokePermissions      -> ModelMgrProjectRevokePermissions
+APIProjectSubscribe              -> NetworkProjectSubscribe              -> FSProjectSubscribe                    -> ModelMgrProjectSubscribe
+APIProjectUnsubscribe            -> NetworkProjectUnsubscribe            -> ModelMgrProjectUnsusbscribe
+
+----- API User Flows -----
+APIUserLogin    -> NetworkUserLogin
+APIUserLookup   -> NetworkUserLookup
+APIUserProjects -> NetworkUserProjects
+APIUserRegister -> NetworkUserRegister

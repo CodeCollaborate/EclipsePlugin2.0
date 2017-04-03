@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.code.toboggan"
+      label="CodeCollaborateClient"
+      version="0.0.36"
+      provider-name="CodeCollaborate">
+
+   <description>
+      CodeCollaborate enables synchronous editing of documents in real-time.
+   </description>
+
+   <copyright url="https://opensource.org/licenses/MIT">
+      Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   </copyright>
+
+   <license url="https://opensource.org/licenses/MIT">
+      Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   </license>
+
+   <url>
+      <update label="Code Collaborate Update Site" url="http://codecollaborate-update.obsessiveorange.com"/>
+   </url>
+
+   <plugin
+         id="org.code.toboggan.clientcore"
+         download-size="0"
+         install-size="0"
+         version="0.0.36"
+         unpack="false"/>
+
+   <plugin
+         id="org.code.toboggan.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.36"
+         unpack="false"/>
+
+   <plugin
+         id="org.code.toboggan.filesystem"
+         download-size="0"
+         install-size="0"
+         version="0.0.36"
+         unpack="false"/>
+
+   <plugin
+         id="org.code.toboggan.network"
+         download-size="0"
+         install-size="0"
+         version="0.0.36"
+         unpack="false"/>
+
+   <plugin
+         id="org.code.toboggan.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.36"
+         unpack="false"/>
+
+   <plugin
+         id="org.code.toboggan.modelmgr"
+         download-size="0"
+         install-size="0"
+         version="0.0.36"
+         unpack="false"/>
+
+</feature>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension-point id="org.code.toboggan.core.project.create" name="org.code.toboggan.core.project.create" schema="schema/org.code.toboggan.core.project.create.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.delete" name="org.code.toboggan.core.project.delete" schema="schema/org.code.toboggan.core.project.delete.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.grantpermissions" name="org.code.toboggan.core.project.grantpermissions" schema="schema/org.code.toboggan.core.project.grantpermissions.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.getpermissionconstants" name="org.code.toboggan.core.project.getpermissionconstants" schema="schema/org.code.toboggan.core.project.getpermissionconstants.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.getfiles" name="org.code.toboggan.core.project.getfiles" schema="schema/org.code.toboggan.core.project.getfiles.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.fetchsubscribeall" name="org.code.toboggan.core.project.fetchsubscribeall" schema="schema/org.code.toboggan.core.project.fetchsubscribeall.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.rename" name="org.code.toboggan.core.project.rename" schema="schema/org.code.toboggan.core.project.rename.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.lookup" name="org.code.toboggan.core.project.lookup" schema="schema/org.code.toboggan.core.project.lookup.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.revokepermissions" name="org.code.toboggan.core.project.revokepermissions" schema="schema/org.code.toboggan.core.project.revokepermissions.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.subscribe" name="org.code.toboggan.core.project.subscribe" schema="schema/org.code.toboggan.core.project.subscribe.exsd"/>
+	<extension-point id="org.code.toboggan.core.project.unsubscribe" name="org.code.toboggan.core.project.unsubscribe" schema="schema/org.code.toboggan.core.project.unsubscribe.exsd"/>
+	<extension-point id="org.code.toboggan.core.user.login" name="org.code.toboggan.core.user.login" schema="schema/org.code.toboggan.core.user.login.exsd"/>
+	<extension-point id="org.code.toboggan.core.user.register" name="org.code.toboggan.core.user.register" schema="schema/org.code.toboggan.core.user.register.exsd"/>
+	<extension-point id="org.code.toboggan.core.user.projects" name="org.code.toboggan.core.user.projects" schema="schema/org.code.toboggan.core.user.projects.exsd"/>
+	<extension-point id="org.code.toboggan.core.user.lookup" name="org.code.toboggan.core.user.lookup" schema="schema/org.code.toboggan.core.user.lookup.exsd"/>
+	<extension-point id="org.code.toboggan.core.file.change" name="org.code.toboggan.core.file.change" schema="schema/org.code.toboggan.core.file.change.exsd"/>
+	<extension-point id="org.code.toboggan.core.file.create" name="org.code.toboggan.core.file.create" schema="schema/org.code.toboggan.core.file.create.exsd"/>
+	<extension-point id="org.code.toboggan.core.file.rename" name="org.code.toboggan.core.file.rename" schema="schema/org.code.toboggan.core.file.rename.exsd"/>
+	<extension-point id="org.code.toboggan.core.file.delete" name="org.code.toboggan.core.file.delete" schema="schema/org.code.toboggan.core.file.delete.exsd"/>
+	<extension-point id="org.code.toboggan.core.file.move" name="org.code.toboggan.core.file.move" schema="schema/org.code.toboggan.core.file.move.exsd"/>
+	<extension-point id="org.code.toboggan.core.file.pulldiffsendchanges" name="org.code.toboggan.core.file.pulldiffsendchanges" schema="schema/org.code.toboggan.core.file.pulldiffsendchanges.exsd"/>
+	<extension-point id="org.code.toboggan.core.file.pull" name="org.code.toboggan.core.file.pull" schema="schema/org.code.toboggan.core.file.pull.exsd"/>
+	<extension-point id="org.code.toboggan.core.storagelistener" name="org.code.toboggan.core.storagelistener" schema="schema/org.code.toboggan.core.storagelistener.exsd"/>
+</plugin>

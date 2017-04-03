@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CCNetwork
 Bundle-SymbolicName: org.code.toboggan.network;singleton:=true
-Bundle-Version: 0.0.40
+Bundle-Version: 0.0.41
 Bundle-Activator: org.code.toboggan.network.NetworkActivator
 Bundle-Vendor: CodeCollaborate
 Require-Bundle: org.eclipse.core.runtime,

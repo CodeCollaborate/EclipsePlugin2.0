@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ClientCore
 Bundle-SymbolicName: org.code.toboggan.clientcore
-Bundle-Version: 0.0.40
+Bundle-Version: 0.0.41
 Bundle-ClassPath: clientcore_unpack/
 Bundle-Vendor: CodeToboggan
 Export-Package: clientcore.constants,

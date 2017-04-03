@@ -36,12 +36,11 @@ public class AddNewUserDialog extends Dialog {
 
 	private CCombo combo;
 	private Label errorLabel;
-	private String username;
 	private int permission;
 	private Button okButton;
 	private Project selectedProject;
 	private BiMap<String, Integer> permissionMap;
-	private Text usernameBox;
+	private Text usernamesBox;
 
 	/**
 	 * Create the dialog.
@@ -67,9 +66,9 @@ public class AddNewUserDialog extends Dialog {
 		lblAddANew.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 		lblAddANew.setText(DialogStrings.AddNewUserDialog_AddByUsername);
 
-		usernameBox = new Text(container, SWT.BORDER);
+		usernamesBox = new Text(container, SWT.BORDER);
 		GridData gd_text = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
-		usernameBox.setLayoutData(gd_text);
+		usernamesBox.setLayoutData(gd_text);
 
 		combo = new CCombo(container, SWT.BORDER);
 		combo.setEditable(false);
@@ -104,8 +103,8 @@ public class AddNewUserDialog extends Dialog {
 			}
 		});
 
-		usernameBox.addModifyListener((event) -> {
-			if (usernameBox.getText() != "") {
+		usernamesBox.addModifyListener((event) -> {
+			if (usernamesBox.getText() != "") {
 				usernameNotEmpty[0] = true;
 			} else {
 				usernameNotEmpty[0] = false;
@@ -143,25 +142,28 @@ public class AddNewUserDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 		logger.debug("UI-DEBUG: Ok button for AddNewUserDialog was pressed");
-		username = usernameBox.getText();
+		String usernamesStr = usernamesBox.getText();
 		permission = Integer.parseInt(combo.getItem(combo.getSelectionIndex()).split(" . ")[0]);
-		if (username != null && permission != -1) {
-			if (username.equals(CoreActivator.getSessionStorage().getUsername())) {
-				MessageDialog.createDialog(DialogStrings.ProjectSettingsDialog_GrantPermissionCurrUser).open();
-			} else {
-				APIFactory.createProjectGrantPermissions(selectedProject.getProjectID(), username, permission)
-						.runAsync();
-				super.okPressed();
+		if (usernamesStr != null && permission != -1) {
+			String[] usernames = usernamesStr.split(",");
+
+			for (String username : usernames) {
+				username = username.trim();
+				
+				// Skip empty usernames
+				if (username.isEmpty()){
+					continue;
+				}
+				
+				if (username.equals(CoreActivator.getSessionStorage().getUsername())) {
+					MessageDialog.createDialog(DialogStrings.ProjectSettingsDialog_GrantPermissionCurrUser).open();
+				} else {
+					APIFactory.createProjectGrantPermissions(selectedProject.getProjectID(), username, permission)
+							.runAsync();
+					super.okPressed();
+				}
 			}
 		}
-	}
-
-	public String getNewUserName() {
-		return username;
-	}
-
-	public int getNewUserPermission() {
-		return permission;
 	}
 
 	@Override

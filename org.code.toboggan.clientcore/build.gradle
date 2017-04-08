@@ -14,7 +14,7 @@ repositories {
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     // compile 'org.slf4j:slf4j-api:1.7.12'
-    compile 'org.code.toboggan:org.code.toboggan.clientcore:2.0.9'
+    compile 'org.code.toboggan:org.code.toboggan.clientcore:2.0.9-hotfix03'
 	compile group: 'commons-io', name: 'commons-io', version: '2.5'	
 	compile group: 'org.bitbucket.cowwoc.diff-match-patch', name: 'diff-match-patch', version: '1.0'
     

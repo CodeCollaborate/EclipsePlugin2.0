@@ -148,8 +148,6 @@ public class DirectoryListener extends AbstractDirectoryListener {
 				kinds.substring(0, Math.max(0, kinds.length() - 2)),
 				flags.substring(0, Math.max(0, flags.length() - 2))));
 
-		// TODO: Is the condition below supposed to be a bitmask & Non-zero
-		// comparison?
 		if (delta.getKind() == IResourceDelta.CHANGED) {
 			if (file == null) {
 				// rather than deleting the document if metadata doesn't exist,

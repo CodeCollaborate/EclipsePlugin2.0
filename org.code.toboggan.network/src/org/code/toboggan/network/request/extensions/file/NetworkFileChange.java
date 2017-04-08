@@ -34,40 +34,50 @@ public class NetworkFileChange extends AbstractNetworkExtension implements IFile
 	@Override
 	public void fileChanged(long fileID, Patch[] patches) {
 		File file = CoreActivator.getSessionStorage().getFile(fileID);
-		if (file == null){
+		if (file == null) {
 			logger.error("File was null for NetworkFileChange");
 			return;
 		}
-		
+
 		Project project = CoreActivator.getSessionStorage().getProject(file.getProjectID());
-		if (project == null){
+		if (project == null) {
 			logger.error("Project was null for NetworkFileChange");
 			return;
 		}
-		
+
 		Permission perm = project.getPermissions().get(CoreActivator.getSessionStorage().getUsername());
 		if (CoreActivator.getSessionStorage().getPermissionConstants().get("read") == null) {
 			logger.error("Read-level permission was null");
 			return;
 		}
-		if (perm == null || perm.getPermissionLevel() == CoreActivator.getSessionStorage().getPermissionConstants().get("read")){
+		if (perm == null || perm.getPermissionLevel() == CoreActivator.getSessionStorage().getPermissionConstants()
+				.get("read")) {
 			// We don't have permission; do not send patch.
 			logger.info("Permission for current user does not exist, or is read-only; saving locally");
 			pm.savePatch(fileID, patches);
 			return;
 		}
-		
+
 		extMgr = NetworkExtensionManager.getInstance();
 		pm.sendPatch(fileID, patches, response -> {
-			long version = ((FileChangeResponse) response.getData()).fileVersion;
-			String acceptedPatches = ((FileChangeResponse) response.getData()).changes;
-			String[] missingPatches = ((FileChangeResponse) response.getData()).missingPatches;
+			if (response.getStatus() != 200) {
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.FILE_CHANGE_REQUEST_ID,
+						IFileChangeResponse.class);
+				for (ICoreExtension e : extensions) {
+					IFileChangeResponse p = (IFileChangeResponse) e;
+					p.fileChangeFailed(fileID, null);
+				}
+			} else {
+				long version = ((FileChangeResponse) response.getData()).fileVersion;
+				String acceptedPatches = ((FileChangeResponse) response.getData()).changes;
+				String[] missingPatches = ((FileChangeResponse) response.getData()).missingPatches;
 
-			Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.FILE_CHANGE_REQUEST_ID,
-					IFileChangeResponse.class);
-			for (ICoreExtension e : extensions) {
-				IFileChangeResponse p = (IFileChangeResponse) e;
-				p.fileChanged(fileID, new Patch(acceptedPatches), Patch.getPatches(missingPatches), version);
+				Set<ICoreExtension> extensions = extMgr.getExtensions(NetworkExtensionIDs.FILE_CHANGE_REQUEST_ID,
+						IFileChangeResponse.class);
+				for (ICoreExtension e : extensions) {
+					IFileChangeResponse p = (IFileChangeResponse) e;
+					p.fileChanged(fileID, new Patch(acceptedPatches), Patch.getPatches(missingPatches), version);
+				}
 			}
 		}, null);
 	}

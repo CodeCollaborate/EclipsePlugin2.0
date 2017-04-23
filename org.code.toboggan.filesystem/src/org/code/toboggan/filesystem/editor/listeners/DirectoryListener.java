@@ -77,7 +77,8 @@ public class DirectoryListener extends AbstractDirectoryListener {
 					return true;
 				} else {
 					logger.debug(String.format("Project [%s] deleted on disk; unsubscribing", project.getName()));
-					APIFactory.createProjectUnsubscribe(project.getProjectID()).runAsync();;
+					APIFactory.createProjectUnsubscribe(project.getProjectID()).runAsync();
+					;
 
 					// No need to recurse; we already are unsubscribed.
 					return true;
@@ -286,7 +287,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 				} else if (file != null) {
 					logger.debug(
 							"got FileCreate directory event for already-created file; diffing and sending changes");
-					APIFactory.createFilePullDiffSendChanges(file.getFileID());
+					APIFactory.createFilePullDiffSendChanges(file.getFileID()).runAsync();
 				} else {
 					createFile(iFile);
 				}

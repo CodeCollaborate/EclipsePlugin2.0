@@ -2,7 +2,7 @@
 <feature
       id="org.code.toboggan"
       label="CodeCollaborateClient"
-      version="0.1.2"
+      version="0.1.3"
       provider-name="CodeCollaborate">
 
    <description>
@@ -33,42 +33,42 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
          id="org.code.toboggan.clientcore"
          download-size="0"
          install-size="0"
-         version="0.1.2"
+         version="0.1.3"
          unpack="false"/>
 
    <plugin
          id="org.code.toboggan.core"
          download-size="0"
          install-size="0"
-         version="0.1.2"
+         version="0.1.3"
          unpack="false"/>
 
    <plugin
          id="org.code.toboggan.filesystem"
          download-size="0"
          install-size="0"
-         version="0.1.2"
+         version="0.1.3"
          unpack="false"/>
 
    <plugin
          id="org.code.toboggan.network"
          download-size="0"
          install-size="0"
-         version="0.1.2"
+         version="0.1.3"
          unpack="false"/>
 
    <plugin
          id="org.code.toboggan.ui"
          download-size="0"
          install-size="0"
-         version="0.1.2"
+         version="0.1.3"
          unpack="false"/>
 
    <plugin
          id="org.code.toboggan.modelmgr"
          download-size="0"
          install-size="0"
-         version="0.1.2"
+         version="0.1.3"
          unpack="false"/>
 
 </feature>

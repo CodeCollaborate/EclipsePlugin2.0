@@ -54,12 +54,6 @@ public class DirectoryListener extends AbstractDirectoryListener {
 				// If it's in the warn list, remove it and return;
 				if (warnList.isProjectInWarnList(iProject.getName(), ProjectRenameNotification.class)) {
 					warnList.removeProjectFromWarnList(iProject.getName(), ProjectRenameNotification.class);
-
-					// Unsubscribe if it's subscribed
-					if (ss.getSubscribedIds().contains(project.getProjectID())) {
-						APIFactory.createProjectSubscribe(project.getProjectID());
-					}
-
 					return true;
 				}
 				// Else, send a project rename request.
@@ -83,7 +77,7 @@ public class DirectoryListener extends AbstractDirectoryListener {
 					return true;
 				} else {
 					logger.debug(String.format("Project [%s] deleted on disk; unsubscribing", project.getName()));
-					APIFactory.createProjectUnsubscribe(project.getProjectID());
+					APIFactory.createProjectUnsubscribe(project.getProjectID()).runAsync();;
 
 					// No need to recurse; we already are unsubscribed.
 					return true;

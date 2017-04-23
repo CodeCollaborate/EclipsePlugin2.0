@@ -66,7 +66,7 @@ public class ConfirmSubscribeDialog extends Dialog {
 	protected void cancelPressed() {
 		logger.debug("UI-DEBUG: Cancel button pressed for ConfirmSubscribeDialog");
 		SubscribedPreferencesController.removeAllSubscribedPrefs();
-		APIFactory.createUserProjects();
+		APIFactory.createUserProjects().runAsync();
 		super.cancelPressed();
 	}
 

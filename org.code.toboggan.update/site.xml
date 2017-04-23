@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.code.toboggan_0.1.3.jar" id="org.code.toboggan" version="0.1.3">
+   <feature url="features/org.code.toboggan_0.1.4.jar" id="org.code.toboggan" version="0.1.4">
       <category name="org.code.toboggan.collaborative-editing"/>
    </feature>
    <category-def name="org.code.toboggan.collaborative-editing" label="Collaborative Editing">
